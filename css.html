@@ -1,0 +1,123 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta id="extViewportMeta" name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+
+<script>
+window.addEventListener("orientationchange", function() {
+  if (navigator.userAgent.match(/(iPhone|iPod|iPad)/i)) {
+    document.documentElement.innerHTML = document.documentElement.innerHTML;
+  }
+}, false);
+</script>
+
+<style>
+    html, body {margin: 0; padding: 0; overflow: hidden}
+    .table_wrapper{width:700px;height:100%;margin:auto;}
+    .table_cellbody{display:table;margin:auto;border:1px dashed #FF0000}
+    .table_cell{display:table-cell;width:100px;height:100%;box-sizing: border-box;border:1px dashed #00FF00}
+    .table_row{display:table-row;}
+    .clearfloat::after{content:"";clear:both;display:block}
+
+	.mother .cbody{margin:auto;width:100px;height:50px;border:3px dashed #FFF;vertical-align:middle}
+	.father .cbody{margin:auto;width:100px;height:50px;border:3px dashed #000;vertical-align:middle}
+
+  .cbody{margin:auto;width:100px;height:50px;border:3px dashed #000;vertical-align:middle}
+
+.father .cbody.bbg{background-color: #000}
+.ccc > p{color:#3366CC}
+.mmm > p{color:#FF0000}
+
+</style>
+
+
+
+  </head>
+  <body>
+    <div style = "height:100vh;">
+      <div style = "height:20%;min-height:80px;background-color:#CCCCCC">HEADER</div>
+      <div style = "height:70%;min-height:500px;width:100%;display:table;position:relative">
+        <div class="mother" style="display:table-cell;background-color:#FF0088;vertical-align:middle;">
+          <button id = "" class="cbody" >MOTHER</button>
+        </div>
+        <div class="father" style="display:table-cell;background-color:#FF0088;vertical-align:middle;">
+          <button id = "" class="cbody bbg" >FATHER</button>
+        </div>
+        <div class="mother" style="display:table-cell;background-color:#FF0088;vertical-align:middle;">
+          <button id = "" class="cbody" >MOTHER</button>
+        </div>
+        <div class="mother" style="display:table-cell;background-color:#FF0088;vertical-align:middle;">
+          <button id = "" class="cbody" >MOTHER</button>
+        </div>
+
+      <div class="mmm">
+        <p>TEST</p>
+        <p>TEST</p>
+        <div><p>WHAT?</p></div>
+        <p>TEST2</p>
+        <p>TEST2</p>
+        <p>TEST2</p>
+        <p>TEST2</p>
+      </div>
+      <p>HERE?</p>
+      <p>HERE?</p>
+
+      <div class="ccc">
+        <p>TEST</p>
+        <p>TEST</p>
+        <p>TEST2</p>
+        <p>TEST2</p>
+        <p>TEST2</p>
+        <p>TEST2</p>
+      </div>
+      <p>HERE?</p>
+      <p>HERE?</p>
+
+      </div>
+      <div style = "height:10%;min-height:40px;background-color:#AAAAAA">FOOTER</div>
+
+   </div>
+
+   <script>
+   function $$(id){ return document.getElementById(id); }
+
+   </script>
+
+    <!-- <div class="table_wrapper">
+      <div class="table_cellbody" style="height:30%">
+        <div class="table_cell">A<br>B<br>A<br>B<br>A<br>B</div>
+        <div class="table_cell">C</div>
+        <div class="table_cell">D</div>
+      </div>
+    </div>
+      <div class="table_wrapper" >
+        <div class="table_cellbody" style="display:block;">
+          <div class="table_cell" style="display:inline-block;vertical-align:middle">A<br>B<br>A<br>B<br>A<br>B</div>
+          <div class="table_cell" style="display:inline-block;vertical-align:middle;margin-top:30px">C</div>
+          <div class="table_cell" style="display:inline-block;vertical-align:middle">D</div>
+        </div>
+      </div>
+        <div class="table_wrapper" >
+          <div class="table_cellbody clearfloat" style="display:block">
+            <div class="table_cell" style="display:block;float:left;vertical-align:middle;height:100%">A<br>B<br>A<br>B<br>A<br>B</div>
+            <div class="table_cell" style="display:block;float:left;vertical-align:middle;margin-top:30px">C</div>
+            <div class="table_cell" style="display:block;float:left;vertical-align:middle">D</div>
+          </div>
+        </div>
+          <div class="table_wrapper" style="width:90%">
+            <div class="table_cellbody" style="display:flex; flex-direction: row;justify-content: flex-start;position:relative">
+              <div class="table_cell" style="width:300px">A<br>B<br>A<br>B<br>A<br>B</div>
+              <div class="table_cell" style="margin-top:30px">C</div>
+              <div class="table_cell" style="">A<br>B<br>A<br>B</div>
+            </div>
+          </div> -->
+  </body>
+</html>
