@@ -1,10 +1,10 @@
-importScript('./js/common/json2.js');
-importScript('./js/common/TweenMax.min.js');
-importScript('./js/common/CMS.js');
-importScript('./js/common/Configuration.js');
-importScript('./js/common/WebSocket.js');
-importScript('./js/common/panelConf.js');
-importScript('./js/common/panelDebug.js');
+importScript('./tcs/js/json2.js');
+importScript('./tcs/js/TweenMax.min.js');
+importScript('./tcs/js/CMS.js');
+importScript('./tcs/js/Configuration.js');
+importScript('./tcs/js/WebSocket.js');
+importScript('./tcs/js/panelConf.js');
+importScript('./tcs/js/panelDebug.js');
 
 
 var tcsapp = {}
