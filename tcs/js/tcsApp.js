@@ -1,6 +1,5 @@
 importScript('./tcs/js/json2.js');
 importScript('./tcs/js/TweenMax.min.js');
-importScript('./tcs/js/CMS.js');
 importScript('./tcs/js/Configuration.js');
 importScript('./tcs/js/WebSocket.js');
 importScript('./tcs/js/panelConf.js');
@@ -24,46 +23,14 @@ tcsapp.panelConf = null;
 tcsapp.appId = "au.com.thecreativeshop";
 
 preset.confp = {
-	CMD_SOCKET_ID:3,
-	CMD_SOCKET_IP:"192.168.0.2",
-	CMD_SOCKET_PORT:9000,
-	CMS_EVENT_CODE:"QS",
-	CMS_IP:"192.168.0.2",
-	CMS_UPLOAD:"/codeigniter/index.php/upload/",
-	CMS_LIST:"/codeigniter/index.php/upload/qsrank/",
-	CMS_CLEAR_BOARD:"/codeigniter/index.php/upload/qsrankclear/",
-	CMS_REQUEST_QUEUE:"/app/f1/requestQueue.php",
-	CMS_SAVE_QUEUE:"/app/f1/saveQueue.php",
-	APP_INFINITE_TEST:"N",
-	TIMEOUT:30,
-	USE_FLAG:"Y",
-	USE_CPU_OPPONENT:"N",
-	FLAG_TXT:["Mercedes","Red Bull Racing","Ferrari","Force India","Williams","McLaren","Toro Rosso","Haas F1 Team","Renault","Sauber"],
-	NUM_FLAG:10,
-	MULTI_USER:1
+
 };
 preset.confd = {
-	CMD_SOCKET_ID:3,
-	CMD_SOCKET_IP:"127.0.0.1",
-	CMD_SOCKET_PORT:9000,
-	CMS_EVENT_CODE:"QS",
-	CMS_IP:"127.0.0.1",
-	CMS_UPLOAD:"/app/f1/codeigniter/index.php/upload/",
-	CMS_LIST:"/app/f1/codeigniter/index.php/upload/qsrank/",
-	CMS_CLEAR_BOARD:"/app/f1/codeigniter/index.php/upload/qsrankclear/",
-	CMS_REQUEST_QUEUE:"/app/f1/requestQueue.php",
-	CMS_SAVE_QUEUE:"/app/f1/saveQueue.php",
-	APP_INFINITE_TEST:"N",
-	TIMEOUT:30,
-	USE_FLAG:"Y",
-	USE_CPU_OPPONENT:"N",
-	FLAG_TXT:["Mercedes","Red Bull Racing","Ferrari","Force India","Williams","McLaren","Toro Rosso","Haas F1 Team","Renault","Sauber"],
-	NUM_FLAG:10,
-	MULTI_USER:1
+
 };
 
 tcsapp.init = function(){
-
+		console.log("TCS APP INITIALISED");
 		this.panelDebug = new PanelDebug('panelDebug');
 		this.panelConf  = new PanelConf('panelConf');
 		this.tcssocket  = new TCSWebSocket();
@@ -98,14 +65,14 @@ tcsapp.init = function(){
 
 }
 tcsapp.keyboardlistener = function(e){
-	ipcRenderer.send('keypress', event.ctrlKey , event.key);
+
 }
 tcsapp.resizelistener = function(e){
-$$("screenRes").innerHTML = document.documentElement.clientWidth+"x"+document.documentElement.clientHeight;
+
 }
 
 tcsapp.thingsAfterConfigloaded = function(){
-	this.paging(0);
+
 }
 
 tcsapp.connectSocket = function(){
@@ -135,9 +102,6 @@ tcsapp.paging = function(n){
 	this.previouspage = this.currentpage;
 	this.currentpage = n;
 }
-
-
-
 
 if(navigator.platform.indexOf("Linux")>-1){
 	document.addEventListener("mousedown", function (e) {
