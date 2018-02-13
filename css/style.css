@@ -1,0 +1,142 @@
+/*
+ * Globals
+ */
+
+/* Links */
+
+
+@font-face {
+font-family: 'NissanBrandBold';
+src:url('../fonts/Nissan Brand Bold.otf') format('opentype');
+}
+@font-face {
+font-family: 'NissanBrandRegular';
+src:url('../fonts/Nissan Brand Regular.otf') format('opentype');
+}
+/*src: url('../fonts/glyphicons-halflings-regular.eot');
+src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
+url('../fonts/glyphicons-halflings-regular.woff2') format('woff2'),
+url('../fonts/glyphicons-halflings-regular.woff') format('woff'),
+url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'),
+url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');*/
+
+
+
+
+a,
+a:focus,
+a:hover {
+  color: #fff;
+}
+
+/*Forms*/
+input{
+  background-color: #FFF;
+}
+
+.form-group{margin-bottom:1.2rem;}
+.form-control{box-sizing: border-box; padding-left: .5rem 0; margin:0}
+.conf-table{display:table;width:100%;font-size: 0.8rem;}
+.conf-group{display:table-row;}
+.conf-title{display:table-cell;width:20%;text-align: right;}
+.conf-value{display:table-cell;text-align: left; padding:5px;}
+.conf-value input{
+    width:100%;
+    padding: .3rem .4rem;
+    font-size: 0.8rem;
+    line-height: 1.0;
+    color: #495057;
+    background-color: #fff;
+    background-image: none;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;}
+
+
+.btn-default {
+  width:130px;margin:10px;
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+  font-weight: bold;
+}
+.btn-default .disabled {
+  color: #AAA;
+  background-color: #e6e6e6;
+  border-color: #8c8c8c;
+}
+.btn-default:hover {
+  color: #333;
+  background-color: #999999;
+  border-color: #999999;
+}
+
+#pageIntrologo img{width:900px;  max-width: 100%; height: auto;}
+/*
+ * Base structure
+ */
+
+html,body{
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+  background-color: #000;
+  background-image:url(../img/bg.png); background-size:cover;background-repeat: no-repeat;
+}
+body {
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
+}
+
+.fillwidth {
+    max-width: 100%;
+    height: auto;
+}
+
+
+.scrollable{}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+/* Full popup Input, Configuration, Debug-Panel Thank you etc ..*/
+.full-popup{ position:absolute; z-index:10001; top:0px; left:0px; width:100%; height:100%; background-color:rgba(0, 0, 0, 0.7);  vertical-align: middle;  text-align: center;  display:none;}
+.full-popup-inner{ position:relative; margin:20px auto; padding:50px;  border: 3px solid #333333;  border-radius: 25px;   height:90%;   width:70%; min-height: 672px; min-width: 760px;
+  background-color:rgba(0, 0, 0, 0.7); text-shadow: 0 0 10px rgba(0,0,0,1); box-shadow: 0px 0px 30px rgba(0,0,0,1);}
+.full-popup .close-button{  z-index:10002;  position:absolute;  top:10px; right:20px;  display:block;  width:50px;  height:50px; background-image: url(../img/close.png);  background-position: center;  background-size:34px 34px;  background-repeat: no-repeat;}
+@keyframes ani-close {from {transform: rotate(0deg);} to {transform: rotate(180deg);}}
+.full-popup .close-button:active{animation-name: ani-close; animation-timing-function: ease-out;  animation-duration: 0.3s;}
+.full-popup-body {display:block; margin-top:20px;}
+.full-popup-utils{display:block;  margin-top:20px; text-align:center;}
+
+.wrapper{display:table;width:100%;height:100%;border:1px dashed #FF0}
+.wrapper-block{display:table-row;padding-top:30px;width:100%;height:100px}
+
+#userPhotoPreview {position:absolute;right:20px;top:0;}
+#userPhotoPreview img{padding:10px;width:300px;height:200px}
+
+/* LOG Panel*/
+.debug-txt-area{width:100%; height:100%; min-height:450px; text-align: left; padding-left: 10px; overflow-y: scroll; -webkit-overflow-scrolling: touch; font-size: 0.6em;}
+#debugInput  {width:80%; display:inline-block;vertical-align:middle;width:80%;vertical-align:middle;}
+#debugBtnSend{width:15%; display:inline-block; min-width:80px; }
+
+/*Hidden Buttons on coners*/
+.hidden-button{position:absolute;z-index:10000;width:100px;height:50px;display:block;background-color: transparent; }
+.lt{top:0px;left:0px;}
+.rt{top:0px;right:0px;}
+.lb{bottom:0px;left:0px;}
+.rb{bottom:0px;right:0px;}
