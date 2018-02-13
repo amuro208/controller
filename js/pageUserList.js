@@ -124,7 +124,7 @@
 
 	PageUserList.prototype.clearBoard = function(){
 		  if(confirm("Are you sure you want to reset this leader board?")){
-				cms.clearBoard(this,{},function(data){
+						cms.clearBoard(this,{},function(data){
 					  tcsapp.tcssocket.send("ALL","BOARD_CLEARD","-");
 				}.bind(this));
 		}
