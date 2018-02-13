@@ -1,0 +1,18 @@
+{
+  "name": "tcs-MediaPlayer",
+  "version": "1.0.0",
+  "description": "TCS Media Player",
+  "repository": "electron/simple-samples",
+  "main": "app.js",
+  "scripts": {
+    "start": "electron app.js"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^1.6.13",
+    "electron-rebuild": "^1.6.0"
+  },
+  "dependencies": {
+    "serialport": "^5.0.0"
+  }
+}

@@ -1,0 +1,24 @@
+{
+ "current": {
+  "CMD_SOCKET_ID": "1",
+  "CMD_SOCKET_IP": "127.0.0.1",
+  "CMD_SOCKET_PORT": "9000",
+  "CMS_IP": "127.0.0.1",
+  "CMS_LIST": "/app/codeigniter/index.php/upload/qsrank/",
+  "ROOT_PATH": "C:/AMURO/Workspace/TCSVideoPlayer/media/Temp",
+  "MEDIA_SOURCE": "LOCAL",
+  "SYNCMODE": "N",
+  "SYNCMODE_MASTER": "N"
+ },
+ "default": {
+  "CMD_SOCKET_ID": 1,
+  "CMD_SOCKET_IP": "127.0.0.1",
+  "CMD_SOCKET_PORT": 9000,
+  "CMS_IP": "127.0.0.1",
+  "CMS_LIST": "/app/codeigniter/index.php/upload/qsrank/",
+  "ROOT_PATH": "C:/AMURO/Workspace/TCSVideoPlayer/media",
+  "MEDIA_SOURCE": "LOCAL",
+  "SYNCMODE": "N",
+  "SYNCMODE_MASTER": "N"
+ }
+}
