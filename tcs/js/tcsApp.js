@@ -65,14 +65,14 @@ preset.confd = {
 tcsapp.init = function(){
 
 		this.panelDebug = new PanelDebug('panelDebug');
-		this.panelConf = new PanelConf('panelConf');
-		this.panelConf.setKeys(this.confKeys);
-		this.tcssocket = new TCSWebSocket();
-
+		this.panelConf  = new PanelConf('panelConf');
+		this.tcssocket  = new TCSWebSocket();
 
 		document.addEventListener("onConfigLoaded",()=>{
 			this.panelDebug.init();
+			this.panelConf.setKeys(this.confKeys);
 			this.panelConf.init();
+
 			if(confCtrl.initialReady){
 				this.connectSocket();
 
@@ -83,21 +83,30 @@ tcsapp.init = function(){
 			for(i in this.pages){
 				this.pages[i].init();
 			}
-			this.paging(0);
+
+			this.thingsAfterConfigloaded();
 		})
+
+		confCtrl.storage = "local";
 		confCtrl.load();
+		window.addEventListener("keydown", this.keyboardlistener);
+    window.addEventListener("resize",this.resizelistener);
 
 		for(var key in navigator){
 			log("navigator."+key+":"+navigator[key]  );
 		}
 
-		window.addEventListener("resize",()=>{
-			$$("screenRes").innerHTML = document.documentElement.clientWidth+"x"+document.documentElement.clientHeight;
-		});
-
-
+}
+tcsapp.keyboardlistener = function(e){
+	ipcRenderer.send('keypress', event.ctrlKey , event.key);
+}
+tcsapp.resizelistener = function(e){
+$$("screenRes").innerHTML = document.documentElement.clientWidth+"x"+document.documentElement.clientHeight;
 }
 
+tcsapp.thingsAfterConfigloaded = function(){
+	this.paging(0);
+}
 
 tcsapp.connectSocket = function(){
 	this.tcssocket.setip(conf.CMD_SOCKET_ID,conf.CMD_SOCKET_IP,conf.CMD_SOCKET_PORT);
