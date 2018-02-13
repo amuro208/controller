@@ -1,0 +1,68 @@
+/* Flag Selection*/
+.flag-container{ width:375px;height:100%;margin:40px auto 0 auto;}
+.flag {filter:brightness(0.8);box-sizing: border-box;position:relative; margin:0;   padding:10px 16px 10px 16px; display:inline-block;}
+.flag .img {box-sizing: border-box; outline:1px solid #999; width:85px; height:50px; margin:auto; box-shadow: 0 0 8px rgba(0,0,0,1);}
+.flag .txt {font-size: 0.8em;font-weight: bold;margin-top:4px;text-align: center;text-shadow: 0 0 4px rgba(0,0,0,1);}
+.flag .badge {display:none;position:absolute;right:-2px;top:-5px;width:35px;height:32px;}
+.flag:active {filter:brightness(0.5);}
+.flag-selected {filter:brightness(1.0);}
+.flag-selected .img{ outline:2px solid #FFF; box-shadow: 0px 0px 25px rgba(0,0,0,1.0);}
+.flag-selected .badge{display:block;}
+
+
+
+/*Terms and Conditions descriptions*/
+.form-check-input{margin-left: -1.25rem}
+
+.terms-des-group{padding-left:2rem;padding-right:1rem;text-align:left; font-size:0.7em;}
+.terms-des-default{color:#CCCCCC; vertical-align: top; text-align:left; margin-top:3px;}
+.terms-des-link   {color:#CCCCCC; text-decoration: underline; font-weight: bold;}
+
+/*Terms and Conditions popup*/
+.terms-body-frame{background-color:#FFFFFF;border-radius:10px; border-top-left-radius:0px;  width:100%;  height:95%;  overflow-y: scroll;-webkit-overflow-scrolling: touch;}
+.terms-tab{display:table;  list-style-type:none;  margin:0;  padding:0; }
+.terms-tab-item{display:table-cell;border-top-left-radius: 8px;border-top-right-radius: 8px;border:1px solid #DADADA;padding:15px 20px 10px 20px;text-shadow: 0 0 0px #000000;box-sizing: content-box;color:#666666;
+   background:linear-gradient(to top ,rgba(255, 255,255, 0.7),rgba(255, 255,255, 0.93),rgba(255, 255,255, 0.94), rgba(255, 255, 255, 1));}
+.terms-tab-item-active{border:1px solid #FFFFFF;border-bottom: 1px solid  #FFFFFF;background-color: #FFFFFF;padding:10px 20px 10px 20px;box-sizing: content-box;color:#000000;}
+
+.uinput-mid-section{
+  display:table;
+}
+
+.uinput-mid-coloum{
+  /*border:1px dashed #CCC;*/
+  display:table-cell;
+  width:100%;
+  padding:10px;
+  vertical-align:top;
+  /* iPhone width in portrait*/
+}
+.uinput-mid-title{
+  height:10%;min-height:40px;vertical-align:top;font-weight:bold;
+}
+
+/*portrait*/
+@media (max-width: 767px) {
+  .uinput-mid-section{
+      display:block;
+  }
+  .uinput-mid-coloum{
+    padding:10px;
+    width:100%;
+    display:block;height:100%;vertical-align:top;
+    /*border:1px dashed #FF0;*/
+
+  }
+
+}
+
+#thankYouBody p{
+font-weight:bold;
+line-height:100%;
+color:#EEE;
+}
+#thankYouBody img{
+width:120px;
+height:80px;
+border:2px solid #666;
+}

@@ -1,0 +1,99 @@
+
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <title>ReActionWall LeaderBoard</title>
+      <script src="./js/common/common.js"               type="text/javascript"></script>
+      <script src="./js/common/pageBase.js"             type="text/javascript"></script>
+      <script src="./js/reactionGameBuzzerCtrl.js"      type="text/javascript"></script>
+      <script src="./js/reactionGameLeaderboard.js"     type="text/javascript"></script>
+      <script src="./js/queueList.js"                   type="text/javascript"></script>
+      <script src="./js/tcsApp.js"                      type="text/javascript"></script>
+
+      <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+      <link rel="stylesheet" type="text/css" href="./css/style.css">
+      <link rel="stylesheet" type="text/css" href="./css/style-leaderboard.css">
+
+      <script type="text/javascript">
+        function onload(){
+          tcsapp.init();
+
+          // setTimeout(function(){
+          //   var  fs = require('fs');
+          //   var element = document.getElementById("edmboard");
+          //   //console.log('document.getElementById("edmboard") '+element);
+          //   html2canvas(element).then(canvas => {
+          //     document.body.appendChild(canvas);
+          //     var img = canvas.toDataURL();
+          //     var data = img.replace(/^data:image\/\w+;base64,/, "");
+          //     var buf = new Buffer(data, 'base64');
+          //     fs.writeFile("C:/AMURO/Workspace/F1/ReActionGame/PROJECTS/F1/Repository/Final/test.png", buf);
+          //  });
+          //
+          // },2000);
+
+        }
+
+
+      </script>
+  </head>
+
+    <body onload="onload();" style="background-color:#000">
+      <!-- CONFIGURATION -->
+      <div id="panelConf" class="full-popup"></div>
+
+      <div><div id="edmboard" ><div id="edmboardContainer" class="edm-list-container"></div></div></div>
+      <!-- DEBUGGING PANEL-->
+      <div id="panelDebug" class="full-popup"></div>
+
+      <div class="hidden-button lt" onclick="tcsapp.panelConf.show();" alt = "Open Configuration"></div>
+      <div class="hidden-button rt" onclick="tcsapp.panelDebug.show();" alt = "Open Log Panel"></div>
+
+
+      <div class="site-wrapper">
+        <div class="site-wrapper-inner">
+          <div class="site-container">
+            <!-- Header -->
+      			<div class="masthead">
+      				<img src="./img/top.png" />
+      			</div>
+
+            <div class="mastbody">
+
+              <!-- normally pages are set under mastbody -->
+              <!-- Queue list -->
+        			<div id="queueContainer" class="queue-container">
+        				<h1 class="queue-title"> Who is next?</h1>
+        				<div class="queue-indicator"><img src="./img/arrow_queue.png" /></div>
+
+        				<div class="queue-container-wrapper">
+        					<div id = "queueListContainer" class="queue-list-container">
+        					</div>
+        				</div>
+        			</div>
+
+              <!-- Board-titles -->
+        			<div class="board-title">
+                <img src="./img/top_bar.png" />
+                <!-- <div class="inner-row">
+          				<div class="item pos">pos</div>
+          				<div class="item team">team</div>
+          				<div class="item uname">name</div>
+          				<div class="item score">pt</div>
+                </div> -->
+        			</div>
+              <!-- Board-list -->
+        			<div id="mContainerList" class="board-list-container">
+        			</div>
+            </div>
+            <!-- Footer -->
+      			<div id="mContainerFooter" class="mastfoot">
+      				<!-- <img src="./img/logo-bottom.png" style="margin-top:50px"/> -->
+      			</div>
+    		</div>
+    	</div>
+    </div>
+  </body>
+</html>

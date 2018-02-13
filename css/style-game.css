@@ -1,0 +1,104 @@
+/*User queue thumnail list*/
+
+@keyframes ani-thumb {
+  from {border:2px solid #666666;}
+  to {border:3px solid #FFFFFF;}
+}
+
+#userStatus{width:100%;position:relative;}
+#userStatus img{width:50px;height:50px}
+#userStatusScroll{position:absolute;left:10px;top:20px;text-align:left;}
+#userStatusUsers{position:absolute;right:10px;top:20px;text-align:right;}
+
+
+#thumbContainerWrapper{width:100%;height:242px;overflow:hidden;z-index:1001;}
+#thumbContainer{margin:auto;width:242px;height:242px;overflow-x:visible;}
+#thumbContainerInner{width:100%;position: relative;}
+
+.thumb-item{display:inline-block;
+  margin:20px;width:200px;height:200px;
+  border:2px solid #666666;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.6);
+  opacity:0.6;
+  background:linear-gradient(to bottom, rgba(255, 255, 255, 0.1),rgba(255, 255, 255, 0.0)) ;
+  text-align:center;
+  vertical-align: middle;
+  position:relative}
+.thumb-item-active{border:3px solid #DDD;opacity:1.0;box-shadow: 0 0 7px rgba(0,0,0,1);
+  animation-name: ani-thumb;
+  animation-timing-function: ease-out;
+  animation-duration: 0.5s;}
+.thumb-item-dimmed{opacity:0.6;}
+.thumb-item-skipped{opacity:0.6;}
+.thumb-item-dimmed .overlay{width:196px;height:196px;background:url(../img/thumb_over_done.png) ;background-size:auto 100%;opacity:1;border-radius: 10px;position:absolute;z-index:10000;left:0px;top:0px}
+.thumb-item-skipped .overlay{width:196px;height:196px;background:url(../img/thumb_over_skipped.png);background-size:auto 100%;opacity:1;border-radius: 10px;position:absolute;z-index:10000;left:0px;top:0px}
+
+
+
+/*Single User*/
+.thumb-item .inner-single{width:100%;height:100%;box-shadow: 0 0 3px rgba(0,0,0,0);}
+.thumb-item .inner-single img{vertical-align:middle; outline:1px solid #999; width:85px; height:50px; margin:auto; box-shadow: 0 0 8px rgba(0,0,0,0.7);}
+.thumb-item .flag-single{  width:100%;height:80px;padding-top:30px;text-align: center;}
+.thumb-item .name-single{  width:100%;height:110px;padding-top: 20px;vertical-align:middle;text-align: center;line-height:120%;font-weight: bold;}
+.thumb-item .name-single .uname{
+  width:170px;
+  height:35px;
+  margin:0;
+  padding:0;
+  text-overflow:ellipsis;
+  line-height:100%;
+  color:#FFF;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.5em;
+  text-indent: 0px;
+  border: 1px dashed rgba(255, 255, 255, 0.0);
+  background-color:rgba(255, 255, 255, 0.0);}
+
+/*Multi User*/
+.thumb-item .inner-multi{display:table;height:50%;margin-left: 16px;}
+.thumb-item .inner-multi img{width:50px;height:30px;vertical-align:middle; box-shadow: 0 0 3px rgba(0,0,0,0.5);}
+.thumb-item .line{height:1px;width:80%;margin:0 auto;background-color:rgba(255, 255, 255, 0.2)}
+.thumb-item .flag-multi{display:table-cell;width:50px;text-align: left;vertical-align:middle; }
+.thumb-item .name-multi{display:table-cell; width:120px; text-align:left; vertical-align:middle; padding-left:10px;}
+.thumb-item .name-multi .uname{
+  width:110px;
+  margin:0;
+  padding:0;
+  text-overflow:ellipsis;
+  line-height:90%;
+  color:#FFFFFF;
+  font-weight: bold;
+  font-size: 1.3em;
+  text-indent: 0px;
+  border: 1px dashed rgba(255, 255, 255, 0.0);
+  background-color:rgba(255, 255, 255, 0.0);}
+
+
+
+  /*Game User*/
+  .game-user{height:180px;display:block;margin:0 auto;}
+
+  .user-gamecard{width:300px;}
+  /* .user-gamecard-flag img{outline: 1px solid #999;width:140px;height:80px;vertical-align:middle; box-shadow: 0 0 14px rgba(0,0,0,0.0);} */
+  .user-gamecard-flag img{width:140px;vertical-align:middle; box-shadow: 0 0 14px rgba(0,0,0,0.0);}
+  .user-gamecard .uname{
+    width:300px;
+    height:30px;
+    margin-top:20px;
+    text-overflow:ellipsis;
+    line-height:90%;
+    color:#FFFFFF;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5em;
+    text-indent: 0px;
+    text-shadow: 0 0 10px rgba(0,0,0,1.0);
+    background-color:rgba(255, 255, 255, 0.0);}
+
+    /*Game Control Buttons*/
+    .game-control{height:200px;display:block;margin:0 auto;}
+    .game-control-btn{opacity: 1.0; display:inline-block;vertical-align:top;width:150px;height:150px;}
+    .game-control-btn:active{opacity: 0.2;}
+    .game-control-btn .inner{ width:130px;height:130px;margin:auto;position:relative;}
