@@ -22,7 +22,22 @@ cms.gameApprove = function(target,obj,fnc){
 }
 
 cms.getListData = function(target,obj,fnc){
+  var cmsURL = "http://"+conf.CMS_IP+conf.CMS_LIST;
+  log("cmsURL "+cmsURL);
 
+    postAjax(cmsURL, {}, function(readyState,status,data){
+      if(readyState == 4){
+          if(status == 200){
+            fnc(data);
+          }else if(status == 404){
+            alert("404 Page Not Found");
+          }else if(status == 500){
+            alert("500 Internal Server Error");
+          }else{
+            alert("Unknown Error");
+          }
+      }
+    }.bind(target));
 }
 
 
@@ -86,7 +101,21 @@ cms.clearBoard = function(target,obj,fnc){
 }
 
 
-
+cms.requestAny = function(target,url,obj,fnc){
+  postAjax(url, {}, function(readyState,status,data){
+    if(readyState == 4){
+      if(status == 200){
+          fnc(data);
+      }else if(status == 404){
+          alert("404 Page Not Found");
+      }else if(status == 500){
+          alert("500 Internal Server Error");
+      }else{
+          alert("Unknown Error");
+      }
+    }
+  }.bind(target));
+}
 
 
 

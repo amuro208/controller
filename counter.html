@@ -16,8 +16,9 @@
   <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
 
   <!--script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script-->
-  <script src="./js/common/common.js"    type="text/javascript"></script>
-  <script src="./js/common/pageBase.js"  type="text/javascript"></script>
+  <script src="./tcs/js/common.js"       type="text/javascript"></script>
+  <script src="./tcs/js/pageBase.js"     type="text/javascript"></script>
+  <script src="./tcs/js/tcsApp.js"       type="text/javascript"></script>
   <script src="./js/pageGameCounter.js"  type="text/javascript"></script>
   <script src="./js/tcsApp.js"           type="text/javascript"></script>
 
@@ -35,7 +36,7 @@
     page_counter    = new PageGameCounter("pageGameCounter");
 
     tcsapp.pages = [page_intro, page_counter];
-    tcsapp.appId = "au.com.thecreativeshop.f1.control";
+    tcsapp.appId = "au.com.thecreativeshop.f1.counter";
     tcsapp.confKeys = ["CMD_SOCKET_ID","CMD_SOCKET_IP","CMD_SOCKET_PORT"];
     tcsapp.init();
 
@@ -70,7 +71,7 @@
 
             <!--Page 0-->
             <div id = "pageIntrologo">
-                <img src="./img/logo.png" />
+                <img src="./img/logo.png" class="page-logo"/>
             </div>
 
             <!--Page 1-->

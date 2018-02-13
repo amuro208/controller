@@ -1,3 +1,8 @@
+
+var {ipcRenderer, remote} = require('electron');
+var main = remote.require("./app.js");
+
+
 importScript('./tcs/js/json2.js');
 importScript('./tcs/js/TweenMax.min.js');
 importScript('./tcs/js/Configuration.js');
@@ -65,8 +70,9 @@ tcsapp.init = function(){
 
 }
 tcsapp.keyboardlistener = function(e){
-
+	ipcRenderer.send('keypress', event.ctrlKey , event.key);
 }
+
 tcsapp.resizelistener = function(e){
 
 }
@@ -102,42 +108,3 @@ tcsapp.paging = function(n){
 	this.previouspage = this.currentpage;
 	this.currentpage = n;
 }
-
-if(navigator.platform.indexOf("Linux")>-1){
-	document.addEventListener("mousedown", function (e) {
-				var docElm = document.documentElement;
-				if (docElm.requestFullscreen) {
-						docElm.requestFullscreen();
-				}
-				else if (docElm.mozRequestFullScreen) {
-						docElm.mozRequestFullScreen();
-				}
-				else if (docElm.webkitRequestFullScreen) {
-						docElm.webkitRequestFullScreen();
-				}
-				else if (docElm.msRequestFullscreen) {
-						docElm.msRequestFullscreen();
-				}
-	});
-
-}
-	/*
-			document.body.addEventListener('touchmove',function(e)
-			{
-				e = e || window.event;
-				var target = e.target || e.srcElement;
-				//in case $altNav is a class:
-				if (!target.className.match(/\bscrollable\b/))
-				{
-						e.returnValue = false;
-						e.cancelBubble = true;
-						if (e.preventDefault)
-						{
-								e.preventDefault();
-								e.stopPropagation();
-						}
-						return false;//or return e, doesn't matter
-				}
-				//target is a reference to an $altNav element here, e is the event object, go mad
-			},false);
-	*/

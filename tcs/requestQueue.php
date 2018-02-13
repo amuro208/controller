@@ -1,3 +1,3 @@
 <?php
-echo file_get_contents("queues.txt");
+echo file_get_contents("../queues.txt");
 ?>
