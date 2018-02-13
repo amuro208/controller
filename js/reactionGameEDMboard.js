@@ -44,6 +44,8 @@ edmb.display = function(){
   }
 }
 edmb.displayEdmList = function(){
+  //var element = document.getElementById("edmboard");
+  // if(element.style.visibility == "hidden")element.style.visibility =  "visible";
   this.captureElement();
 }
 edmb.setitem= function(item,info){
@@ -114,6 +116,7 @@ edmb.captureElement = function(){
          delete buf2;
          console.log("saved second file: "+path2);
          tcsapp.tcssocket.send("ALL","GIF_DONE","-");
+         //if(element.style.visibility == "visible")element.style.visibility = "hidden";
        });
     });
 
