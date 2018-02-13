@@ -21,7 +21,32 @@ url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'),
 url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');*/
 
 
-
+html, body {margin: 0; padding: 0; overflow: hidden}
+#mContainer{
+  width:1280px;
+  height:720px;
+  vertical-align: top;
+}
+#mContainerWrapper{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  vertical-align: top;
+}
+#mContainerWrapper  video {
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+}
+#mContainerWrapper  img {
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+}
 
 a,
 a:focus,

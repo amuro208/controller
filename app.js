@@ -2,9 +2,59 @@ const {app, BrowserWindow, ipcMain} = require('electron') // http://electron.ato
 var path = require('path')         // https://nodejs.org/api/path.html
 var url = require('url')           // https://nodejs.org/api/url.html
 
-var window = null
+var window = null;
+//console.log("process.env.npm_package_config_debug : "+process.env.npm_package_config_debug);
+var debug = false;
+debug = process.env.npm_package_config_debug=="false"?false:true;
+//console.log("process.env.debug : "+process.env.tcsdebug);
+// exports.pong = arg => {
+//     //Print 6
+//     console.log("pong : "+arg);
+// }
+//
+// ipcMain.on('async', (event, arg) => {
+//     // Print 1
+//     console.log("async "+arg);
+//     // Reply on async message from renderer process
+//     event.sender.send('async-reply', 2);
+// });
+//
+// ipcMain.on('sync', (event, arg) => {
+//     // Print 3
+//     console.log("sync "+arg);
+//     // Send value synchronously back to renderer process
+//     event.returnValue = 4;
+//     // Send async message to renderer process
+//     window.webContents.send('ping', 5);
+// });
+ipcMain.on('keypress', (event, ctrl,key) => {
+    // Print 1
+    console.log("keypress "+ctrl+":"+key);
 
-var debugMode = true;
+    if(ctrl){
+      switch(key){
+        case "f":
+        if(debug){
+          debug = false;
+          window.setSize(1280,720);
+          window.setAlwaysOnTop(true);
+          window.closeDevTools();
+          window.setKiosk(true);
+
+
+        }else{
+          debug = true;
+          window.setKiosk(false);
+          window.setAlwaysOnTop(false);
+          window.openDevTools();
+        }
+
+        break;
+      }
+    }
+    // Reply on async message from renderer process
+    //event.sender.send('async-reply', 2);
+});
 /*
 var SerialPort = require('serialport');
    var port = new SerialPort('COM3', {baudRate: 9600,  'disconnectedCallback': function () {
@@ -20,6 +70,8 @@ var SerialPort = require('serialport');
     port.on('open', onPortOpen);
     port.on('close', onClose);
     port.on('error', onError);
+
+
 
 
     //var ipcMain = require('electron').ipcMain;
@@ -77,14 +129,16 @@ var SerialPort = require('serialport');
 // Wait until the app is ready
 app.on('ready', function () {
   // Create a new window
-  if(debugMode){
+  if(debug){
     window = new BrowserWindow({
       alwaysOnTop :false,
       width: 1280,
-      height: 780,
+      height: 720,
       frame:true,
+      titleBarStyle: 'hidden',
       backgroundColor: "#111",
-      show: false
+      show: false,
+      kiosk:false
     });
   }else{
     window = new BrowserWindow({
@@ -92,12 +146,14 @@ app.on('ready', function () {
       width: 1280,
       height: 720,
       frame:false,
-      titleBarStyle: 'hiddenInset',
+      titleBarStyle: 'hidden',
       backgroundColor: "#111",
-      show: false
-    })
+      show: false,
+      kiosk:true
+    });
   }
 
+  //window.setAutoHideMenuBar(true);
   // Load a URL in the window to the local index.html path
   window.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
@@ -108,21 +164,11 @@ app.on('ready', function () {
   // Show window when page is ready
   window.once('ready-to-show', function () {
     window.show();
-   // window.setFullScreen(true);
-   if(debugMode){
-     window.setSize(1280,780);
-     window.setPosition(0,0);
-    }else{
-      window.setSize(1280,720);
-      window.setPosition(0,0);
-    }
+    window.setSize(1280,720);
+    window.setPosition(0,0);
 
-    //window.toggleDevTools();
-  });
-
-
-});
-
+	  //window.toggleDevTools();
+  })
 /*
   globalShortcut.register('CommandOrControl+F', () => {
   //  console.log("window.getFullScreen()) : "+window.getFullScreen());
@@ -139,6 +185,13 @@ app.on('ready', function () {
     }
   })
 */
+
+
+})
+
+
+
+
 
 
 

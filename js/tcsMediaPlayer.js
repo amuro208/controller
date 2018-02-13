@@ -25,7 +25,7 @@ mplayer.init = function(){
       document.addEventListener("onNewFileDetected",(e)=>{
           this.onNewFileAdded(e.detail.file);
       });
-      dm.root = conf.ROOT_PATH+"/";
+      dm.root = conf.ROOT_PATH;
       dm.maxnum = this.maxnum;
       dm.init();
   }else{
@@ -57,7 +57,7 @@ mplayer.onNewFileAdded = function(newfile){
 
    if(totalLen >= this.maxnum){
         if(insertIndex >= totalLen){insertIndex = 0;}
-       var deleteFile = conf.ROOT_PATH+"/"+this.playlist[insertIndex];
+       var deleteFile = conf.ROOT_PATH+this.playlist[insertIndex];
        this.fs.unlink(deleteFile,function(err){console.log("file deleted "+deleteFile+"/"+err);});
        this.playlist[insertIndex] = newfile;
    }else{
@@ -178,7 +178,7 @@ mplayer.dimoutCurrent = function(n){
    var ext = mediaUrl.substring(mediaUrl.lastIndexOf(".")+1).toUpperCase();
    if(ext == "MP4"){
      this.videoPlayer = document.createElement("video");
-     this.videoPlayer.src = conf.ROOT_PATH+"/"+mediaUrl;
+     this.videoPlayer.src = conf.ROOT_PATH+mediaUrl;
      this.videoPlayer.load();
      this.videoPlayer.play();
      this.videoPlayer.volume = 0.0;
@@ -190,7 +190,7 @@ mplayer.dimoutCurrent = function(n){
 
    }else{
      this.imgPlayer = document.createElement("img");
-     this.imgPlayer.src = conf.ROOT_PATH+"/"+mediaUrl;
+     this.imgPlayer.src = conf.ROOT_PATH+mediaUrl;
      TweenMax.from(this.imgPlayer,1,{opacity:"0"});
      this.timeout = setTimeout(this.imageframeCheck.bind(this),5000);
      this.currentPlayer = this.imgPlayer;
