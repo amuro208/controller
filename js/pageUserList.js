@@ -77,7 +77,7 @@
 	/*Get UserQueue*/
 	PageUserList.prototype.getQueueFromLocalStorage = function(){
 		if (typeof(Storage) !== "undefined") {
-			this.initUserQueueWithData(localStorage.getItem("userqueues"));
+			this.initUserQueueWithData(localStorage.getItem(tcsapp.id+".userqueues"));
 		}
 	}
 	PageUserList.prototype.getQueueFromServer = function(){
@@ -119,7 +119,7 @@
 
 	PageUserList.prototype.saveQueueAtLocalStorage = function(){
 		var jstr = JSON.stringify(user.queuedata);
-		localStorage.setItem("userqueues", jstr );
+		localStorage.setItem(tcsapp.id+".userqueues", jstr );
 	}
 
 	PageUserList.prototype.clearBoard = function(){
@@ -221,9 +221,9 @@
 										 <input type='text' class='uname noselect' readonly='true' value="+lnames[1]+">";
 					}
 
-					if(conf.USER_FLAG == "N"){
-						fStr1 = "";
-						fStr2 = "";
+					if(conf.USE_FLAG == "N"){
+						fStr1 = "<img src = './img/flags/flag0.png'/>";
+						fStr2 = "<img src = './img/flags/flag0.png'/>";
 					}
 
 					thumb.innerHTML = "\
@@ -254,8 +254,8 @@
 					var nStr1 = "<input type='text' class='uname noselect' readonly='true' value="+fnames[0]+">\
 											 <input type='text' class='uname noselect' readonly='true' value="+lnames[0]+(levels[0]=="true"?"*":"")+">";
 
-					if(conf.USER_FLAG == "N"){
- 						fStr1 = "";
+					if(conf.USE_FLAG == "N"){
+ 						fStr1 = "<img src = './img/flags/flag0.png'/>";
  					}
 
 					thumb.innerHTML = "\
@@ -357,7 +357,7 @@
 
 			if(cntQueue>0){
 				var jstr = JSON.stringify(qlist);
-				tcssocket.send("ALL","QUEUE_LIST",jstr);
+				tcsapp.tcssocket.send("ALL","QUEUE_LIST",jstr);
 			}
 
 			this.tmpCurIndex = -1;

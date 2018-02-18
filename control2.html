@@ -20,7 +20,7 @@
       <script src="./tcs/js/CMS.js"          type="text/javascript"></script>
       <script src="./js/input/UserData.js"   type="text/javascript"></script>
       <script src="./js/PageUserList.js"     type="text/javascript"></script>
-      <script src="./js/pageGame.js"         type="text/javascript"></script>
+      <script src="./js/pageGame2.js"         type="text/javascript"></script>
       <script src="./js/tcsApp.js"           type="text/javascript"></script>
       <style>
           html{position:fixed}
@@ -38,12 +38,13 @@
           page_intro = new Page("pageIntrologo");
           page_list  = new PageUserList("pageUserlist");
           page_game  = new PageGame("pageGamemain");
+          preset.confp.CMD_SOCKET_IP = "192.168.0.31";
+          preset.confp.CMS_IP = "192.168.0.31";
+          preset.confp.MULTI_USER = 2;
+          preset.confd.MULTI_USER = 2;
+
           tcsapp.pages = [page_intro, page_list, page_game];
-          tcsapp.appId = "au.com.thecreativeshop.comm.control";
-          preset.confp.CMD_SOCKET_IP = "192.168.0.51";
-          preset.confp.CMS_IP = "192.168.0.51";
-          preset.confp.MULTI_USER = 1;
-          preset.confd.MULTI_USER = 1;
+          tcsapp.appId = "au.com.thecreativeshop.comm.control2";
           tcsapp.confKeys = ["CMD_SOCKET_ID","CMD_SOCKET_IP","CMD_SOCKET_PORT","CMS_EVENT_CODE","CMS_IP","CMS_UPLOAD","CMS_CLEAR_BOARD","APP_INFINITE_TEST","TIMEOUT"];
           tcsapp.init();
           tcsapp.paging(1);

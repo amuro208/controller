@@ -256,7 +256,7 @@
 
 	PageGame.prototype.approve = function(){
 
-		if(tcsapp.isGameRunning){alert("Game still running .. ");return;}
+		//if(tcsapp.isGameRunning){alert("Game still running .. ");return;}
 
 		this.btnCancel.disabled = true;
 		this.btnApprove.disabled = true;

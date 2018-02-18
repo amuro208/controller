@@ -11,7 +11,7 @@ var PageRegi = function(id){
 	this.cbMandatory = [true];
 	this.enableBtnClick = 0;
 
-	this.forms = ["userFirstName","userLastName","userEmail","userFlag","userOption1"];
+	this.forms = ["userFirstName","userLastName","userEmail","userMobile","userAge","userOption1","userOption2"];
 	//this.forms = ["userFirstName","userLastName","userEmail","userMobile","userFlag","userPostcode","userOption1","userOption1","userOption2","userOption3",""];
 	this.terms = new PanelTerms("panelTerms");
 	this.thankyou = new PanelThankyou("panelThankyou");
@@ -132,9 +132,9 @@ var PageRegi = function(id){
 				var nStr1 = "<input type='text' class='uname noselect' readonly='true' value="+user.userFirstName+">\
 										 <input type='text' class='uname noselect' readonly='true' value="+user.userLastName+">";
 
-				if(conf.USE_FLAG == "N"){
-					fStr1 = "";
-				}
+				 if(conf.USE_FLAG == "N"){
+ 					fStr1 = "<img src = './img/flags/flag0.png'/>";
+ 				}
 
 				thumb.innerHTML = "\
 				<div class='overlay'></div>\
@@ -149,6 +149,7 @@ var PageRegi = function(id){
 
 	PageRegi.prototype.resetForms = function(){
 		if(this.isForm("userTitle"))this.setRadioValue('userTitle',-1);
+		if(this.isForm("userAge"))this.setRadioValue('userAge',-1);
 		if(this.isForm("userFirstName"))$$("userFirstName").value = "";
 		if(this.isForm("userFirstName"))$$("userLastName").value = "";
 		if(this.isForm("userEmail"))$$("userEmail").value = "";
@@ -158,7 +159,7 @@ var PageRegi = function(id){
 		this.resetCheckBox(false);
 	}
 
-	
+
 
   PageRegi.prototype.fakeUsers = [
 	{"fname":"Amuro",  "lname":"Lee",         "email":"amuro208@gmail.com",               "flag":1, "mobile":"0443399887","post":"2016"},
@@ -175,6 +176,7 @@ var PageRegi = function(id){
 	PageRegi.prototype.defaultPunchin = function(){
 		var obj = this.fakeUsers[Math.floor(Math.random() * this.fakeUsers.length)];
 		if(this.isForm("userFirstName"))$$("userFirstName").value = obj.fname;
+		//if(this.isForm("userAge"))$$("userFirstName").value = obj.fname;
 		if(this.isForm("userFirstName"))$$("userLastName").value = obj.lname;
 		if(this.isForm("userEmail"))$$("userEmail").value = obj.email;
 		if(this.isForm("userFlag"))this.flagSelect(obj.flag);
@@ -262,6 +264,11 @@ PageRegi.prototype.setRadioValue = function(field,n){
 			if(value == " "){alert("Check your title");return false};
 			user.userTitle = value;
 		}
+		if(this.isForm("userAge")){
+			value = this.getRadioValue("userAge");
+			if(value == " "){alert("Check your age");return false};
+			user.userAge = value;
+		}
 		if(this.isForm("userFirstName")){
 			value = $$("userFirstName").value;
 			if(value == "" || sutil.specialCharChk(value)){alert("Check your first name");return false};
@@ -332,7 +339,7 @@ PageRegi.prototype.setRadioValue = function(field,n){
 				return;
 			}
 		}
-		var userTitle = this.getFormValues("userTitle");
+		var userAge = this.getFormValues("userAge");
 		var userFirstName = this.getFormValues("userFirstName");
 		var userLastName = this.getFormValues("userLastName");
 		var userEmail = this.getFormValues("userEmail");
@@ -343,6 +350,6 @@ PageRegi.prototype.setRadioValue = function(field,n){
 		var userOption2 = this.getFormValues("userOption2");
     var userOption3 = this.getFormValues("userOption3");
 
-		tcsapp.tcssocket.send("ALL","USERDATA",userFirstName+","+userLastName+","+userEmail+","+userFlag+","+userMobile+","+userPostcode+","+userOption1+","+userOption2+","+userOption3+","+userTitle);
+		tcsapp.tcssocket.send("ALL","USERDATA",userFirstName+","+userLastName+","+userEmail+","+userFlag+","+userMobile+","+userPostcode+","+userOption1+","+userOption2+","+userOption3+","+userAge);
 
 	}
