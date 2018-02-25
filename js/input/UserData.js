@@ -7,6 +7,7 @@ user.queuedata =
 
 var UserData = function() {
     this.userTitle = "";
+    this.userAge = "";
     this.userFirstName = "";
     this.userLastName = "";
     this.userEmail = "";
@@ -20,6 +21,7 @@ var UserData = function() {
 
     this.reset = function(){
       this.userTitle = "";
+      this.userAge = "";
       this.userFirstName = "";
       this.userLastName = "";
       this.userEmail = "";

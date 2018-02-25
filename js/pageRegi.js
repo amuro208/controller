@@ -7,11 +7,11 @@ var PageRegi = function(id){
   this.users = [];
 	this.selectedFlag = 0;
 	this.selectedUser = 0;
-	this.cbChecked = [true];
-	this.cbMandatory = [true];
+	this.cbChecked = [false,false,false];
+	this.cbMandatory = [true,false,false];
 	this.enableBtnClick = 0;
 
-	this.forms = ["userFirstName","userLastName","userEmail","userFlag","userOption1"];
+	this.forms = ["userFirstName","userLastName","userEmail","userCountry","userPostcode","userOption1","userOption2","userOption3"];
 	//this.forms = ["userFirstName","userLastName","userEmail","userMobile","userFlag","userPostcode","userOption1","userOption1","userOption2","userOption3",""];
 	this.terms = new PanelTerms("panelTerms");
 	this.thankyou = new PanelThankyou("panelThankyou");
@@ -80,7 +80,7 @@ var PageRegi = function(id){
 				badge.className = "badge";
 				flag.setAttribute("id", "flag"+(index+1));
 				badge.src = "./img/checked.png";
-				img.src = "./img/flags/flag"+(index+1)+".png";
+				img.src = "./img/flags"+conf.FLAG_ROOT+"/flag"+(index+1)+".png";
 				txt.innerHTML = conf.FLAG_TXT[index];
 				flag.appendChild(img);
 				flag.appendChild(badge);
@@ -128,7 +128,7 @@ var PageRegi = function(id){
 			var thumb = $$("userBtn"+n);
 			if(user.check){
 				var flag1 = isNaN(parseInt(user.userFlag))?0:parseInt(user.userFlag);
-				var fStr1 = "<img src = './img/flags/flag"+flag1+".png'/>";
+				var fStr1 = "<img src = './img/flags"+conf.FLAG_ROOT+"/flag"+flag1+".png'/>";
 				var nStr1 = "<input type='text' class='uname noselect' readonly='true' value="+user.userFirstName+">\
 										 <input type='text' class='uname noselect' readonly='true' value="+user.userLastName+">";
 
@@ -152,13 +152,14 @@ var PageRegi = function(id){
 		if(this.isForm("userFirstName"))$$("userFirstName").value = "";
 		if(this.isForm("userFirstName"))$$("userLastName").value = "";
 		if(this.isForm("userEmail"))$$("userEmail").value = "";
+		if(this.isForm("userCountry"))$$("userCountry").value = "";
 		if(this.isForm("userFlag"))this.flagSelect(0);
 		if(this.isForm("userMobile"))$$("userMobile").value = "";
 		if(this.isForm("userPostcode"))$$("userPostcode").value = "";
 		this.resetCheckBox(false);
 	}
 
-	
+
 
   PageRegi.prototype.fakeUsers = [
 	{"fname":"Amuro",  "lname":"Lee",         "email":"amuro208@gmail.com",               "flag":1, "mobile":"0443399887","post":"2016"},
@@ -177,6 +178,7 @@ var PageRegi = function(id){
 		if(this.isForm("userFirstName"))$$("userFirstName").value = obj.fname;
 		if(this.isForm("userFirstName"))$$("userLastName").value = obj.lname;
 		if(this.isForm("userEmail"))$$("userEmail").value = obj.email;
+		if(this.isForm("userCountry"))$$("userCountry").value = countrylist.cnames[obj.flag];
 		if(this.isForm("userFlag"))this.flagSelect(obj.flag);
 		if(this.isForm("userMobile"))$$("userMobile").value = obj.mobile;
 		if(this.isForm("userPostcode"))$$("userPostcode").value = obj.post;
@@ -203,6 +205,7 @@ var PageRegi = function(id){
 			if(this.isForm("userFirstName"))$$("userFirstName").value = user.userFirstName;
 			if(this.isForm("userFirstName"))$$("userLastName").value = user.userLastName;
 			if(this.isForm("userEmail"))$$("userEmail").value = user.userEmail;
+			if(this.isForm("userCountry"))$$("userCountry").value =  countrylist.getCountryName(user.userCountry);
 			if(this.isForm("userFlag"))this.flagSelect(user.userFlag);
 			if(this.isForm("userMobile"))$$("userMobile").value = user.userMobile;
 			if(this.isForm("userPostcode"))$$("userPostcode").value = user.userPostcode;
@@ -277,6 +280,12 @@ PageRegi.prototype.setRadioValue = function(field,n){
 				if(value == "" || !sutil.emailMalformedChk(value)){alert("Check your email address");return false};
 				user.userEmail = value;
 			}
+		if(this.isForm("userCountry")){
+				value = $$("userCountry").value;
+				var code = countrylist.getCountryCode(value);
+				if(code==""){alert("Check your country");return false};
+				user.userCountry = code;
+			}
 		if(this.isForm("userFlag")){
 				if(conf.USE_FLAG == "Y" && this.selectedFlag<1){alert("Please select your team");return false};
 				user.userFlag = this.selectedFlag;
@@ -301,7 +310,7 @@ PageRegi.prototype.setRadioValue = function(field,n){
 			}
 		if(this.isForm("userOption3")){
 				user.userOption3 = $$("userOption3").checked;
-				if(this.cbMandatory[2] && !user.userOption2){alert("Check terms and condition");return false};
+				if(this.cbMandatory[2] && !user.userOption3){alert("Check terms and condition");return false};
 			}
 
 		user.check = true;
@@ -338,11 +347,12 @@ PageRegi.prototype.setRadioValue = function(field,n){
 		var userEmail = this.getFormValues("userEmail");
 		var userMobile = this.getFormValues("userMobile");
 		var userFlag = this.getFormValues("userFlag");
+		var userCountry = this.getFormValues("userCountry");
 		var userPostcode = this.getFormValues("userPostcode");
 		var userOption1 = this.getFormValues("userOption1");
 		var userOption2 = this.getFormValues("userOption2");
     var userOption3 = this.getFormValues("userOption3");
 
-		tcsapp.tcssocket.send("ALL","USERDATA",userFirstName+","+userLastName+","+userEmail+","+userFlag+","+userMobile+","+userPostcode+","+userOption1+","+userOption2+","+userOption3+","+userTitle);
+		tcsapp.tcssocket.send("ALL","USERDATA",userFirstName+","+userLastName+","+userEmail+","+userCountry+","+userMobile+","+userPostcode+","+userOption1+","+userOption2+","+userOption3+","+userTitle);
 
 	}

@@ -38,7 +38,7 @@
 
 /*Single User*/
 .thumb-item .inner-single{width:100%;height:100%;box-shadow: 0 0 3px rgba(0,0,0,0);}
-.thumb-item .inner-single img{vertical-align:middle; width:100px; height:30px; margin:auto; }
+.thumb-item .inner-single img{vertical-align:middle; outline:1px solid #999; height:50px; margin:auto; box-shadow: 0 0 8px rgba(0,0,0,0.7);}
 .thumb-item .flag-single{  width:100%;height:80px;padding-top:30px;text-align: center;}
 .thumb-item .name-single{  width:100%;height:110px;padding-top: 20px;vertical-align:middle;text-align: center;line-height:120%;font-weight: bold;}
 .thumb-item .name-single .uname{
@@ -58,7 +58,7 @@
 
 /*Multi User*/
 .thumb-item .inner-multi{display:table;height:50%;margin-left: 16px;}
-.thumb-item .inner-multi img{width:50px;height:15px;vertical-align:middle; }
+.thumb-item .inner-multi img{width:50px;height:30px;vertical-align:middle; box-shadow: 0 0 3px rgba(0,0,0,0.5);}
 .thumb-item .line{height:1px;width:80%;margin:0 auto;background-color:rgba(255, 255, 255, 0.2)}
 .thumb-item .flag-multi{display:table-cell;width:50px;text-align: left;vertical-align:middle; }
 .thumb-item .name-multi{display:table-cell; width:120px; text-align:left; vertical-align:middle; padding-left:10px;}
@@ -81,7 +81,7 @@
   .game-user{height:180px;display:block;margin:0 auto;}
 
   .user-gamecard{width:300px;}
-  .user-gamecard-flag img{width:180px;vertical-align:middle; box-shadow: 0 0 14px rgba(0,0,0,0.0);}
+  .user-gamecard-flag img{outline: 1px solid #999;width:140px;height:80px;vertical-align:middle; box-shadow: 0 0 14px rgba(0,0,0,1.0);}
   .user-gamecard .uname{
     width:300px;
     height:30px;

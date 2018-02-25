@@ -22,6 +22,7 @@
       <script src="./js/PageUserList.js"     type="text/javascript"></script>
       <script src="./js/pageGame.js"         type="text/javascript"></script>
       <script src="./js/tcsApp.js"           type="text/javascript"></script>
+      <script src="./js/input/CountryList.js"       type="text/javascript"></script>
       <style>
           html{position:fixed}
           /*.digitNum{display:inline-block;width:62px;height:72px;font-family:Digital7;font-size:7em;line-height:100%;margin-left:-10px;}*/
@@ -38,9 +39,10 @@
           page_intro = new Page("pageIntrologo");
           page_list  = new PageUserList("pageUserlist");
           page_game  = new PageGame("pageGamemain");
+          preset.confd.FLAG_ROOT = preset.confp.FLAG_ROOT = "./flags/flags-normal/";
           tcsapp.pages = [page_intro, page_list, page_game];
-          tcsapp.appId = "au.com.thecreativeshop.f1.control";
-          tcsapp.confKeys = ["CMD_SOCKET_ID","CMD_SOCKET_IP","CMD_SOCKET_PORT","CMS_EVENT_CODE","CMS_IP","CMS_UPLOAD","CMS_CLEAR_BOARD","APP_INFINITE_TEST","TIMEOUT","USE_FLAG","MULTI_USER"];
+          tcsapp.appId = "au.com.thecreativeshop.pf.control";
+          tcsapp.confKeys = ["CMD_SOCKET_ID","CMD_SOCKET_IP","CMD_SOCKET_PORT","CMS_EVENT_CODE","CMS_IP","CMS_UPLOAD","CMS_CLEAR_BOARD","APP_INFINITE_TEST","TIMEOUT","USE_FLAG"];
           tcsapp.init();
           tcsapp.paging(1);
         }
@@ -49,7 +51,7 @@
 
   <body onload="onload();">
 
-    <div id="screenRes" style="position:fixed;bottom:60px;text-align:left">1920x1080</div>
+    <!-- <div id="screenRes" style="position:fixed;bottom:60px;text-align:left">1920x1080</div> -->
     <!-- CONFIGURATION -->
     <div id = "panelConf" class="full-popup"></div>
 

@@ -19,14 +19,16 @@
 
   <!--script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script-->
   <script src="./tcs/js/common.js"       type="text/javascript"></script>
+  <script src="./tcs/js/CMS.js"       type="text/javascript"></script>
   <script src="./tcs/js/pageBase.js"     type="text/javascript"></script>
   <script src="./tcs/js/tcsApp.js"       type="text/javascript"></script>
   <script src="./js/input/UserData.js"   type="text/javascript"></script>
   <script src="./js/pageRegi.js"   type="text/javascript"></script>
   <script src="./js/tcsApp.js"       type="text/javascript"></script>
-
+  <script src="./js/input/CountryList.js"       type="text/javascript"></script>
+  <script src="./js/input/autoCompleteInput.js"       type="text/javascript"></script>
   <style>
-      /*html, body {margin: 0; padding: 0; overflow: hidden}*/
+
   </style>
   <script type="text/javascript">
   var page_intro = null;
@@ -37,18 +39,20 @@
     page_regi   = new PageRegi("pageUserInput");
 
     tcsapp.pages = [page_intro,page_regi];
-    tcsapp.appId = "au.com.thecreativeshop.f1.registration";
-    tcsapp.confKeys = ["CMD_SOCKET_ID","CMD_SOCKET_IP","CMD_SOCKET_PORT","CMS_IP","USE_FLAG","MULTI_USER"];
+    tcsapp.appId = "au.com.thecreativeshop.pf.registration";
+    tcsapp.confKeys = ["CMD_SOCKET_ID","CMD_SOCKET_IP","CMD_SOCKET_PORT","CMS_IP"];
     tcsapp.init();
     tcsapp.paging(1);
-  }
 
+    console.log("countrylist.cnames : "+countrylist.cnames);
+    autocomplete(document.getElementById("userCountry"), countrylist.cnames);
+  }
   </script>
 
   </head>
   <body onload="onload();">
 
-    <div id="screenRes" style="position:fixed;bottom:0;text-align:left">1920x1080</div>
+
 
     <!-- CONFIGURATION -->
     <div id = "panelConf" class="full-popup"></div>
@@ -78,7 +82,7 @@
         <div class="uinput-mid-section" >
             <div class="uinput-mid-coloum">
               <div class="uinput-mid-title">Your Details</div>
-              <div class="input-container">
+              <div class="input-container" style="width:70%;margin:auto">
                 <!-- <input type="radio" name="userTitle" value="Mr"   style="font-size:0.8em"> Mr &nbsp;&nbsp;
                 <input type="radio" name="userTitle" value="Mrs"  style="font-size:0.8em" > Mrs &nbsp;&nbsp;
                 <input type="radio" name="userTitle" value="Miss" style="font-size:0.8em" > Miss &nbsp;&nbsp;
@@ -88,8 +92,37 @@
                 <div class="form-group"><input type="text"     class="form-control" id="userFirstName"autocorrect="off" placeholder="First Name" /></div>
                 <div class="form-group"><input type="text"     class="form-control" id="userLastName" autocorrect="off" placeholder="Last Name"/></div>
                 <div class="form-group"><input type="email"    class="form-control" id="userEmail"    placeholder="Email"/></div>
+                <div class="form-group autocomplete" style="width:60%;display:inline-block"><form autocomplete="off">
+                  <input  type="text" class="form-control" id="userCountry" name="userCountry" placeholder="Country">
+                </form></div>
+                <div class="form-group" style="width:39%;display:inline-block">
+                  <input  type="text" class="form-control" id="userPostcode" name="userPostcode" maxlength="4" placeholder="Postcode">
+                </div>
+
                 <!--div class="form-group"><input type="number"   class="form-control" id="userPostcode"  placeholder="Postcode" max=4/></div>
                 <div class="form-group"><input type="password" class="form-control" id="userMobile"    placeholder="Mobile"   max=10/></div-->
+                <div>
+                  <div class="terms-des-group">
+                    <input type="checkbox" id="userOption1" class="form-check-input" >
+                    <label class="terms-des-default">
+                  I have read and understood the NRL’s General Warning and Conditions of Participation displayed at the Activity and the Participation Conditions of The Creative Shop (<span onclick="page_regi.terms.showTerms(1);" class="terms-des-link">available here</span>) and agree to the contents of these documents, including the assumption of risk and exclusion of liability.
+                    </label>
+                  </div>
+                  <div class="terms-des-group">
+                    <input type="checkbox" id="userOption2" class="form-check-input" >
+                    <label class="terms-des-default">
+                  AGPC are collecting your personal information to provide you with information about programs, activities and events which may be of interest to you. You may opt out of receiving our communications by ticking the box below or by contacting AGPC at privacy@grandprix.com.au <span onclick="page_regi.terms.showTerms(1);" class="terms-des-link">AGPC</span>
+                    </label>
+                  </div>
+                  <div class="terms-des-group">
+                    <input type="checkbox" id="userOption3" class="form-check-input" >
+                    <label class="terms-des-default">
+                  activities and events which may be of interest to you. You may opt out of receiving our communications by ticking the box below <span onclick="page_regi.terms.showTerms(1);" class="terms-des-link">AGPC</span>
+                    </label>
+                  </div>
+                </div>
+
+
               </div>
             </div>
             <div  id="userFlags" class="uinput-mid-coloum">
@@ -99,20 +132,7 @@
             </div>
         </div>
 
-        <div>
-            <div class="terms-des-group">
-              <label class="terms-des-default">
-			     AGPC are collecting your personal information to provide you with information about programs, activities and events which may be of interest to you. You may opt out of receiving our communications by ticking the box below or by contacting AGPC at privacy@grandprix.com.au
-              </label>
-            </div>
-            <div class="terms-des-group">
-              <input type="checkbox" id="userOption1" class="form-check-input" >
-              <label class="terms-des-default">
-              Opt out of receiving communication from <span onclick="page_regi.terms.showTerms(1);" class="terms-des-link">AGPC</span>
 
-              </label>
-            </div>
-        </div>
 
       </div>
       <div>

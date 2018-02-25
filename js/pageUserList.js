@@ -56,7 +56,9 @@
       <button onclick="page_list.clearBoard()"            class="btn btn-sm btn-default" style="width:160px;">Clear Leader board</button>\
     </div>';
 
-		this.getQueueFromLocalStorage();
+		cms.getQueue(this,{"appid":tcsapp.appId},function(data){
+			this.initUserQueueWithData(data);
+		}.bind(this));
 		//document.documentElement.style.position = "fixed";
 		//document.documentElement.style.overFlow = "hidden";
 		//document.body.style.position = "fixed";
@@ -75,24 +77,24 @@
 		}
 	}
 	/*Get UserQueue*/
-	PageUserList.prototype.getQueueFromLocalStorage = function(){
-		if (typeof(Storage) !== "undefined") {
-			this.initUserQueueWithData(localStorage.getItem("userqueues"));
-		}
-	}
+	// PageUserList.prototype.getQueueFromLocalStorage = function(){
+	// 	if (typeof(Storage) !== "undefined") {
+	// 		this.initUserQueueWithData(localStorage.getItem(tcsapp.appId+".userqueues"));
+	// 	}
+	// }
 	PageUserList.prototype.getQueueFromServer = function(){
-		 if(confirm("Are you sure you want to bring user queues from server?")){
-			  this.deleteQueue(false);
- 	 			cms.getQueue(this,{},function(data){
+		if(confirm("Are you sure you want to bring user queues from server?")){
+			  this.deleteQueueUI();
+ 	 			cms.getQueue(this,{"appid":tcsapp.appId},function(data){
 					this.initUserQueueWithData(data);
-				  this.saveQueueAtLocalStorage();
 				}.bind(this));
-			}
+			//}
+		}
   }
 
 	/*Initialise UserQueue*/
 	PageUserList.prototype.initUserQueueWithData = function(data){
-		log(data);
+		console.log("initUserQueueWithData : "+data);
 		if(data != null){
 			user.queuedata = JSON.parse(data);
 			for(var i = 0;i<user.queuedata.userqueues.length;i++){
@@ -111,16 +113,16 @@
 	}
 
 	PageUserList.prototype.saveQueueAtServer = function(){
-		  var obj = {userQueues:JSON.stringify(user.queuedata)};
+		  var obj = {userQueues:JSON.stringify(user.queuedata),appid:tcsapp.appId};
 			cms.saveQueue(this,obj,function(){
-			 console.log("Queue Saved!");
+			 console.log("Queue Saved!"+obj);
 		 }.bind(this));
 	}
 
-	PageUserList.prototype.saveQueueAtLocalStorage = function(){
-		var jstr = JSON.stringify(user.queuedata);
-		localStorage.setItem("userqueues", jstr );
-	}
+	// PageUserList.prototype.saveQueueAtLocalStorage = function(){
+	// 	var jstr = JSON.stringify(user.queuedata);
+	// 	localStorage.setItem(tcsapp.appId+".userqueues", jstr );
+	// }
 
 	PageUserList.prototype.clearBoard = function(){
 		  if(confirm("Are you sure you want to reset this leader board?")){
@@ -129,31 +131,43 @@
 				}.bind(this));
 		}
 	}
-
+  PageUserList.prototype.deleteQueueUI = function(chk){
+		for(var i = 0;i<user.queuedata.userqueues.length;i++){
+			this.deleteThumbnail(user.queuedata.userqueues[i]);
+		}
+		user.queuedata.userqueues = [];
+		this.totalUser = 0;
+		this.setCurUserIndex();
+		this.displayStatus();
+	}
 	PageUserList.prototype.deleteQueue = function(chk){
 		var bool = true;
 		if(chk)bool = confirm("Are you sure you want to delete user queues?");
 		if(bool){
-			for(var i = 0;i<user.queuedata.userqueues.length;i++){
-				this.deleteThumbnail(user.queuedata.userqueues[i]);
-	  	}
-			user.queuedata.userqueues = [];
-			this.totalUser = 0;
-			this.setCurUserIndex();
-			this.saveQueueAtLocalStorage();
-			this.displayStatus();
+			this.deleteQueueUI();
+			this.saveQueueAtServer();
 		}
 	}
-
 
 	/*Manipulates UserData*/
 
 	PageUserList.prototype.addUserData = function(info){
 			var uinfos = info.split(",");
-			var uobj = {"status":0,"userFirstName":uinfos[0],"userLastName":uinfos[1],"userEmail":uinfos[2],"userFlag":uinfos[3],"userMobile":uinfos[4],"userPostcode":uinfos[5],"userOption1":uinfos[6],"userOption2":uinfos[7],"userOption3":uinfos[8],"userTitle":uinfos[9],"thumb":null};
+			var uobj = {"status":0,
+			"userFirstName":uinfos[0],
+			"userLastName":uinfos[1],
+			"userEmail":uinfos[2],
+			"userCountry":uinfos[3],
+			"userMobile":uinfos[4],
+			"userPostcode":uinfos[5],
+			"userOption1":uinfos[6],
+			"userOption2":uinfos[7],
+			"userOption3":uinfos[8],
+			"userAge":uinfos[9],
+			"thumb":null};
 			user.queuedata.userqueues.push(uobj);
 			this.saveQueueAtServer();
-			this.saveQueueAtLocalStorage();
+			//this.saveQueueAtLocalStorage();
 			this.totalUser = user.queuedata.userqueues.length;
 			this.addThumbnail(uobj);
 			if(this.currentpage == 1){
@@ -180,43 +194,43 @@
 				//userFirstName,userLastName,userEmail,userFlag,userMobile,userPostcode,userOption1,userOption2
 				var fnames = obj.userFirstName.split("|");
 				var lnames = obj.userLastName.split("|");
-				var flags  = obj.userFlag.split("|");
+				var flags  = obj.userCountry.split("|");
 				var levels = obj.userOption1.split("|");
 
 				if(conf.MULTI_USER==2){
-					console.log("isNaN(parseInt(flags[1])) ::: "+isNaN(parseInt(flags[1])));
-					var flag1 = isNaN(parseInt(flags[0]))?0:parseInt(flags[0]);
-					var flag2 = isNaN(parseInt(flags[1]))?0:parseInt(flags[1]);
+				//	console.log("isNaN(parseInt(flags[1])) ::: "+isNaN(parseInt(flags[1])));
+					var flag1 = (flags[0]==undefined || flags[0].length<2)?"xx":flags[0].toLowerCase();
+					var flag2 = (flags[1]==undefined || flags[1].length<2)?"xx":flags[1].toLowerCase();
 					var fStr1="";
 					var fStr2="";
 					var nStr1="";
 					var nStr2="";
 
 
-					if(flag1 == 0){
+					if(flag1 == "xx"){
 						if(conf.USE_CPU_OPPONENT == "Y"){
-							fStr1 = "<img src = './img/flags/flag0.png'/>";
+							fStr1 = "<img src = '"+conf.FLAG_ROOT+"xx.png'/>";
 							nStr1 = "<input type='text' class='uname noselect ' readonly='true' value='CPU'>";
 						}else{
 							fStr1 = "";
 							nStr1 = "";
 						}
 					}else{
-						fStr1 = "<img src = './img/flags/flag"+flag1+".png'/>";
+						fStr1 = "<img src = '"+conf.FLAG_ROOT+flag1+".png'/>";
 						nStr1 = "<input type='text' class='uname noselect' readonly='true' value="+fnames[0]+">\
 										 <input type='text' class='uname noselect' readonly='true' value="+lnames[0]+">";
 					}
 
-					if(flag2 == 0){
+					if(flag2 == "xx"){
 						if(conf.USE_CPU_OPPONENT == "Y"){
-							fStr2 = "<img src = './img/flags/flag0.png'/>";
+							fStr2 = "<img src = '"+conf.FLAG_ROOT+"xx.png'/>";
 							nStr2 = "<input type='text' class='uname noselect ' readonly='true' value='CPU'>";
 						}else{
 							fStr2 = "";
 							nStr2 = "";
 						}
 					}else{
-						fStr2 = "<img src = './img/flags/flag"+flag2+".png'/>";
+						fStr2 = "<img src = '"+conf.FLAG_ROOT+flag2+".png'/>";
 						nStr2 = "<input type='text' class='uname noselect' readonly='true' value="+fnames[1]+">\
 										 <input type='text' class='uname noselect' readonly='true' value="+lnames[1]+">";
 					}
@@ -240,7 +254,7 @@
 
 
 				}else{
-					var flag1 = isNaN(parseInt(flags[0]))?0:parseInt(flags[0]);
+					var flag1 = flags[0].length<2?"xx":flags[0].toLowerCase();
 
 					if(flag1 == 0){
 							flag1 = 1;
@@ -250,7 +264,7 @@
 							//return;
 					}
 
-					var fStr1 = "<img src = './img/flags/flag"+flag1+".png'/><br><span>"+conf.FLAG_TXT[flag1-1]+"</span>";
+					var fStr1 = "<img src = '"+conf.FLAG_ROOT+flag1+".png'/>";
 					var nStr1 = "<input type='text' class='uname noselect' readonly='true' value="+fnames[0]+">\
 											 <input type='text' class='uname noselect' readonly='true' value="+lnames[0]+(levels[0]=="true"?"*":"")+">";
 
@@ -341,7 +355,7 @@
 				if(i == this.tmpCurIndex){
 					uobj.status = 2;
 					this.thumbnailStyle(uobj.thumb,"dimmed");
-					qlist.userqueues.push({"uname":(uobj.userFirstName+" "+uobj.userLastName),"flag":uobj.userFlag});
+					qlist.userqueues.push({"uname":(uobj.userFirstName+" "+uobj.userLastName),"flag":uobj.userCountry});
 				}
 				if(uobj.status == 2){
 					if(needToDelete<0)needToDelete = i;
@@ -349,7 +363,7 @@
 				}
 
 				if(i > this.tmpCurIndex && uobj.status=="0" && cntQueue<maxQueue){
-					qlist.userqueues.push({"uname":(uobj.userFirstName+" "+uobj.userLastName),"flag":uobj.userFlag});
+					qlist.userqueues.push({"uname":(uobj.userFirstName+" "+uobj.userLastName),"flag":uobj.userCountry});
 					cntQueue++;
 				}
 
@@ -357,7 +371,7 @@
 
 			if(cntQueue>0){
 				var jstr = JSON.stringify(qlist);
-				tcssocket.send("ALL","QUEUE_LIST",jstr);
+				tcsapp.tcssocket.send("ALL","QUEUE_LIST",jstr);
 			}
 
 			this.tmpCurIndex = -1;
@@ -366,7 +380,7 @@
 				user.queuedata.userqueues.splice(needToDelete,1);
 			}
 			this.totalUser = user.queuedata.userqueues.length;
-			this.saveQueueAtLocalStorage();
+			this.saveQueueAtServer();
 			this.setCurUserIndex();
 			this.thumbnailOrdering();
 			this.displayStatus();

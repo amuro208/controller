@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <meta id="extViewportMeta" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+  <title>REGISTRATION</title>
+
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous"> -->
+  <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="./css/style.css">
+  <link rel="stylesheet" type="text/css" href="./css/style-regi.css">
+  <link rel="stylesheet" type="text/css" href="./css/style-game.css">
+  <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+
+  <!--script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script-->
+  <script src="./tcs/js/common.js"       type="text/javascript"></script>
+  <script src="./tcs/js/CMS.js"       type="text/javascript"></script>
+  <script src="./tcs/js/pageBase.js"     type="text/javascript"></script>
+  <script src="./tcs/js/tcsApp.js"       type="text/javascript"></script>
+  <script src="./js/input/UserData.js"   type="text/javascript"></script>
+  <script src="./js/pageRegi.js"   type="text/javascript"></script>
+  <script src="./js/tcsApp.js"       type="text/javascript"></script>
+  <script src="./js/input/CountryList.js"       type="text/javascript"></script>
+  <script src="./js/input/autoCompleteInput.js"       type="text/javascript"></script>
+  <style>
+
+  </style>
+  <script type="text/javascript">
+  var page_intro = null;
+  var page_regi = null;
+
+  function onload(){
+    page_intro  = new Page("pageIntrologo");
+    page_regi   = new PageRegi("pageUserInput");
+
+    tcsapp.pages = [page_intro,page_regi];
+    preset.confd.MULTI_USER = preset.confp.MULTI_USER = 2;
+    preset.confp.CMD_SOCKET_IP = preset.confp.CMS_IP = "192.168.0.41";
+    preset.confp.CMS_EVENT_CODE = "CY";
+    tcsapp.appId = "au.com.thecreativeshop.pf.registration_cy";
+    tcsapp.confKeys = ["CMD_SOCKET_ID","CMD_SOCKET_IP","CMD_SOCKET_PORT","CMS_IP","USE_FLAG"];
+    tcsapp.init();
+    tcsapp.paging(1);
+
+    console.log("countrylist.cnames : "+countrylist.cnames);
+    autocomplete(document.getElementById("userCountry"), countrylist.cnames);
+  }
+  </script>
+
+  </head>
+  <body onload="onload();">
+
+    <!-- <div id="screenRes" style="position:fixed;top:100;text-align:left">1920x1080</div> -->
+
+    <!-- CONFIGURATION -->
+    <div id = "panelConf" class="full-popup"></div>
+
+    <!-- DEBUGGING PANEL-->
+    <div id = "panelDebug" class="full-popup"></div>
+
+    <!-- THANK YOU -->
+    <div id = "panelThankyou" class="full-popup"></div>
+
+    <!-- TERMS & CONDITIONS -->
+    <div id = "panelTerms" class="full-popup"></div>
+
+
+    <div class="hidden-button lt disable" onclick="tcsapp.panelConf.show();" alt = "Open Configuration"></div>
+    <div class="hidden-button rt disable" onclick="tcsapp.panelDebug.show();" alt = "Open Log Panel"></div>
+    <div class="hidden-button rb disable" style="z-index:100000000" onclick="page_regi.defaultPunchin()" alt = "default user"></div>
+    <div class="hidden-button lb" onclick="eableHiddenButtons(this)" alt = "default user"></div>
+    <!-- USER INPUT -->
+    <div id = "userInput" class="full-popup">
+      <div class="full-popup-inner" style="width:90%;">
+      <div class="close-button" onclick="closeFullPopup('userInput')"></div>
+      <div style="width:100%;text-align:left">
+      <h2 id = "userInputTitle">PLAYER1</h2></div><br>
+      <div id = "userInputBody" >
+
+        <div class="uinput-mid-section" >
+            <div class="uinput-mid-coloum">
+              <div class="uinput-mid-title">Your Details</div>
+              <div class="input-container" style="width:70%;margin:auto">
+                <!-- <input type="radio" name="userTitle" value="Mr"   style="font-size:0.8em"> Mr &nbsp;&nbsp;
+                <input type="radio" name="userTitle" value="Mrs"  style="font-size:0.8em" > Mrs &nbsp;&nbsp;
+                <input type="radio" name="userTitle" value="Miss" style="font-size:0.8em" > Miss &nbsp;&nbsp;
+                <input type="radio" name="userTitle" value="Ms"   style="font-size:0.8em" > Ms
+                <br><br> -->
+
+                <div class="form-group"><input type="text"     class="form-control" id="userFirstName"autocorrect="off" placeholder="First Name" /></div>
+                <div class="form-group"><input type="text"     class="form-control" id="userLastName" autocorrect="off" placeholder="Last Name"/></div>
+                <div class="form-group"><input type="email"    class="form-control" id="userEmail"    placeholder="Email"/></div>
+                <div class="form-group autocomplete" style="width:60%;display:inline-block"><form autocomplete="off">
+                  <input  type="text" class="form-control" id="userCountry" name="userCountry" placeholder="Country">
+                </form></div>
+                <div class="form-group" style="width:39%;display:inline-block">
+                  <input  type="text" class="form-control" id="userPostcode" name="userPostcode" maxlength="4" placeholder="Postcode">
+                </div>
+
+                <!--div class="form-group"><input type="number"   class="form-control" id="userPostcode"  placeholder="Postcode" max=4/></div>
+                <div class="form-group"><input type="password" class="form-control" id="userMobile"    placeholder="Mobile"   max=10/></div-->
+                <div>
+                  <div class="terms-des-group">
+                    <input type="checkbox" id="userOption1" class="form-check-input" >
+                    <label class="terms-des-default">
+                  I have read and understood the NRL’s General Warning and Conditions of Participation displayed at the Activity and the Participation Conditions of The Creative Shop (<span onclick="page_regi.terms.showTerms(1);" class="terms-des-link">available here</span>) and agree to the contents of these documents, including the assumption of risk and exclusion of liability.
+                    </label>
+                  </div>
+                  <div class="terms-des-group">
+                    <input type="checkbox" id="userOption2" class="form-check-input" >
+                    <label class="terms-des-default">
+                  AGPC are collecting your personal information to provide you with information about programs, activities and events which may be of interest to you. You may opt out of receiving our communications by ticking the box below or by contacting AGPC at privacy@grandprix.com.au <span onclick="page_regi.terms.showTerms(1);" class="terms-des-link">AGPC</span>
+                    </label>
+                  </div>
+                  <div class="terms-des-group">
+                    <input type="checkbox" id="userOption3" class="form-check-input" >
+                    <label class="terms-des-default">
+                  activities and events which may be of interest to you. You may opt out of receiving our communications by ticking the box below <span onclick="page_regi.terms.showTerms(1);" class="terms-des-link">AGPC</span>
+                    </label>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+            <div  id="userFlags" class="uinput-mid-coloum">
+               <div class="uinput-mid-title">Choose your team</div>
+               <div id = "flagContainer" class="flag-container">
+               </div>
+            </div>
+        </div>
+
+
+
+      </div>
+      <div>
+          <div class="app-buttons">
+            <button onclick="page_regi.delete()"  id = "btn-delete" type="submit" class="btn btn-lg btn-default">DELETE</button>
+            <button onclick="page_regi.punchIn()" id = "btn-enter"  type="submit" class="btn btn-lg btn-default">ENTER</button>
+        </div>
+      </div>
+      </div>
+    </div>
+
+
+
+
+
+  <!-- MAIN -->
+    <div class="site-wrapper">
+      <div class="site-wrapper-inner">
+        <div class="site-container">
+          <div class="masthead">
+              <h1 id = "headerTitle">REGISTRATION</h1>
+          </div>
+
+          <div class="mastbody">
+
+            <div id = "pageIntrologo">
+                <img src="./img/logo.png" class="page-logo"/>
+            </div>
+
+            <div id = "pageUserInput" >
+              <div class="app-page">
+                <div id = "appPageBody" class="app-page-body">
+                  <div id = "userBtn0" onclick="page_regi.openInput(0)" class="thumb-item" >PLAYER1<br>Register Player</div>
+                  <div id = "userBtn1" onclick="page_regi.openInput(1)" class="thumb-item" >PLAYER2<br>Register Player</div>
+                </div>
+              </div>
+              <div class="app-buttons">
+                  <button onclick="page_regi.reset()"  id = "btn-reset"  type="submit" class="btn btn-lg btn-default">RESET</button>
+                  <button onclick="page_regi.submit()" id = "btn-submit"  type="submit" class="btn btn-lg btn-default">SUBMIT</button>
+              </div>
+            </div>
+
+          </div>
+          <div class="mastfoot">
+            <div>
+              <!--p>Powered By The Creative Shop</p-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script> -->
+      </body>
+  </html>
