@@ -27,7 +27,7 @@ html, body {margin: 0; padding: 0; overflow: hidden}
   vertical-align: middle;
 }
 .pos{width:10%;}
-.team{width:22%;}
+.team{width:18%;padding-left:30px;}
 .uname{text-align:left;padding-left: 40px;}
 .score{width:10%;}
 
@@ -76,7 +76,7 @@ html, body {margin: 0; padding: 0; overflow: hidden}
   border:none;
 }
 .board-list .score{
-  color:#FFF;
+  color:#e91f36;
   /* background-image: url(../img/slider_shapes.png);  background-position: center; background-size:auto 100%; */
 }
 
@@ -112,7 +112,8 @@ html, body {margin: 0; padding: 0; overflow: hidden}
 position:absolute;z-index:1000;  width:1280px;height:853px;left:1080px;top:0px;   background-image: url(../img/edm_board_bg.png);  background-position: left; background-size:auto 100%;
 }
 .edm-list-container{
-
+  font-size: 0.8rem;
+  font-weight: 200;
   position:relative;
   margin:auto;
   top:208px;
@@ -120,6 +121,8 @@ position:absolute;z-index:1000;  width:1280px;height:853px;left:1080px;top:0px; 
   height:500px;
   background-color:#000000;
 }
+
+
 .edm-list{
   margin-top:0px;
   position:relative;
@@ -131,20 +134,39 @@ position:absolute;z-index:1000;  width:1280px;height:853px;left:1080px;top:0px; 
   background-image: url(../img/list_edm_bg.png);  background-position: left; background-size:auto 100%;
   /* border-bottom: 5px solid #EEE; */
 }
-.edm-list .inner-row .new{
+.edm-list .edm-list-new{
   background-image: url(../img/list_edm_bg_over.png);  background-position: left; background-size:auto 100%;
 }
 .edm-list .team-flag{
-  width:120px;
-  height:35px;
+  width:100px;
+
   /* border:1px solid #DDD; */
 }
 .edm-list .team-flag-none{
-  width:120px;
-  height:35;
+  width:100px;
   border:none;
 }
 .edm-list .score{
+  color:#e91f36;
+  /* background-image: url(../img/slider_shapes.png);  background-position: center; background-size:auto 100%; */
+}
+
+
+.edm-list-new{
+  margin-top:0px;
+  position:relative;
+}
+.edm-list-new .inner-row{
+  background-color:#FFF;
+  height:50px;
+  background-image: url(../img/list_edm_bg_over.png);  background-position: left; background-size:auto 100%;
+  /* border-bottom: 5px solid #EEE; */
+}
+.edm-list-new .team-flag{
+  width:100px;
+}
+
+.edm-list-new .score{
   color:#FFF;
   /* background-image: url(../img/slider_shapes.png);  background-position: center; background-size:auto 100%; */
 }

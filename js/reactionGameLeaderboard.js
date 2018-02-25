@@ -278,7 +278,7 @@ rb.onSocketMessage = function(e){
       if(!tcsapp.isGameRunning || !tcsapp.isGameReady)return false;
       tcsapp.isGameRunning = false;
       game.timeout();
-      edmb.displayEdmList();
+      edmb.displayEdmList(rb.newuserInfo);
 
     }else if(e.detail.cmd == "BOARD_CLEARD"){
 	  log("BOARD_CLEARD");

@@ -5,7 +5,7 @@ var url = require('url')           // https://nodejs.org/api/url.html
 var window = null;
 //console.log("process.env.npm_package_config_debug : "+process.env.npm_package_config_debug);
 var debug = false;
-debug = process.env.npm_package_config_debug=="false"?false:true;
+//debug = process.env.npm_package_config_debug=="false"?false:true;
 //console.log("process.env.debug : "+process.env.tcsdebug);
 // exports.pong = arg => {
 //     //Print 6
@@ -129,18 +129,7 @@ var SerialPort = require('serialport');
 // Wait until the app is ready
 app.on('ready', function () {
   // Create a new window
-  if(debug){
-    window = new BrowserWindow({
-      alwaysOnTop :false,
-      width: 1080,
-      height: 1080,
-      frame:true,
-      titleBarStyle: 'hidden',
-      backgroundColor: "#111",
-      show: false,
-      kiosk:false
-    });
-  }else{
+
     window = new BrowserWindow({
       alwaysOnTop :true,
       width: 1080,
@@ -151,7 +140,7 @@ app.on('ready', function () {
       show: false,
       kiosk:true
     });
-  }
+
 
   //window.setAutoHideMenuBar(true);
   // Load a URL in the window to the local index.html path

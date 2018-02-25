@@ -19,7 +19,7 @@
 	var arduino = new net.Socket();
 
 	game.init = function(){
-		arduino.connect(5331, '127.0.0.1', function() {
+		arduino.connect(5331, 'localhost', function() {
 		  log('Connected');
 		  //arduino.write('Hello, server! Love, Client.\n');
 		});
@@ -70,7 +70,7 @@
 
 	game.sendToArduino = function(s) {
 	   log("sendToArduino : "+s );
-	   if(arduino.connected)arduino.write(s+'\n');
+	   arduino.write(s+'\n');
 	   //ipcRender.send("arduinoCommand",s);
 	}
 	game.testLED = function(){
