@@ -158,7 +158,7 @@ var PageRegi = function(id){
 		this.resetCheckBox(false);
 	}
 
-	
+
 
   PageRegi.prototype.fakeUsers = [
 	{"fname":"Amuro",  "lname":"Lee",         "email":"amuro208@gmail.com",               "flag":1, "mobile":"0443399887","post":"2016"},
@@ -301,7 +301,7 @@ PageRegi.prototype.setRadioValue = function(field,n){
 			}
 		if(this.isForm("userOption3")){
 				user.userOption3 = $$("userOption3").checked;
-				if(this.cbMandatory[2] && !user.userOption2){alert("Check terms and condition");return false};
+				if(this.cbMandatory[2] && !user.userOption3){alert("Check terms and condition");return false};
 			}
 
 		user.check = true;

@@ -8,5 +8,5 @@ src:url('../fonts/digital-7-webfont.ttf') format('truetype');
 .dn-timer-colon{width:6.5vw;font-size:36.5vw;  margin:0px -10px 0 -10px;}
 .dn-timeout{font-size:31.5vw;}
 .dn-counter{font-size:56.5vw; }
-.dn-small{width:5vw;font-size:10vw;  margin:0px -3px 0 -3px;}
-.dn-small-colon{width:2vw;font-size:10vw;  margin:0px -3px 0 -3px;}
+.dn-small{width:7.6vw;font-size:16vw;  margin:0px -5px 0 -5px;}
+.dn-small-colon{width:3.5vw;font-size:16vw;  margin:0px -5px 0 -5px;}

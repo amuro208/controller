@@ -14,7 +14,17 @@ preset.confp = {
 	TIMEOUT:30,
 	USE_FLAG:"Y",
 	USE_CPU_OPPONENT:"N",
-	FLAG_TXT:["Mercedes","Red Bull Racing","Ferrari","Force India","Williams","McLaren","Toro Rosso","Haas F1 Team","Renault","Sauber"],
+	FLAG_TXT:[
+	"Mercedes AMG <br/>Petronas Motorsport",
+	"Aston Martin <br/>Red Bull Racing",
+	"Scuderia <br/>Ferrari",
+	"Sahara Force India<br/>F1 Team",
+	"Williams Martini <br/>Racing",
+	"McLaren <br/>F1 Team",
+	"Red Bull <br/>Toro Rosso Honda",
+	"Haas<br/>F1 Team",
+	"Renault Sport <br/>Formula One Team",
+	"Alfa Romeo Sauber<br/>F1 Team"],
 	NUM_FLAG:10,
 	MULTI_USER:1
 };
@@ -33,7 +43,18 @@ preset.confd = {
 	TIMEOUT:30,
 	USE_FLAG:"Y",
 	USE_CPU_OPPONENT:"N",
-	FLAG_TXT:["Mercedes","Red Bull Racing","Ferrari","Force India","Williams","McLaren","Toro Rosso","Haas F1 Team","Renault","Sauber"],
+	FLAG_TXT:[
+		"Mercedes AMG <br/>Petronas Motorsport",
+		"Aston Martin <br/>Red Bull Racing",
+		"Scuderia <br/>Ferrari",
+		"Sahara Force India<br/>F1 Team",
+		"Williams Martini <br/>Racing",
+		"McLaren <br/>F1 Team",
+		"Red Bull <br/>Toro Rosso Honda",
+		"Haas<br/>F1 Team",
+		"Renault Sport <br/>Formula One Team",
+		"Alfa Romeo Sauber<br/>F1 Team"],
+	//FLAG_TXT:["Mercedes","Red Bull Racing","Ferrari","Force India","Williams","McLaren","Toro Rosso","Haas F1 Team","Renault","Sauber"],
 	NUM_FLAG:10,
 	MULTI_USER:1
 };

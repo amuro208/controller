@@ -25,7 +25,7 @@ cms.getListData = function(target,obj,fnc){
   var cmsURL = "http://"+conf.CMS_IP+conf.CMS_LIST;
   log("cmsURL "+cmsURL);
 
-    postAjax(cmsURL, {}, function(readyState,status,data){
+    postAjax(cmsURL,obj, function(readyState,status,data){
       if(readyState == 4){
           if(status == 200){
             fnc(data);
@@ -45,7 +45,7 @@ cms.getQueue = function(target,obj,fnc){
    var cmsURL = "http://"+conf.CMS_IP+conf.CMS_REQUEST_QUEUE;
    log("cmsURL "+cmsURL);
 
-     postAjax(cmsURL, {}, function(readyState,status,data){
+     postAjax(cmsURL,obj, function(readyState,status,data){
        if(readyState == 4){
            if(status == 200){
              fnc(data);
@@ -83,7 +83,7 @@ cms.saveQueue = function(target,obj,fnc){
 
 cms.clearBoard = function(target,obj,fnc){
     var cmsURL = "http://"+conf.CMS_IP+conf.CMS_CLEAR_BOARD;
-    postAjax(cmsURL, {}, function(readyState,status,data){
+    postAjax(cmsURL, obj, function(readyState,status,data){
       if(readyState == 4){
         if(status == 200){
 
@@ -102,7 +102,7 @@ cms.clearBoard = function(target,obj,fnc){
 
 
 cms.requestAny = function(target,url,obj,fnc){
-  postAjax(url, {}, function(readyState,status,data){
+  postAjax(url, obj, function(readyState,status,data){
     if(readyState == 4){
       if(status == 200){
           fnc(data);

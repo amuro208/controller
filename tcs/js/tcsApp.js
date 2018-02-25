@@ -35,7 +35,7 @@ tcsapp.init = function(){
 		this.panelConf  = new PanelConf('panelConf');
 		this.tcssocket  = new TCSWebSocket();
 
-		document.addEventListener("onConfigLoaded",()=>{
+		document.addEventListener("onConfigLoaded",function(){
 			this.panelDebug.init();
 			this.panelConf.setKeys(this.confKeys);
 			this.panelConf.init();
@@ -52,7 +52,7 @@ tcsapp.init = function(){
 			}
 
 			this.thingsAfterConfigloaded();
-		})
+		}.bind(this));
 
 		confCtrl.storage = "local";
 		confCtrl.load();

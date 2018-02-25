@@ -9,6 +9,8 @@
 		this.timerId;
 		this.prevTime;
 		this.userData = {};
+		this.btnAniId = 0;
+		this.btnAniIndex = 0;
 
 	}
 
@@ -26,6 +28,14 @@
 		this.cnt1 = $$("cnt1");
 		this.cnt2 = $$("cnt2");
 		document.addEventListener("onSocketMessage",this.onSocketMessage.bind(this),false);
+
+		this.btnAniIndex = 0;
+		this.btnAniId = setInterval(function(){
+			this.btnAniIndex++;
+			if(this.btnAniIndex == 6)this.btnAniIndex = 0;
+			$$("btnCtrlBall").src = "./img/game/sl"+this.btnAniIndex+".png";
+		}.bind(this),1000);
+
 	}
 	PageGame.prototype.ready = function(){
 		tcsapp.isGameReady = true;
@@ -149,9 +159,11 @@
 			$$("gtimer").style.display = "block";
 		  $$("gameButtons").style.display = "block";
 
-			TweenMax.to($$("btnCtrlBall"), 0.6, {top:"0px", repeat:-1, repeatDelay:1.0, ease:Bounce.easeOut});
+			//TweenMax.to($$("btnCtrlBall"), 0.6, {top:"0px", repeat:-1, repeatDelay:1.0, ease:Bounce.easeOut});
 			$$("btnCtrlBall").style.filter = "drop-shadow(0px 5px 10px #000)";
-	    $$("btnCtrlRnd").style.filter = "saturate(0)";
+
+
+	    //$$("btnCtrlRnd").style.filter = "saturate(0)";
 
 			tcsapp.paging(2);
 
@@ -166,6 +178,10 @@
 			alert("No user selected!");
 		}
 	}
+
+
+
+
 
   PageGame.prototype.activeBtn = function(btn,a){
 		if(a)btn.classList.add("active");
@@ -219,7 +235,7 @@
 		this.tms3.innerHTML = tmsStr.charAt(2);
 
 		var scoreStr = this.userScore<10?"0"+this.userScore:""+this.userScore;
-		this.cnt2.innerHTML = scoreStr.charAt(0);
+		this.cnt1.innerHTML = scoreStr.charAt(0);
 		this.cnt2.innerHTML = scoreStr.charAt(1);
 
 	}
@@ -234,7 +250,7 @@
 			tcsapp.tcssocket.send("ALL","GAME_COMPLETE","-");
 			page_list.updateUserStatus();
 			if(conf.APP_INFINITE_TEST == "Y"){
-				setTimeout(function(){this.userReady();},6000);
+				setTimeout(function(){this.userReady();}.bind(this),6000);
 			}
 		}else{
 			if(confirm("Error Occured : "+data)) {

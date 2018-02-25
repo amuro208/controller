@@ -6,12 +6,12 @@
 
 
 @font-face {
-font-family: 'NissanBrandBold';
-src:url('../fonts/Nissan Brand Bold.otf') format('opentype');
+font-family: 'OstrichSansBold';
+src:url('../fonts/OstrichSans-Bold.otf') format('opentype');
 }
 @font-face {
-font-family: 'NissanBrandRegular';
-src:url('../fonts/Nissan Brand Regular.otf') format('opentype');
+font-family: 'HeaderTitle';
+src:url('../fonts/OstrichSans-Medium.otf') format('opentype');
 }
 /*src: url('../fonts/glyphicons-halflings-regular.eot');
 src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
@@ -126,7 +126,7 @@ border:1px dashed #CCC;
 .masthead {display:none;}
 .mastfoot {display:none;}
 
-.masthead h1{margin:33px 100px;}
+.masthead h1{font-family: "HeaderTitle", sans-serif; font-size:4em; letter-spacing:5px; margin:20px 100px;}
 .mastfoot p{font-size: 0.8em;color:#999}
 
 /*landscape normal*/
