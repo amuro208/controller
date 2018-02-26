@@ -1,5 +1,5 @@
 
-importScript('./js/reactionGameEDMboard.js');
+//importScript('./js/reactionGameEDMboard.js');
 
 
 
@@ -91,7 +91,7 @@ rb.addNewUser = function(obj){
     //newitemIndex--;
 
   }
-  edmb.photoId = userinfo[2];
+  //edmb.photoId = userinfo[2];
   rb.itemList.appendChild(rb.newitem);
   rb.newitem.style.top = ""+(newitemIndex*rb.itemHeight)+"px";
   rb.newuserScore = 0;
@@ -173,8 +173,8 @@ rb.setitem= function(item,info){
   		item.getElementsByClassName("score")[0].innerHTML = "";
   		item.getElementsByClassName("uname")[0].innerHTML = "";
 	  }else{
-  		img.className = "team-flag";
-  		img.src = "./img/flags/flag"+(parseInt(info.flag))+".png";
+		var flag1 = (info.flag==undefined || info.flag.length<2)?"xx":info.flag.toLowerCase();
+  		img.src = "./flags/flags-normal/"+flag1+".png";
   		item.getElementsByClassName("pos")[0].innerHTML   = ""+info.pos;
   		item.getElementsByClassName("score")[0].innerHTML = ""+info.score;
   		item.getElementsByClassName("uname")[0].innerHTML = ""+info.uname;
@@ -190,7 +190,7 @@ rb.keyboardlistener = function(e){
       if(tcsapp.isGameReady || tcsapp.isGameRunning){
           return false;
       }
-      tcsapp.tcssocket.send("ALL","READY","Donghoon Lee,2,12223344|");
+      tcsapp.tcssocket.send("ALL","READY","Donghoon Lee,ca,12223344|");
     break;
     case "s":
       if(!tcsapp.isGameReady || tcsapp.isGameRunning)return false;
@@ -278,7 +278,7 @@ rb.onSocketMessage = function(e){
       if(!tcsapp.isGameRunning || !tcsapp.isGameReady)return false;
       tcsapp.isGameRunning = false;
       game.timeout();
-      edmb.displayEdmList();
+      //edmb.displayEdmList(rb.newuserInfo);
 
     }else if(e.detail.cmd == "BOARD_CLEARD"){
 	  log("BOARD_CLEARD");
@@ -384,9 +384,11 @@ rb.onResponseXML = function(data){
   for(var i = 0;i<this.totalItems;i++){
 	  if(i<rb.userlist.length){
 		rb.userlist[i].item = $$("item"+i);
+		console.log("rb.setitem : "+rb.userlist[i]);
 		rb.setitem($$("item"+i),rb.userlist[i]);
 
 	  }else{
+	  console.log("rb.setitem : null");
 		rb.setitem($$("item"+i),null);
 	  }
 

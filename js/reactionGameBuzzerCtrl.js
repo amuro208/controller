@@ -19,7 +19,9 @@
 	var arduino = new net.Socket();
 
 	game.init = function(){
-		arduino.connect(5331, '127.0.0.1', function() {
+	console.log("arduino.connect(5331, '127.0.0.1')");
+		arduino.connect(5331, 'localhost', function() {
+		  console.log("arduino.connect callback");
 		  log('Connected');
 		  //arduino.write('Hello, server! Love, Client.\n');
 		});
@@ -70,7 +72,7 @@
 
 	game.sendToArduino = function(s) {
 	   log("sendToArduino : "+s );
-	   if(arduino.connected)arduino.write(s+'\n');
+	   arduino.write(s+'\n');
 	   //ipcRender.send("arduinoCommand",s);
 	}
 	game.testLED = function(){
@@ -111,7 +113,7 @@
 			game.sendToArduino("bo"+game.currentOn);
 			game.seqNow++;
 			if(game.seqNow == game.seqTotal)game.seqNow = 0;
-			if(conf.infiniteTest == "Y"){
+			if(conf.APP_INFINITE_TEST == "Y"){
 			  setTimeout(function(){
 			  if(tcsapp.isGameRunning)game.sendToArduino("bf"+game.currentOn);
 			  },Math.floor(Math.random() * 900) + 50);

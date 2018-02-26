@@ -35,18 +35,18 @@ ql.showQueueList = function(msg){
         if(i<list.userqueues.length){
           info = list.userqueues[i];
         }else{
-          info = {"uname":" ","flag":-1};
+          info = {"uname":" ","flag":"xx"};
         }
 
-  			var flag = parseInt(info.flag);
+  			var flag1 = (info.flag==undefined || info.flag.length<2)?"xx":info.flag.toLowerCase();
   			var img = item.getElementsByTagName("IMG")[0];
-  			if(flag<0){
+  			if(flag1=="xx"){
   				img.className = "team-flag-none";
   				img.src = "./img/blank.png";
 
   			}else{
   				img.className = "team-flag";
-  				img.src   = "./img/flags/flag"+(parseInt(info.flag)+1)+".png";
+  				img.src   = "./flags/flags-normal/"+flag1+".png";
   			}
 
   			item.getElementsByClassName("uname")[0].innerHTML = ""+info.uname;

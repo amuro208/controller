@@ -4,8 +4,8 @@ var url = require('url')           // https://nodejs.org/api/url.html
 
 var window = null;
 //console.log("process.env.npm_package_config_debug : "+process.env.npm_package_config_debug);
-var debug = false;
-debug = process.env.npm_package_config_debug=="false"?false:true;
+var debug = true;
+//debug = process.env.npm_package_config_debug=="false"?false:true;
 //console.log("process.env.debug : "+process.env.tcsdebug);
 // exports.pong = arg => {
 //     //Print 6
@@ -36,7 +36,7 @@ ipcMain.on('keypress', (event, ctrl,key) => {
         case "f":
         if(debug){
           debug = false;
-          window.setSize(1080,1920);
+          window.setSize(1080,3840);
           window.setAlwaysOnTop(true);
           window.closeDevTools();
           window.setKiosk(true);
@@ -129,6 +129,7 @@ var SerialPort = require('serialport');
 // Wait until the app is ready
 app.on('ready', function () {
   // Create a new window
+
   if(debug){
     window = new BrowserWindow({
       alwaysOnTop :false,
@@ -144,7 +145,7 @@ app.on('ready', function () {
     window = new BrowserWindow({
       alwaysOnTop :true,
       width: 1080,
-      height: 1920,
+      height: 3840,
       frame:false,
       titleBarStyle: 'hidden',
       backgroundColor: "#111",
@@ -152,6 +153,7 @@ app.on('ready', function () {
       kiosk:true
     });
   }
+
 
   //window.setAutoHideMenuBar(true);
   // Load a URL in the window to the local index.html path
@@ -164,7 +166,7 @@ app.on('ready', function () {
   // Show window when page is ready
   window.once('ready-to-show', function () {
     window.show();
-    window.setSize(1080,1920);
+    window.setSize(1080,3840);
     window.setPosition(0,0);
 
 	  //window.toggleDevTools();
