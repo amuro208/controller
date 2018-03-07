@@ -34,7 +34,7 @@ this.fs       = require("fs");
   this.DIR_ROOT  = conf.ROOT_PATH;
 
   this.DIR_USER;
-  this.DIR_FINAL  = this.DIR_ROOT+'/Final';
+  this.DIR_FINAL  = conf.FINAL_PATH;
   this.DIR_TEMP   = this.DIR_ROOT+'/Temp';
   this.DIR_PRESET = this.DIR_ROOT+'/Preset';
 
@@ -337,7 +337,7 @@ this.fs       = require("fs");
 		this.logSocket("process "+this.user_pid+": make EDM image");
 
 		var input  = this.DIR_USER+"/image-000.jpg";
-		var output = this.DIR_FINAL+"/"+this.user_pid+".png";
+		var output = this.DIR_FINAL+"/"+this.user_pid+"_edm.png";
 		var wm     = this.DIR_PRESET+"/moods/overlay_wm.png";
 		const options = [];
 		options.push("-y");
