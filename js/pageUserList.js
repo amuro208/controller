@@ -195,7 +195,7 @@
 				var fnames = obj.userFirstName.split("|");
 				var lnames = obj.userLastName.split("|");
 				var flags  = obj.userFlag.split("|");
-				var levels = obj.userOption1.split("|");
+				//var levels = obj.userOption1.split("|");
 
 				if(conf.MULTI_USER==2){
 					console.log("isNaN(parseInt(flags[1])) ::: "+isNaN(parseInt(flags[1])));
@@ -266,7 +266,7 @@
 
 					var fStr1 = "<img src = './img/flags/flag"+flag1+".png'/><br><div>"+conf.FLAG_TXT[flag1-1]+"</div>";
 					var nStr1 = "<input type='text' class='uname noselect' readonly='true' value="+fnames[0]+">\
-											 <input type='text' class='uname noselect' readonly='true' value="+lnames[0]+(levels[0]=="true"?"*":"")+">";
+											 <input type='text' class='uname noselect' readonly='true' value="+lnames[0]+">";//(levels[0]=="true"?"*":"")+
 
 					if(conf.USER_FLAG == "N"){
  						fStr1 = "";

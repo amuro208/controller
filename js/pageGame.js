@@ -113,7 +113,7 @@
 			var lnames = this.userData.userLastName.split("|");
 			var emails = this.userData.userEmail.split("|");
 			var flags  = this.userData.userFlag.split("|");
-			var levels = this.userData.userOption1.split("|");
+			var levels = this.userData.userOption2.split("|");
 
 
 
@@ -142,6 +142,7 @@
 				var flag = isNaN(parseInt(flags[0]))?0:parseInt(flags[0]);
 				var fStr1 = "<img src = './img/flags/flag"+flag+".png'/>";
 				var un1 = fnames[0]+" "+lnames[0];
+				console.log("levels[0] : "+levels[0]);
 				$$("userGame1").innerHTML = "<div class='user-gamecard'><div class='user-gamecard-flag'>"+fStr1+"</div><div class='uname'>"+un1+(levels[0]=="true"?"*":"")+"</div></div>";
 				tcsapp.tcssocket.send("ALL","READY",un1+","+flag+","+this.photoId+","+levels[0]+"|");
 				$$("userGame2").style.display = "none";
