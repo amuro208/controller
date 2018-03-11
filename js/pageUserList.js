@@ -29,6 +29,25 @@
   PageUserList.prototype.constructor = PageUserList;
 	PageUserList.prototype.init = function(){
 
+		document.addEventListener('touchmove',function(e)
+		{
+			e = e || window.event;
+			var target = e.target || e.srcElement;
+			//in case $altNav is a class:
+			if (!target.className.match(/\bscrollable\b/))
+			{
+					e.returnValue = false;
+					e.cancelBubble = true;
+					if (e.preventDefault)
+					{
+							e.preventDefault();
+							e.stopPropagation();
+					}
+					return false;//or return e, doesn't matter
+			}
+			//target is a reference to an $altNav element here, e is the event object, go mad
+		},false);
+		
 		this.blockUtils         = $$("blockUtils");
 		this.containerWrapper   = $$("thumbContainerWrapper");
 		this.containerCropFrame = $$("thumbContainerCropFrame");
@@ -49,8 +68,8 @@
 
 		this.btnReady.disabled = true;
 
-		this.blockUtils.innerHTML = '<div class="hidden-button rb disable" onclick="toggleOnOff(\'utilBtns\')" alt = "Toggle Utils"></div>\
-    <div id = "utilBtns" style="display:none; z-index:1001; position:absolute; width:200px; bottom:55px; right:0px; text-align:right">\
+		this.blockUtils.innerHTML = '<div class="hidden-button rt" onclick="toggleOnOff(\'utilBtns\')" alt = "Toggle Utils"></div>\
+    <div id = "utilBtns" style="display:none; z-index:1001; position:absolute; width:200px; top:55px; right:0px; text-align:right">\
       <button onclick="page_list.saveQueueAtServer()"     class="btn btn-sm btn-default" style="width:160px;">Save user queues</button><br>\
       <button onclick="page_list.deleteQueue(true)"       class="btn btn-sm btn-default" style="width:160px;">Delete user queues</button><br>\
       <button onclick="page_list.clearBoard()"            class="btn btn-sm btn-default" style="width:160px;">Clear Leader board</button>\

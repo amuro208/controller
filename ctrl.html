@@ -56,9 +56,8 @@
     <!-- DEBUGGING PANEL-->
     <div id = "panelDebug" class="full-popup"></div>
 
-    <div class="hidden-button lt disable" onclick="tcsapp.panelConf.show();" alt = "Open Configuration"></div>
-    <div class="hidden-button rt disable" onclick="tcsapp.panelDebug.show();" alt = "Open Log Panel"></div>
-    <div class="hidden-button lb" onclick="eableHiddenButtons(this)" alt = "default user"></div>
+    <div class="hidden-button lt" onclick="tcsapp.panelConf.show();" alt = "Open Configuration"></div>
+    <!-- <div class="hidden-button rt" onclick="tcsapp.panelDebug.show();" alt = "Open Log Panel"></div> -->
 
     <div id = "blockUtils"></div>
 
@@ -84,7 +83,7 @@
                     <div id = "userStatusScroll"></div>
                     <div><img src="./img/arrow.png"/></div>
                     <div id = "userStatusUsers"></div>
-                    <div style = "z-index:1001; position:absolute; width:200px; top:-80px; right:0px; text-align:right">
+                    <div style = "z-index:1001; position:absolute; width:200px; top:330px; right:0px; text-align:right">
                 			<button onclick="page_list.scrollToUser(0)"         class="btn btn-sm btn-default" style="width:160px;">Who is next</button><br>
                 			<button onclick="page_list.getQueueFromServer()"    class="btn btn-sm btn-default" style="width:160px;">Fetch user queues</button>
                 		</div>

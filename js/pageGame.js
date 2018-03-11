@@ -277,6 +277,7 @@
 		postObj.userEDMTNC = this.userData.userOption1 == "true"?"Y":"N";
 		//userData.videoId = this.videoId;
 		postObj.userScore = this.userScore;
+		if(postObj.userScore<1)postObj.userScore = 1;
 		//postObj.userTitle = this.userData.userTitle;
 		postObj.userCountryId = this.userData.userFlag;
 		postObj.userFirstName = this.userData.userFirstName;
