@@ -37,10 +37,10 @@
     page_regi   = new PageRegi("pageUserInput");
 
     tcsapp.pages = [page_intro,page_regi];
-    tcsapp.appId = "au.com.thecreativeshop.comm.registration2";
-    preset.confp.CMD_SOCKET_IP = "192.168.0.31";
-    preset.confp.MULTI_USER = 2;
-    preset.confd.MULTI_USER = 2;
+    tcsapp.appId = "au.com.thecreativeshop.comm.registration_wp";
+    preset.confp.CMD_SOCKET_IP = "192.168.0.51";
+    preset.confp.MULTI_USER = 1;
+    preset.confd.MULTI_USER = 1;
     tcsapp.confKeys = ["CMD_SOCKET_ID","CMD_SOCKET_IP","CMD_SOCKET_PORT","CMS_IP"];
     tcsapp.init();
     tcsapp.paging(1);
@@ -51,7 +51,7 @@
   </head>
   <body onload="onload();">
 
-    <div id="screenRes" style="position:fixed;bottom:0;text-align:left">1920x1080</div>
+    <div id="screenRes" style="position:fixed;top:100;text-align:left">1920x1080</div>
 
     <!-- CONFIGURATION -->
     <div id = "panelConf" class="full-popup"></div>
@@ -88,11 +88,11 @@
                 <div class="form-group"><input type="password" class="form-control" id="userMobile"    placeholder="Mobile"   max=10/></div>
 
                 <span><strong>Your Age : &nbsp;&nbsp;</strong></span>
-                <input type="radio" name="userAge" value="Under 12"   style="font-size:0.8em"> Under 12 &nbsp;&nbsp;
-                <input type="radio" name="userAge" value="12-17"      style="font-size:0.8em" > 12-17 &nbsp;&nbsp;
-                <input type="radio" name="userAge" value="18-25"      style="font-size:0.8em" > 18-25 &nbsp;&nbsp;
-                <input type="radio" name="userAge" value="25-34"      style="font-size:0.8em" > 25-34 &nbsp;&nbsp;
-                <input type="radio" name="userAge" value="18-25"      style="font-size:0.8em" > 18-25
+                <input type="radio" name="userAge" value="0"   style="font-size:0.8em"> Under 12 &nbsp;&nbsp;
+                <input type="radio" name="userAge" value="1"      style="font-size:0.8em" > 12-17 &nbsp;&nbsp;
+                <input type="radio" name="userAge" value="2"      style="font-size:0.8em" > 18-25 &nbsp;&nbsp;
+                <input type="radio" name="userAge" value="3"      style="font-size:0.8em" > 25-34 &nbsp;&nbsp;
+                <input type="radio" name="userAge" value="4"      style="font-size:0.8em" > 35+
 
               </div>
             </div>
@@ -104,17 +104,17 @@
         </div>
 
         <div style="padding-top:20px;width:700px;margin:auto">
-            <div class="terms-des-group">
-              <input type="checkbox" id="userOption1" class="form-check-input" >
-              <label class="terms-des-default">
-			             Are you interested in receiving information about Griffith University?
-              </label>
-            </div>
+          <div class="terms-des-group">
+            <input type="checkbox" id="userOption1" class="form-check-input" >
+            <label class="terms-des-default">
+              I agree to the Griffith University privacy policy... <span onclick="page_regi.terms.showTerms(1);" class="terms-des-link">AGPC</span>
+
+            </label>
+          </div>
             <div class="terms-des-group">
               <input type="checkbox" id="userOption2" class="form-check-input" >
               <label class="terms-des-default">
-                I agree to the Griffith University privacy policy... <span onclick="page_regi.terms.showTerms(1);" class="terms-des-link">AGPC</span>
-
+			             Are you interested in receiving information about Griffith University?
               </label>
             </div>
         </div>

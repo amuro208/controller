@@ -29,6 +29,25 @@
   PageUserList.prototype.constructor = PageUserList;
 	PageUserList.prototype.init = function(){
 
+		document.addEventListener('touchmove',function(e)
+		{
+			e = e || window.event;
+			var target = e.target || e.srcElement;
+			//in case $altNav is a class:
+			if (!target.className.match(/\bscrollable\b/))
+			{
+					e.returnValue = false;
+					e.cancelBubble = true;
+					if (e.preventDefault)
+					{
+							e.preventDefault();
+							e.stopPropagation();
+					}
+					return false;//or return e, doesn't matter
+			}
+			//target is a reference to an $altNav element here, e is the event object, go mad
+		},false);
+		
 		this.blockUtils         = $$("blockUtils");
 		this.containerWrapper   = $$("thumbContainerWrapper");
 		this.containerCropFrame = $$("thumbContainerCropFrame");
@@ -49,14 +68,16 @@
 
 		this.btnReady.disabled = true;
 
-		this.blockUtils.innerHTML = '<div class="hidden-button rb disable" onclick="toggleOnOff(\'utilBtns\')" alt = "Toggle Utils"></div>\
-    <div id = "utilBtns" style="display:none; z-index:1001; position:absolute; width:200px; bottom:55px; right:0px; text-align:right">\
+		this.blockUtils.innerHTML = '<div class="hidden-button rt" onclick="toggleOnOff(\'utilBtns\')" alt = "Toggle Utils"></div>\
+    <div id = "utilBtns" style="display:none; z-index:1001; position:absolute; width:200px; top:55px; right:0px; text-align:right">\
       <button onclick="page_list.saveQueueAtServer()"     class="btn btn-sm btn-default" style="width:160px;">Save user queues</button><br>\
       <button onclick="page_list.deleteQueue(true)"       class="btn btn-sm btn-default" style="width:160px;">Delete user queues</button><br>\
       <button onclick="page_list.clearBoard()"            class="btn btn-sm btn-default" style="width:160px;">Clear Leader board</button>\
     </div>';
 
-		this.getQueueFromLocalStorage();
+		cms.getQueue(this,{"appid":tcsapp.appId},function(data){
+			this.initUserQueueWithData(data);
+		}.bind(this));
 		//document.documentElement.style.position = "fixed";
 		//document.documentElement.style.overFlow = "hidden";
 		//document.body.style.position = "fixed";
@@ -75,24 +96,24 @@
 		}
 	}
 	/*Get UserQueue*/
-	PageUserList.prototype.getQueueFromLocalStorage = function(){
-		if (typeof(Storage) !== "undefined") {
-			this.initUserQueueWithData(localStorage.getItem(tcsapp.id+".userqueues"));
-		}
-	}
+	// PageUserList.prototype.getQueueFromLocalStorage = function(){
+	// 	if (typeof(Storage) !== "undefined") {
+	// 		this.initUserQueueWithData(localStorage.getItem(tcsapp.appId+".userqueues"));
+	// 	}
+	// }
 	PageUserList.prototype.getQueueFromServer = function(){
-		 if(confirm("Are you sure you want to bring user queues from server?")){
-			  this.deleteQueue(false);
- 	 			cms.getQueue(this,{},function(data){
+		if(confirm("Are you sure you want to bring user queues from server?")){
+			  this.deleteQueueUI();
+ 	 			cms.getQueue(this,{"appid":tcsapp.appId},function(data){
 					this.initUserQueueWithData(data);
-				  this.saveQueueAtLocalStorage();
 				}.bind(this));
-			}
+			//}
+		}
   }
 
 	/*Initialise UserQueue*/
 	PageUserList.prototype.initUserQueueWithData = function(data){
-		log(data);
+		console.log("initUserQueueWithData : "+data);
 		if(data != null){
 			user.queuedata = JSON.parse(data);
 			for(var i = 0;i<user.queuedata.userqueues.length;i++){
@@ -111,16 +132,16 @@
 	}
 
 	PageUserList.prototype.saveQueueAtServer = function(){
-		  var obj = {userQueues:JSON.stringify(user.queuedata)};
+		  var obj = {userQueues:JSON.stringify(user.queuedata),appid:tcsapp.appId};
 			cms.saveQueue(this,obj,function(){
-			 console.log("Queue Saved!");
+			 console.log("Queue Saved!"+obj);
 		 }.bind(this));
 	}
 
-	PageUserList.prototype.saveQueueAtLocalStorage = function(){
-		var jstr = JSON.stringify(user.queuedata);
-		localStorage.setItem(tcsapp.id+".userqueues", jstr );
-	}
+	// PageUserList.prototype.saveQueueAtLocalStorage = function(){
+	// 	var jstr = JSON.stringify(user.queuedata);
+	// 	localStorage.setItem(tcsapp.appId+".userqueues", jstr );
+	// }
 
 	PageUserList.prototype.clearBoard = function(){
 		  if(confirm("Are you sure you want to reset this leader board?")){
@@ -129,31 +150,43 @@
 				}.bind(this));
 		}
 	}
-
+  PageUserList.prototype.deleteQueueUI = function(chk){
+		for(var i = 0;i<user.queuedata.userqueues.length;i++){
+			this.deleteThumbnail(user.queuedata.userqueues[i]);
+		}
+		user.queuedata.userqueues = [];
+		this.totalUser = 0;
+		this.setCurUserIndex();
+		this.displayStatus();
+	}
 	PageUserList.prototype.deleteQueue = function(chk){
 		var bool = true;
 		if(chk)bool = confirm("Are you sure you want to delete user queues?");
 		if(bool){
-			for(var i = 0;i<user.queuedata.userqueues.length;i++){
-				this.deleteThumbnail(user.queuedata.userqueues[i]);
-	  	}
-			user.queuedata.userqueues = [];
-			this.totalUser = 0;
-			this.setCurUserIndex();
-			this.saveQueueAtLocalStorage();
-			this.displayStatus();
+			this.deleteQueueUI();
+			this.saveQueueAtServer();
 		}
 	}
-
 
 	/*Manipulates UserData*/
 
 	PageUserList.prototype.addUserData = function(info){
 			var uinfos = info.split(",");
-			var uobj = {"status":0,"userFirstName":uinfos[0],"userLastName":uinfos[1],"userEmail":uinfos[2],"userFlag":uinfos[3],"userMobile":uinfos[4],"userPostcode":uinfos[5],"userOption1":uinfos[6],"userOption2":uinfos[7],"userOption3":uinfos[8],"userTitle":uinfos[9],"thumb":null};
+			var uobj = {"status":0,
+			"userFirstName":uinfos[0],
+			"userLastName":uinfos[1],
+			"userEmail":uinfos[2],
+			"userFlag":uinfos[3],
+			"userMobile":uinfos[4],
+			"userPostcode":uinfos[5],
+			"userOption1":uinfos[6],
+			"userOption2":uinfos[7],
+			"userOption3":uinfos[8],
+			"userTitle":uinfos[9],
+			"thumb":null};
 			user.queuedata.userqueues.push(uobj);
 			this.saveQueueAtServer();
-			this.saveQueueAtLocalStorage();
+			//this.saveQueueAtLocalStorage();
 			this.totalUser = user.queuedata.userqueues.length;
 			this.addThumbnail(uobj);
 			if(this.currentpage == 1){
@@ -366,7 +399,7 @@
 				user.queuedata.userqueues.splice(needToDelete,1);
 			}
 			this.totalUser = user.queuedata.userqueues.length;
-			this.saveQueueAtLocalStorage();
+			this.saveQueueAtServer();
 			this.setCurUserIndex();
 			this.thumbnailOrdering();
 			this.displayStatus();

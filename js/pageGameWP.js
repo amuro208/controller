@@ -3,59 +3,63 @@
 		Page.call(this,id);
 		this.photoId = "";
 		this.videoId = "";
-		this.totalTime = 30.0;
-		this.timeRemain = 0;
-		this.userScore = 0;;
-		this.timerId;
-		this.prevTime;
 		this.userData = {};
-
 	}
 
 	PageGame.prototype = Object.create(Page.prototype);
 	PageGame.prototype.constructor = PageGame;
 
 	PageGame.prototype.init = function(){
+		this.isinCameraStayupProcess = false;
+		this.startAfterStayupProcessDone = false;
 		this.btnCancel = $$("btn-cancel");
 		this.btnApprove = $$("btn-approve");
-		this.ts1 = $$("ts1");
-		this.ts2 = $$("ts2");
-		this.tms1 = $$("tms1");
-		this.tms2 = $$("tms2");
-		this.tms3 = $$("tms3");
-		this.cnt1 = $$("cnt1");
-		this.cnt2 = $$("cnt2");
+		this.btnBall = $$("btnCtrl1");
+		this.iconBall = $$("btnCtrlBall");
+		this.iconRnd = $$("btnCtrlRnd");
+		this.iconBall.style.filter = "drop-shadow(0px 5px 10px #000)";
+
 		document.addEventListener("onSocketMessage",this.onSocketMessage.bind(this),false);
 	}
 	PageGame.prototype.ready = function(){
 		tcsapp.isGameReady = true;
 		this.btnCancel.disabled = false;
-		this.btnApprove.disabled = false;
+		this.btnApprove.disabled = true;
+
+		if(this.isinCameraStayupProcess)this.ballBtnEnable(false);
+		else this.ballBtnEnable(true);
 
 		console.log("GAME ready");
 		this.setHeader("GAME CONTROL");
 	}
 	PageGame.prototype.onSocketMessage = function(e){
-		if(e.detail.cmd == "TIMEOUT"){
-				tcsapp.isGameRunning = false;
-				tcsapp.isGameReady = false;
-
-		}else if(e.detail.cmd == "START"){
+		if(e.detail.cmd == "START"){
 			tcsapp.isGameRunning = true;
-			if(this.timerId)clearInterval(this.timerId);
-			this.prevTime = new Date().getTime();
-			this.timerId = setInterval(this.calculateTime,30,this);
 
-		}else if(e.detail.cmd == "ADDPOINT"){
-			this.userScore++;
-			this.display();
-
-		}else if(e.detail.cmd == "GIF_DONE"){
+		}else if(e.detail.cmd == "GAME_END"){
 			this.btnApprove.disabled = false;
+			tcsapp.isGameRunning = false;
 			if(conf.APP_INFINITE_TEST == "Y"){
 				this.approve();
 			}
 
+		}else if(e.detail.cmd == "ENCODING_DONE"){
+			//setTimeout()
+
+		}else if(e.detail.cmd == "STAYUP_PROCESS_START"){
+			this.isinCameraStayupProcess = true;
+			if(!tcsapp.isGameRunning){
+				this.ballBtnEnable(false);
+			}
+		}else if(e.detail.cmd == "STAYUP_PROCESS_DONE"){
+			this.isinCameraStayupProcess = false;
+			if(!tcsapp.isGameRunning){
+				this.ballBtnEnable(true);
+				if(conf.APP_INFINITE_TEST == "Y" && this.startAfterStayupProcessDone){
+					this.startAfterStayupProcessDone = false;
+					tcsapp.tcssocket.send("ALL","START","-");
+				}
+			}
 		}else if(e.detail.cmd == "STOP"){
 			tcsapp.isGameRunning = false;
 			tcsapp.isGameReady = false;
@@ -74,21 +78,6 @@
 
 	PageGame.prototype.userReady = function(){
 
-		// var docElm = document.documentElement;
-		// if (docElm.requestFullscreen) {
-		// 		docElm.requestFullscreen();
-		// }
-		// else if (docElm.mozRequestFullScreen) {
-		// 		docElm.mozRequestFullScreen();
-		// }
-		// else if (docElm.webkitRequestFullScreen) {
-		// 		docElm.webkitRequestFullScreen();
-		// }
-		// else if (docElm.msRequestFullscreen) {
-		// 		docElm.msRequestFullscreen();
-		// }
-
-
 		if(page_list.curUserIndex>-1 && page_list.totalUser>0){
 
 			clearlog();
@@ -105,31 +94,7 @@
 			var flags  = this.userData.userFlag.split("|");
 			var levels = this.userData.userOption1.split("|");
 
-
-
 			if(conf.MULTI_USER==2){
-				var flag1 = isNaN(parseInt(flags[0]))?0:parseInt(flags[0]);
-				var flag2 = isNaN(parseInt(flags[1]))?0:parseInt(flags[1]);
-
-				var fStr1 = "<img src = './img/flags/flag"+flag1+".png'/>";
-				var fStr2 = "<img src = './img/flags/flag"+flag2+".png'/>";
-				var un1 = flag1 == 0?"CPU":fnames[0]+" "+lnames[0];
-				var un2 = flag2 == 0?"CPU":fnames[1]+" "+lnames[1];
-				if(conf.USE_FLAG == "N"){
-					fStr1 = "<img src = './img/flags/flag0.png'/>";
-					fStr2 = "<img src = './img/flags/flag0.png'/>";
-				}
-				$$("userGame1").innerHTML = "<div class='user-gamecard'><div class='user-gamecard-flag'>"+fStr1+"</div><div class='uname'>"+un1+(levels[0]=="true"?"*":"")+"</div></div>";
-				$$("userGame2").innerHTML = "<div class='user-gamecard'><div class='user-gamecard-flag'>"+fStr2+"</div><div class='uname'>"+un2+(levels[1]=="true"?"*":"")+"</div></div>";
-
-				if(conf.USER_CPU_OPPONENT == "Y"){
-
-				}else{
-					if(flag1 == 0)$$("userGame1").innerHTML = "";
-					if(flag2 == 0)$$("userGame2").innerHTML = "";
-				}
-
-				tcsapp.tcssocket.send("ALL","READY",un1+","+flag1+","+this.photoId+","+levels[0]+"|"+un2+","+flag2+","+this.photoId+","+levels[1]);
 
 
 			}else{
@@ -139,21 +104,11 @@
 				if(conf.USE_FLAG == "N"){
 					fStr1 = "<img src = './img/flags/flag0.png'/>";
 				}
-				$$("userGame1").innerHTML = "<div class='user-gamecard'><div class='user-gamecard-flag'>"+fStr1+"</div><div class='uname'>"+un1+(levels[0]=="true"?"*":"")+"</div></div>";
+				$$("userGame1").innerHTML = "<div class='user-gamecard'><div class='user-gamecard-flag'>"+fStr1+"</div><div class='uname'>"+un1+"</div></div>";
 				tcsapp.tcssocket.send("ALL","READY",un1+","+flag+","+this.photoId+","+levels[0]+"|");
 				$$("userGame2").style.display = "none";
 			}
 
-			this.userScore = 0;
-
-			if(this.timerId)clearInterval(this.timerId);
-			this.totalTime = conf.TIMEOUT;
-			this.timeRemain = this.totalTime*1000;
-			this.display();
-
-			$$("gameInfo").style.display = "none";
-			$$("gtimeout").style.display = "none";
-			$$("gtimer").style.display = "block";
 		  $$("gameButtons").style.display = "block";
 
 			TweenMax.to($$("btnCtrlBall"), 0.6, {top:"0px", repeat:-1, repeatDelay:1.0, ease:Bounce.easeOut});
@@ -164,9 +119,12 @@
 
 			if(conf.APP_INFINITE_TEST == "Y"){
 					setTimeout(function(){
-						$$("gameInfo").style.display = "block";
-					  $$("gameButtons").style.display = "none";
-					  tcsapp.tcssocket.send("ALL","START","-");},2000);
+					  if(this.isinCameraStayupProcess){
+							this.startAfterStayupProcessDone = true;
+						}else{
+							tcsapp.tcssocket.send("ALL","START","-");
+						}
+					}.bind(this),2000);
 			}
 			//dispatchEvent(new PanelEvent(PanelEvent.NEXT_STEP,null,false,false));
 		}else{
@@ -174,19 +132,26 @@
 		}
 	}
 
-  PageGame.prototype.activeBtn = function(btn,a){
-		if(a)btn.classList.add("active");
-		else btn.classList.remove("active");
+	PageGame.prototype.ballBtnEnable = function(b){
+		if(b){
+			this.iconBall.style.top = "-33px";
+			this.btnBall.style.opacity = 1;
+			this.btnBall.classList.remove("disable");
+			this.iconRnd.style.filter = "saturate(1)";
+			TweenMax.to(this.iconBall, 0.6, {top:"0px", repeat:-1, repeatDelay:1.0, ease:Bounce.easeOut});
+		}else{
+			this.iconBall.style.top = "0px";
+			this.btnBall.style.opacity = 0.7;
+			this.btnBall.classList.add("disable");
+			this.iconRnd.style.filter = "saturate(0)";
+			TweenMax.killTweensOf(this.iconBall);
+		}
 	}
-
 
   PageGame.prototype.gameBtnControl = function(s){
 
 		if(s == "start"){
-			$$("gameInfo").style.display = "block";
-			$$("gameButtons").style.display = "none";
 			tcsapp.tcssocket.send("ALL","START","-");
-
 		}else if(s == "again"){
 			tcsapp.tcssocket.send("ALL","RETRY","");
 		}else if(s == "level"){
@@ -194,40 +159,6 @@
 		}else if(s == "fake"){
 			tcsapp.tcssocket.send("ALL","KICK_TRACKER","1.0,0,1.0");
 		}
-
-	}
-
-
-	PageGame.prototype.calculateTime = function(_this){
-		var curTime = new Date().getTime();
-		_this.timeRemain -= (curTime - _this.prevTime);
-		_this.prevTime = curTime;
-		if(_this.timeRemain<0){
-			_this.timeRemain = 0;
-			$$("gtimeout").style.display = "block";
-			$$("gtimer").style.display = "none";
-			//$$("gcounter").style.display = "none";
-			clearInterval(_this.timerId);
-		}
-		_this.display();
-	}
-
-	PageGame.prototype.display = function(){
-		var tm = Math.floor(this.timeRemain/(60*1000));
-		var ts  = this.timeRemain%(60*1000)/1000;
-		var tms = this.timeRemain%1000;
-
-		var tsStr = ts<10?"0"+ts:""+ts;
-		var tmsStr = tms<10?"00"+tms:(tms<100?"0"+tms:""+tms);
-		this.ts1.innerHTML = tsStr.charAt(0);
-		this.ts2.innerHTML = tsStr.charAt(1);
-		this.tms1.innerHTML = tmsStr.charAt(0);
-		this.tms2.innerHTML = tmsStr.charAt(1);
-		this.tms3.innerHTML = tmsStr.charAt(2);
-
-		var scoreStr = this.userScore<10?"0"+this.userScore:""+this.userScore;
-		this.cnt2.innerHTML = scoreStr.charAt(0);
-		this.cnt2.innerHTML = scoreStr.charAt(1);
 
 	}
 
@@ -241,7 +172,7 @@
 			tcsapp.tcssocket.send("ALL","GAME_COMPLETE","-");
 			page_list.updateUserStatus();
 			if(conf.APP_INFINITE_TEST == "Y"){
-				setTimeout(function(){this.userReady();},6000);
+				setTimeout(function(){this.userReady();}.bind(this),(Math.random()*60*50+60)*1000);
 			}
 		}else{
 			if(confirm("Error Occured : "+data)) {
@@ -264,7 +195,7 @@
 		var postObj = {};
 		postObj.eventCode = conf.CMS_EVENT_CODE;
 		postObj.videoId = this.photoId;
-		postObj.userEDMTNC = this.userData.userOption1 == "true"?"Y":"N";
+		postObj.userEDMTNC = this.userData.userOption2 == "true"?"Y":"N";
 		//userData.videoId = this.videoId;
 		//postObj.userScore = this.userScore;
 		postObj.userAge = this.userData.userAge;

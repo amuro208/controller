@@ -7,8 +7,8 @@ var PageRegi = function(id){
   this.users = [];
 	this.selectedFlag = 0;
 	this.selectedUser = 0;
-	this.cbChecked = [true];
-	this.cbMandatory = [true];
+	this.cbChecked = [false,false];
+	this.cbMandatory = [true,false];
 	this.enableBtnClick = 0;
 
 	this.forms = ["userFirstName","userLastName","userEmail","userMobile","userAge","userOption1","userOption2"];
@@ -176,7 +176,7 @@ var PageRegi = function(id){
 	PageRegi.prototype.defaultPunchin = function(){
 		var obj = this.fakeUsers[Math.floor(Math.random() * this.fakeUsers.length)];
 		if(this.isForm("userFirstName"))$$("userFirstName").value = obj.fname;
-		//if(this.isForm("userAge"))$$("userFirstName").value = obj.fname;
+		if(this.isForm("userAge"))this.setRadioValue("userAge",0);
 		if(this.isForm("userFirstName"))$$("userLastName").value = obj.lname;
 		if(this.isForm("userEmail"))$$("userEmail").value = obj.email;
 		if(this.isForm("userFlag"))this.flagSelect(obj.flag);
@@ -202,10 +202,12 @@ var PageRegi = function(id){
 		this.selectedUser = n;
 		var user = this.users[this.selectedUser];
 		if(user.check){
+			console.log("openInput userAge : "+user.userAge);
 			if(this.isForm("userFirstName"))$$("userFirstName").value = user.userFirstName;
 			if(this.isForm("userFirstName"))$$("userLastName").value = user.userLastName;
 			if(this.isForm("userEmail"))$$("userEmail").value = user.userEmail;
 			if(this.isForm("userFlag"))this.flagSelect(user.userFlag);
+			if(this.isForm("userAge"))this.setRadioValue("userAge",user.userAge);
 			if(this.isForm("userMobile"))$$("userMobile").value = user.userMobile;
 			if(this.isForm("userPostcode"))$$("userPostcode").value = user.userPostcode;
 			this.resetCheckBox(true);
@@ -267,6 +269,7 @@ PageRegi.prototype.setRadioValue = function(field,n){
 		if(this.isForm("userAge")){
 			value = this.getRadioValue("userAge");
 			if(value == " "){alert("Check your age");return false};
+			console.log("Punch in userAge : "+value);
 			user.userAge = value;
 		}
 		if(this.isForm("userFirstName")){
@@ -308,7 +311,7 @@ PageRegi.prototype.setRadioValue = function(field,n){
 			}
 		if(this.isForm("userOption3")){
 				user.userOption3 = $$("userOption3").checked;
-				if(this.cbMandatory[2] && !user.userOption2){alert("Check terms and condition");return false};
+				if(this.cbMandatory[2] && !user.userOption3){alert("Check terms and condition");return false};
 			}
 
 		user.check = true;
@@ -319,11 +322,16 @@ PageRegi.prototype.setRadioValue = function(field,n){
 		this.checkSubmitAvailable();
 		return true;
 	}
+
   PageRegi.prototype.getFormValues = function(key){
 		var values = "";
+		var ageArr = ["Under 12","12-17","18-25","25-34","35+"];
 		for(var i = 0;i<this.users.length;i++){
 			var user = this.users[i];
 			values+=user[key];
+			if(key == 'userAge'){
+				values+=ageArr[user[key]];
+			}
 			if(i<this.users.length-1){
 				values+="|";
 			}

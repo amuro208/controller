@@ -30,31 +30,23 @@
 	PageGame.prototype.ready = function(){
 		tcsapp.isGameReady = true;
 		this.btnCancel.disabled = false;
-		this.btnApprove.disabled = false;
+		this.btnApprove.disabled = true;
 
 		console.log("GAME ready");
 		this.setHeader("GAME CONTROL");
 	}
 	PageGame.prototype.onSocketMessage = function(e){
-		if(e.detail.cmd == "TIMEOUT"){
-				tcsapp.isGameRunning = false;
-				tcsapp.isGameReady = false;
-
-		}else if(e.detail.cmd == "START"){
+		if(e.detail.cmd == "START"){
 			tcsapp.isGameRunning = true;
-			if(this.timerId)clearInterval(this.timerId);
-			this.prevTime = new Date().getTime();
-			this.timerId = setInterval(this.calculateTime,30,this);
 
-		}else if(e.detail.cmd == "ADDPOINT"){
-			this.userScore++;
-			this.display();
-
-		}else if(e.detail.cmd == "GIF_DONE"){
+		}else if(e.detail.cmd == "GAME_END"){
 			this.btnApprove.disabled = false;
 			if(conf.APP_INFINITE_TEST == "Y"){
 				this.approve();
 			}
+
+		}else if(e.detail.cmd == "ENCODING_DONE"){
+
 
 		}else if(e.detail.cmd == "STOP"){
 			tcsapp.isGameRunning = false;
@@ -256,7 +248,7 @@
 
 	PageGame.prototype.approve = function(){
 
-		//if(tcsapp.isGameRunning){alert("Game still running .. ");return;}
+		if(tcsapp.isGameRunning){alert("Game still running .. ");return;}
 
 		this.btnCancel.disabled = true;
 		this.btnApprove.disabled = true;
@@ -264,7 +256,7 @@
 		var postObj = {};
 		postObj.eventCode = conf.CMS_EVENT_CODE;
 		postObj.videoId = this.photoId;
-		postObj.userEDMTNC = this.userData.userOption1 == "true"?"Y":"N";
+		postObj.userEDMTNC = this.userData.userOption2 == "true"?"Y":"N";
 		//userData.videoId = this.videoId;
 		//postObj.userScore = this.userScore;
 		postObj.userAge = this.userData.userAge;

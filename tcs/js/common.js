@@ -61,7 +61,7 @@ importScript('./tcs/js/StringUtil.js');
   var enableBtnClick = 0;
   function eableHiddenButtons(target){
       enableBtnClick++;
-      setTimeout(()=>{enableBtnClick--;if(enableBtnClick<0)enableBtnClick=0},1000);
+      setTimeout(function(){enableBtnClick--;if(enableBtnClick<0)enableBtnClick=0},1000);
       if(enableBtnClick == 3){
         var btns = document.querySelectorAll(".hidden-button");
         for(var i = 0;i<btns.length;i++){
