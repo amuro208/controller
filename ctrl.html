@@ -59,8 +59,6 @@
     <div class="hidden-button lt" onclick="tcsapp.panelConf.show();" alt = "Open Configuration"></div>
     <!-- <div class="hidden-button rt" onclick="tcsapp.panelDebug.show();" alt = "Open Log Panel"></div> -->
 
-    <div id = "blockUtils"></div>
-
     <div class="site-wrapper">
       <div class="site-wrapper-inner">
         <div class="site-container">
@@ -83,6 +81,10 @@
                     <div id = "userStatusScroll"></div>
                     <div><img src="./img/arrow.png"/></div>
                     <div id = "userStatusUsers"></div>
+                    <div style = "z-index:1001; position:absolute; width:200px; top:-85px; right:0px; text-align:right">
+                      <button onclick="page_list.deleteQueue(true)"       class="btn btn-sm btn-default" style="width:160px;">Delete user queues</button><br>
+                      <button onclick="page_list.clearBoard()"            class="btn btn-sm btn-default" style="width:160px;">Clear Leader board</button>
+                    </div>
                     <div style = "z-index:1001; position:absolute; width:200px; top:330px; right:0px; text-align:right">
                 			<button onclick="page_list.scrollToUser(0)"         class="btn btn-sm btn-default" style="width:160px;">Who is next</button><br>
                 			<button onclick="page_list.getQueueFromServer()"    class="btn btn-sm btn-default" style="width:160px;">Fetch user queues</button>
@@ -117,7 +119,7 @@
                   </div>
 
                   <div id = "gameInfo" class="game-control"  style="display:none" >
-                    <div style="display:inline-block;width:50%;text-align:right;">
+                    <div style="display:inline-block;width:50%;">
                       <div id = "gtimer" style="display:block">
                         <div id="ts1"  class="digitNum dn-small" >0</div>
                         <div id="ts2"  class="digitNum dn-small" >0</div>
@@ -130,7 +132,7 @@
                         <div id="ts"  class="digitNum dn-small" style="width:100%">TIMEOUT</div>
                       </div>
                   </div>
-                    <div id = "gcounter" style="display:inline-block;width:20%;text-align:left;margin-left:5%;">
+                    <div id = "gcounter" style="display:inline-block;width:20%;margin-left:5%;">
                       <div id="cnt1" class="digitNum dn-small">0</div>
                       <div id="cnt2" class="digitNum dn-small">0</div>
                     </div>

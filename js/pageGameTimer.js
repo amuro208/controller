@@ -33,11 +33,14 @@ PageGameTimer.prototype.onSocketMessage = function(e){
 		tcsapp.paging(1);
 
 	}else if(e.detail.cmd == "START"){
-		if(tcsapp.isGameRunning)return;
 		tcsapp.isGameRunning = true;
 		if(this.timerId)clearInterval(this.timerId);
 		this.prevTime = new Date().getTime();
 		this.timerId = setInterval(this.calculateTime,30,this);
+
+	}else if(e.detail.cmd == "TIMEOUT"){
+		tcsapp.isGameRunning = false;
+		tcsapp.paging(2);
 
 	}else if(e.detail.cmd == "STOP" || e.detail.cmd == "GAME_COMPLETE" || e.detail.cmd == "SUBMIT_ERROR"){
 		if(this.timerId)clearInterval(this.timerId);
@@ -56,12 +59,8 @@ PageGameTimer.prototype.calculateTime = function(_this){
 
 	if(_this.timeRemain<0){
 		_this.timeRemain = 0;
-		tcsapp.tcssocket.send("ALL","TIMEOUT","-");
-		tcsapp.isGameRunning = false;
-		tcsapp.paging(2);
 		clearInterval(_this.timerId);
-	}else{
-
+		tcsapp.tcssocket.send("ALL","TIMEOUT","-");
 	}
 	_this.display();
 

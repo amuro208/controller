@@ -8,7 +8,7 @@ var PageRegi = function(id){
 	this.selectedFlag = 0;
 	this.selectedUser = 0;
 	this.cbChecked = [true];
-	this.cbMandatory = [true];
+	this.cbMandatory = [false];
 	this.enableBtnClick = 0;
 
 	this.forms = ["userFirstName","userLastName","userEmail","userFlag","userOption1"];

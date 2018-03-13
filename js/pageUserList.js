@@ -47,7 +47,7 @@
 			}
 			//target is a reference to an $altNav element here, e is the event object, go mad
 		},false);
-		
+
 		this.blockUtils         = $$("blockUtils");
 		this.containerWrapper   = $$("thumbContainerWrapper");
 		this.containerCropFrame = $$("thumbContainerCropFrame");
@@ -67,13 +67,9 @@
 		this.containerWrapper.addEventListener('touchmove',this.scrolling.bind(this),false);
 
 		this.btnReady.disabled = true;
-
-		this.blockUtils.innerHTML = '<div class="hidden-button rt" onclick="toggleOnOff(\'utilBtns\')" alt = "Toggle Utils"></div>\
-    <div id = "utilBtns" style="display:none; z-index:1001; position:absolute; width:200px; top:55px; right:0px; text-align:right">\
-      <button onclick="page_list.saveQueueAtServer()"     class="btn btn-sm btn-default" style="width:160px;">Save user queues</button><br>\
-      <button onclick="page_list.deleteQueue(true)"       class="btn btn-sm btn-default" style="width:160px;">Delete user queues</button><br>\
-      <button onclick="page_list.clearBoard()"            class="btn btn-sm btn-default" style="width:160px;">Clear Leader board</button>\
-    </div>';
+// <div class="hidden-button rt" onclick="toggleOnOff(\'utilBtns\')" alt = "Toggle Utils"></div>\
+//<button onclick="page_list.saveQueueAtServer()"     class="btn btn-sm btn-default" style="width:160px;">Save user queues</button><br>\
+		//this.blockUtils.innerHTML = '';
 
 		cms.getQueue(this,{"appid":tcsapp.appId},function(data){
 			this.initUserQueueWithData(data);

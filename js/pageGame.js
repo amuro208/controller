@@ -7,6 +7,7 @@
 		this.timeRemain = 0;
 		this.userScore = 0;;
 		this.timerId;
+		this.timerTimeoutChk;
 		this.prevTime;
 		this.userData = {};
 		this.btnAniId = 0;
@@ -28,7 +29,7 @@
 		this.cnt1 = $$("cnt1");
 		this.cnt2 = $$("cnt2");
 		document.addEventListener("onSocketMessage",this.onSocketMessage.bind(this),false);
-
+    document.addEventListener("onSocketOpen",this.onSocketOpen.bind(this),false);
 		this.btnAniIndex = 0;
 		this.btnAniId = setInterval(function(){
 			this.btnAniIndex++;
@@ -45,6 +46,9 @@
 		console.log("GAME ready");
 		this.setHeader("GAME CONTROL");
 	}
+	PageGame.prototype.onSocketOpen = function(e){
+  	tcsapp.tcssocket.send("ALL","STOP","-");
+	}
 	PageGame.prototype.onSocketMessage = function(e){
 		if(e.detail.cmd == "TIMEOUT"){
 				tcsapp.isGameRunning = false;
@@ -54,7 +58,7 @@
 			tcsapp.isGameRunning = true;
 			if(this.timerId)clearInterval(this.timerId);
 			this.prevTime = new Date().getTime();
-			this.timerId = setInterval(this.calculateTime,30,this);
+			this.timerId = setInterval(this.calculateTime.bind(this),30);
 
 		}else if(e.detail.cmd == "ADDPOINT"){
 			this.userScore++;
@@ -69,14 +73,14 @@
 		}else if(e.detail.cmd == "STOP"){
 			tcsapp.isGameRunning = false;
 			tcsapp.isGameReady = false;
+			tcsapp.paging(1);
+			if(this.timerId)clearInterval(this.timerId);
 
 		}
 	}
 
 	PageGame.prototype.cancel = function(){
 		if(confirm("Are you sure you want to cancel this game?")){
-			tcsapp.paging(1);
-			if(this.timerId)clearInterval(this.timerId);
 			tcsapp.tcssocket.send("ALL","STOP","-");
 		}
 	}
@@ -195,7 +199,7 @@
 		if(s == "start"){
 			$$("gameInfo").style.display = "block";
 			$$("gameButtons").style.display = "none";
-			tcsapp.tcssocket.send("ALL","START","-");
+			if(!tcsapp.isGameRunning)tcsapp.tcssocket.send("ALL","START","-");
 
 		}else if(s == "again"){
 			tcsapp.tcssocket.send("ALL","RETRY","");
@@ -208,18 +212,22 @@
 	}
 
 
-	PageGame.prototype.calculateTime = function(_this){
+	PageGame.prototype.calculateTime = function(){
 		var curTime = new Date().getTime();
-		_this.timeRemain -= (curTime - _this.prevTime);
-		_this.prevTime = curTime;
-		if(_this.timeRemain<0){
-			_this.timeRemain = 0;
+		this.timeRemain -= (curTime - this.prevTime);
+		this.prevTime = curTime;
+		if(this.timeRemain<0){
+			this.timeRemain = 0;
 			$$("gtimeout").style.display = "block";
 			$$("gtimer").style.display = "none";
 			//$$("gcounter").style.display = "none";
-			clearInterval(_this.timerId);
+			clearInterval(this.timerId);
+			this.timerTimeoutChk = setTimeout(function(){
+				console.log("Alternative Timeout"+":"+tcsapp.isGameRunning);
+				if(tcsapp.isGameRunning)tcsapp.tcssocket.send("ALL","TIMEOUT","-");
+			}.bind(this),2000);
 		}
-		_this.display();
+		this.display();
 	}
 
 	PageGame.prototype.display = function(){
@@ -267,14 +275,14 @@
 	PageGame.prototype.approve = function(){
 
 		if(tcsapp.isGameRunning){alert("Game still running .. ");return;}
-
+		clearTimeout(this.timerTimeoutChk);
 		this.btnCancel.disabled = true;
 		this.btnApprove.disabled = true;
 
 		var postObj = {};
 		postObj.eventCode = conf.CMS_EVENT_CODE;
 		postObj.photoId = this.photoId;
-		postObj.userEDMTNC = this.userData.userOption1 == "true"?"Y":"N";
+		postObj.userEDMTNC = this.userData.userOption1 == "true"?"N":"Y";
 		//userData.videoId = this.videoId;
 		postObj.userScore = this.userScore;
 		if(postObj.userScore<1)postObj.userScore = 1;
