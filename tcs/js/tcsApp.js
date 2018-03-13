@@ -121,7 +121,7 @@ if(navigator.platform.indexOf("Linux")>-1){
 	});
 
 }
-	/*
+
 			document.body.addEventListener('touchmove',function(e)
 			{
 				e = e || window.event;
@@ -140,4 +140,4 @@ if(navigator.platform.indexOf("Linux")>-1){
 				}
 				//target is a reference to an $altNav element here, e is the event object, go mad
 			},false);
-	*/
+	

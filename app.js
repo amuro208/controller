@@ -1,32 +1,15 @@
 const {app, BrowserWindow, ipcMain} = require('electron') // http://electron.atom.io/docs/api
 var path = require('path')         // https://nodejs.org/api/path.html
 var url = require('url')           // https://nodejs.org/api/url.html
+var argLen = process.argv.length;
+console.log("process.argv.debug : "+process.argv[argLen-1]);
+var debug = false;
+if(process.argv[argLen-1] == "d"){
+  debug = true;
+}
 
 var window = null;
-//console.log("process.env.npm_package_config_debug : "+process.env.npm_package_config_debug);
-var debug = false;
-//debug = process.env.npm_package_config_debug=="false"?false:true;
-//console.log("process.env.debug : "+process.env.tcsdebug);
-// exports.pong = arg => {
-//     //Print 6
-//     console.log("pong : "+arg);
-// }
-//
-// ipcMain.on('async', (event, arg) => {
-//     // Print 1
-//     console.log("async "+arg);
-//     // Reply on async message from renderer process
-//     event.sender.send('async-reply', 2);
-// });
-//
-// ipcMain.on('sync', (event, arg) => {
-//     // Print 3
-//     console.log("sync "+arg);
-//     // Send value synchronously back to renderer process
-//     event.returnValue = 4;
-//     // Send async message to renderer process
-//     window.webContents.send('ping', 5);
-// });
+
 ipcMain.on('keypress', (event, ctrl,key) => {
     // Print 1
     console.log("keypress "+ctrl+":"+key);
@@ -55,83 +38,28 @@ ipcMain.on('keypress', (event, ctrl,key) => {
     // Reply on async message from renderer process
     //event.sender.send('async-reply', 2);
 });
-/*
-var SerialPort = require('serialport');
-   var port = new SerialPort('COM3', {baudRate: 9600,  'disconnectedCallback': function () {
-     console.log("DEVICE: Disconnected.");
-     }}, false);
 
 
-    const Readline = SerialPort.parsers.Readline;
-    const parser = new Readline();
-    port.pipe(parser);
-    parser.on('data', onData);
-    port.write('ARDUINO PLEASE RESPOND\n');
-    port.on('open', onPortOpen);
-    port.on('close', onClose);
-    port.on('error', onError);
-
-
-
-
-    //var ipcMain = require('electron').ipcMain;
-    ipcMain.on("arduinoCommand",function(event,data){
-      //port.write(data+"\n");
-      port.write(data+'\n', function(error, results) {
-            if(error){
-                console.log(error);
-                //Handle Error
-            }
-            if(results){
-                console.log(results);
-                //Handle Error
-            }
-
-                console.log("Write : " + data);
-                // uncomment below line to close the port internally after writing.
-                //port.close();
-
-
-        });
-    })
-    function onPortOpen(){
-        console.log("YESSIR THE PORT IS OPEN COS CAPS");
-    }
-
-    var strBuff = "";
-    function onData(d)
-    {
-      for(var i = 0;i<d.length;i++){
-        //console.log("typeof(d) :: "+typeof(d));
-				if(d.charCodeAt(i) == 13){
-					strBuff.substring(0,strBuff.length-1);
-          window.webContents.send('arduinoData', strBuff);
-					strBuff = "";
-				}else{
-					strBuff+=d.charAt(i);
-				}
-			}
-    }
-
-    function onClose(){
-        console.log("Port is closed, yo");
-    }
-    function onError(err){
-        console.log("Something went horribly wrong : "+err.message);
-    }
-
-*/
-
-
-
-
-
-// Wait until the app is ready
 app.on('ready', function () {
   // Create a new window
-
+  if(debug){
+    window = new BrowserWindow({
+      alwaysOnTop :false,
+      x:100,
+      y:0,
+      width: 1080,
+      height: 1920,
+      frame:true,
+      titleBarStyle: 'hidden',
+      backgroundColor: "#111",
+      show: false,
+      kiosk:false
+    });
+  }else{
     window = new BrowserWindow({
       alwaysOnTop :true,
+      x:0,
+      y:0,
       width: 1080,
       height: 1920,
       frame:false,
@@ -140,6 +68,8 @@ app.on('ready', function () {
       show: false,
       kiosk:true
     });
+  }
+
 
 
   //window.setAutoHideMenuBar(true);

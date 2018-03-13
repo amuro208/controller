@@ -17,12 +17,10 @@
 
 	var net = require('net');
 	var arduino = new net.Socket();
-
+	var arduinoReconnectId;
+	game.isArduino =false;
 	game.init = function(){
-		arduino.connect(5331, 'localhost', function() {
-		  log('Connected');
-		  //arduino.write('Hello, server! Love, Client.\n');
-		});
+		arduino.connect(5331, 'localhost');
 		sound.background = new Audio('./sound/f1_idle.mp3');
 		sound.background.loop = true;
 		sound.background.volume =.8;
@@ -57,20 +55,39 @@
 	});
 
 	arduino.on('close', function() {
-	  log('Connection closed');
+	  console.log('Arduino closed');
+		game.isArduino = false;
+		arduinoReconnectId = setTimeout(function(){
+			if(!game.isArduino)arduino.connect(5331, 'localhost');
+		},5000);
 	});
+	arduino.on('error', function() {
+		 console.log('Arduino error');
+		 game.isArduino = false;
+	});
+	arduino.on('connect', function() {
+	   console.log('Arduino open');
+		 clearTimeout(arduinoReconnectId);
+		 game.isArduino = true;
+	});
+
 
 	game.currentOn = 0;
 	game.panning;
 	game.seqCurrent;
 	game.gameLevel = 0;
-	game.numButton = 7;
+	game.numButton = 10;
 	game.disables;
 	game.rId = 0;
 
 	game.sendToArduino = function(s) {
-	   log("sendToArduino : "+s );
-	   arduino.write(s+'\n');
+
+	   if(game.isArduino){
+			 console.log("sendToArduino : "+s );
+			 arduino.write(s+'\n');
+		}else{
+			 console.log("lost Arduino : "+s );
+		}
 	   //ipcRender.send("arduinoCommand",s);
 	}
 	game.testLED = function(){
@@ -107,11 +124,11 @@
 
 	game.randomOn = function(){
 		if(tcsapp.isGameRunning){
-			game.currentOn = parseInt(game.seqCurrent[game.seqNow]);
+			game.currentOn = parseInt(game.seqCurrent[game.seqNow])-1;
 			game.sendToArduino("bo"+game.currentOn);
 			game.seqNow++;
 			if(game.seqNow == game.seqTotal)game.seqNow = 0;
-			if(conf.infiniteTest == "Y"){
+			if(conf.APP_INFINITE_TEST == "Y"){
 			  setTimeout(function(){
 			  if(tcsapp.isGameRunning)game.sendToArduino("bf"+game.currentOn);
 			  },Math.floor(Math.random() * 900) + 50);
@@ -126,7 +143,7 @@
 	}
 
 	game.randonNum = function(){
-		return Math.ceil(Math.random()*7);
+		return Math.ceil(Math.random()*game.numButton);
 	}
 
 	game.onArduinoError = function(e){
@@ -148,21 +165,22 @@
 		sound.background.play();
 	}
 	game.generateRandomSequence = function(){
-		log("generateRandomSequence WHY1");
+		log("generateRandomSequence");
 		var arr = [];
 		var pr = 0;
 
-		game.disables = [];//SET.DISABLE.split(",");
-		//trace("disables : "+disables);
+		game.disables = conf.DISABLE.split(",");
+		console.log("disables : "+game.disables);
 		for(var i = 0;i<50;i++){
 			var r = 0;
 			do{
-				if(game.isKid){
-					r = Math.ceil(Math.random()*5)+2;
+				//if(game.isKid){
+				//	r = Math.ceil(Math.random()*5)+2;
 
-				}else{
+				//}else{
 					r = Math.ceil(Math.random()*game.numButton);
-				}
+					//console.log("r : "+r);
+				//}
 
 			}while(pr>0 && r==pr || game.isDisableNumber(r));
 			//trace(r);
@@ -174,7 +192,7 @@
 	}
 	game.isDisableNumber = function(n){
 		for(var i = 0;i<game.disables.length;i++){
-			if(parserInt(game.disables[i]) == n){
+			if(parseInt(game.disables[i]) == n){
 				return true;
 			}
 		}

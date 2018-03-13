@@ -76,7 +76,7 @@ rb.init = function(){
 rb.addNewUser = function(obj){
   var userinfo = obj.split("|")[0].split(",");
   var isKid = userinfo.length<4?false:(userinfo[3]=="true"?true:false);
-  game.isKid = isKid;
+  game.isKid = false;//isKid;
   game.gameReady();
 
   var newitemIndex = rb.userlist.length;
@@ -95,7 +95,7 @@ rb.addNewUser = function(obj){
   rb.itemList.appendChild(rb.newitem);
   rb.newitem.style.top = ""+(newitemIndex*rb.itemHeight)+"px";
   rb.newuserScore = 0;
-  rb.newuserInfo = {"pos":0,"uname":userinfo[0]+(isKid?"*":""),"flag":userinfo[1],"score":0,"user":1,"item":rb.newitem};
+  rb.newuserInfo = {"pos":0,"uname":userinfo[0],"flag":userinfo[1],"score":0,"user":1,"item":rb.newitem};//+(isKid?"*":"")
   rb.userlist.push(rb.newuserInfo);
   rb.setitem(rb.newitem,rb.newuserInfo);
   //rb.refitem = null;
@@ -185,47 +185,50 @@ rb.keyboardlistener = function(e){
   ipcRenderer.send('keypress', event.ctrlKey , event.key);
   //console.log("event.key : "+event.key);
   //main.pong(event.key);
-  switch (event.key) {
-    case "r":
-      if(tcsapp.isGameReady || tcsapp.isGameRunning){
-          return false;
-      }
-      tcsapp.tcssocket.send("ALL","READY","Donghoon Lee,2,12223344|");
-    break;
-    case "s":
-      if(!tcsapp.isGameReady || tcsapp.isGameRunning)return false;
-      tcsapp.tcssocket.send("ALL","START","-");
-    break;
-    case "t":
-      if(!tcsapp.isGameRunning)return false;
-      tcsapp.tcssocket.send("ALL","TIMEOUT","-");
-    break;
-    case "c":
-      //if(!tcsapp.isGameRunning)return false;
-      tcsapp.tcssocket.send("ALL","STOP","-");
-    break;
-	case "l":
-      //if(!tcsapp.isGameRunning)return false;
-      tcsapp.tcssocket.send("ALL","BOARD_CLEARD","-");
-    break;
-    case "q":
-      var qlist = {"userqueues":[]};
-          qlist.userqueues.push({"uname":"Amuro Lee","flag":2});
-          qlist.userqueues.push({"uname":"Miyoung Kang","flag":3});
-          qlist.userqueues.push({"uname":"Gundam 78","flag":4});
-          qlist.userqueues.push({"uname":"Macross 83","flag":5});
-          qlist.userqueues.push({"uname":"Nadia 76","flag":6});
-      var jstr = JSON.stringify(qlist);
-      tcsapp.tcssocket.send("ALL","QUEUE_LIST",jstr);
+  if(event.ctrlKey){
+    switch (event.key) {
+      case "r":
+        if(tcsapp.isGameReady || tcsapp.isGameRunning){
+            return false;
+        }
+        tcsapp.tcssocket.send("ALL","READY","Donghoon Lee,2,12223344|");
       break;
-    case "ArrowUp":
-      if(!tcsapp.isGameRunning)return false;
-      sound.whitle_short.play();
-      rb.addScore();
-      tcsapp.tcssocket.send("ALL","ADDPOINT","-");
-    break;
+      case "s":
+        if(!tcsapp.isGameReady || tcsapp.isGameRunning)return false;
+        tcsapp.tcssocket.send("ALL","START","-");
+      break;
+      case "t":
+        if(!tcsapp.isGameRunning)return false;
+        tcsapp.tcssocket.send("ALL","TIMEOUT","-");
+      break;
+      case "c":
+        //if(!tcsapp.isGameRunning)return false;
+        tcsapp.tcssocket.send("ALL","STOP","-");
+      break;
+  	case "l":
+        //if(!tcsapp.isGameRunning)return false;
+        tcsapp.tcssocket.send("ALL","BOARD_CLEARD","-");
+      break;
+      case "q":
+        var qlist = {"userqueues":[]};
+            qlist.userqueues.push({"uname":"Amuro Lee","flag":2});
+            qlist.userqueues.push({"uname":"Miyoung Kang","flag":3});
+            qlist.userqueues.push({"uname":"Gundam 78","flag":4});
+            qlist.userqueues.push({"uname":"Macross 83","flag":5});
+            qlist.userqueues.push({"uname":"Nadia 76","flag":6});
+        var jstr = JSON.stringify(qlist);
+        tcsapp.tcssocket.send("ALL","QUEUE_LIST",jstr);
+        break;
+      case "ArrowUp":
+        if(!tcsapp.isGameRunning)return false;
+        sound.whitle_short.play();
+        rb.addScore();
+        tcsapp.tcssocket.send("ALL","ADDPOINT","-");
+      break;
 
+    }
   }
+
 }
 
 
@@ -244,12 +247,12 @@ rb.onSocketMessage = function(e){
   console.log("rb.tcsapp.isGameRunning : "+tcsapp.isGameRunning);
   if(e.detail.cmd == "READY"){
 	   $$("debugTxtArea").innerHTML = "";
-      if(tcsapp.isGameReady || tcsapp.isGameRunning){
+      if(tcsapp.isGameRunning){
           tcsapp.tcssocket.send("ALL","STOP","-");
           return false;
-
       }
       tcsapp.isGameReady = true;
+      //rb.resetNewItem();
 	    ql.hideQueueList();
       rb.addNewUser(e.detail.msg);
 
@@ -264,12 +267,7 @@ rb.onSocketMessage = function(e){
       tcsapp.isGameRunning = false;
       tcsapp.isGameReady = false;
       game.gameStop();
-
-      for(var i=0;i<rb.userlist.length;i++){
-        rb.userlist[i].item.getElementsByClassName("pos")[0].innerHTML = ""+rb.userlist[i].pos;
-      }
-      var uindex = rb.userlist.indexOf(rb.newuserInfo);
-      rb.userlist.splice(uindex,1);
+      rb.gameStop();
 
       rb.resetNewItem();
       //rb.queryRanking();
@@ -292,6 +290,13 @@ rb.onSocketMessage = function(e){
     }else if(e.detail.cmd == "QUEUE_LIST"){
       ql.showQueueList(e.detail.msg);
     }
+}
+rb.gameStop = function(){
+  for(var i=0;i<rb.userlist.length;i++){
+    rb.userlist[i].item.getElementsByClassName("pos")[0].innerHTML = ""+rb.userlist[i].pos;
+  }
+  var uindex = rb.userlist.indexOf(rb.newuserInfo);
+  rb.userlist.splice(uindex,1);
 }
 rb.resetNewItem = function(){
   if(rb.newitem.parentElement != null){
