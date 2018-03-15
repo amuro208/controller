@@ -60,9 +60,8 @@
     <!-- DEBUGGING PANEL-->
     <div id = "panelDebug" class="full-popup"></div>
 
-    <div class="hidden-button lt disable" onclick="tcsapp.panelConf.show();" alt = "Open Configuration"></div>
-    <div class="hidden-button rt disable" onclick="tcsapp.panelDebug.show();" alt = "Open Log Panel"></div>
-    <div class="hidden-button lb" onclick="eableHiddenButtons(this)" alt = "default user"></div>
+    <div class="hidden-button lt" onclick="tcsapp.panelConf.show();" alt = "Open Configuration"></div>
+    <!-- <div class="hidden-button rt" onclick="tcsapp.panelDebug.show();" alt = "Open Log Panel"></div> -->
 
     <div id = "blockUtils"></div>
 
@@ -88,7 +87,11 @@
                     <div id = "userStatusScroll"></div>
                     <div><img src="./img/arrow.png"/></div>
                     <div id = "userStatusUsers"></div>
-                    <div style = "z-index:1001; position:absolute; width:200px; top:-80px; right:0px; text-align:right">
+                    <div style = "z-index:1001; position:absolute; width:200px; top:-85px; right:0px; text-align:right">
+                      <button onclick="page_list.deleteQueue(true)"       class="btn btn-sm btn-default" style="width:160px;">Delete user queues</button><br>
+                      <button onclick="page_list.clearBoard()"            class="btn btn-sm btn-default" style="width:160px;">Clear Leader board</button>
+                    </div>
+                    <div style = "z-index:1001; position:absolute; width:200px; top:330px; right:0px; text-align:right">
                 			<button onclick="page_list.scrollToUser(0)"         class="btn btn-sm btn-default" style="width:160px;">Who is next</button><br>
                 			<button onclick="page_list.getQueueFromServer()"    class="btn btn-sm btn-default" style="width:160px;">Fetch user queues</button>
                 		</div>
@@ -118,10 +121,11 @@
 
                   <div class="game-user">
                     <div id = "userGame1" style="display:inline-block;width:300px;height:120px;"></div>
+                    <div id = "userVS"    style="display:inline-block;width:40px;height:120px;font-size:2.7em;vertical-align:top;margin-top:20px;">VS</div>
                     <div id = "userGame2" style="display:inline-block;width:300px;height:120px;"></div>
                   </div>
 
-                  <div id = "gameInfo" class="game-control"  style="display:none" >
+                  <!-- <div id = "gameInfo" class="game-control"  style="display:none" >
                     <div style="display:inline-block;width:300px;">
                     <div id = "gtimer" style="display:block">
                       <div id="ts1"  class="digitNum dn-small" >0</div>
@@ -139,16 +143,18 @@
                       <div id="cnt1" class="digitNum dn-small">0</div>
                       <div id="cnt2" class="digitNum dn-small">0</div>
                     </div>
-                  </div>
+                  </div> -->
 
                   <div id = "gameButtons" style="display:none" class="game-control" >
-                    <div id = "btnCtrl1" class="game-control-btn"  onclick="page_game.gameBtnControl('start');">
+                    <div id = "btnCtrl1" class="game-control-btn"  onclick="page_game.gameBtnControl('ball');">
                       <div class="inner">
-                        <img id="btnCtrlBall" style = "position:relative; top:-30px;margin:0 auto;z-index:1000;" src = "./img/game/ball.png" width="120px">
+                        <img id="btnCtrlBall" style = "position:relative; top:0px;margin:0 auto;z-index:1000;" src = "./img/game/ball_nrl.png" width="120px">
                         <img id="btnCtrlRnd" style = "position:relative; top:-33px;margin:0 auto;z-index:999;" src = "./img/game/shadow.png" width="60px">
+
                       </div>
-                      <div>START</div>
+                      <div><b>BALL</b></div>
                     </div>
+
                     <!-- <div id = "btnCtrl2" class="game-control-btn"  onclick="tcsGame.gameBtnControl('start');">
                       <div class="inner">
                         <img id="btnCtrlBall" style = "position:relative; top:-30px;margin:0 auto;z-index:1000;" src = "./img/game/ball.png" width="120px">

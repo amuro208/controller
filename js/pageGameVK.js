@@ -2,7 +2,6 @@
 	var PageGame = function(id){
 		Page.call(this,id);
 		this.photoId = "";
-		this.videoId = "";
 		this.totalTime = 30.0;
 		this.timeRemain = 0;
 		this.userScore = 0;;
@@ -18,42 +17,68 @@
 	PageGame.prototype.init = function(){
 		this.btnCancel = $$("btn-cancel");
 		this.btnApprove = $$("btn-approve");
-		this.ts1 = $$("ts1");
-		this.ts2 = $$("ts2");
-		this.tms1 = $$("tms1");
-		this.tms2 = $$("tms2");
-		this.tms3 = $$("tms3");
-		this.cnt1 = $$("cnt1");
-		this.cnt2 = $$("cnt2");
+		this.btnBall = $$("btnCtrl1");
+		this.iconBall = $$("btnCtrlBall");
+		this.iconRnd = $$("btnCtrlRnd");
+		this.iconBall.style.filter = "drop-shadow(0px 5px 10px #000)";
 		document.addEventListener("onSocketMessage",this.onSocketMessage.bind(this),false);
+		window.addEventListener("keydown", this.keyboardlistener.bind(this));
 	}
 	PageGame.prototype.ready = function(){
 		tcsapp.isGameReady = true;
 		this.btnCancel.disabled = false;
-		this.btnApprove.disabled = false;
-
-		console.log("GAME ready");
+		this.btnApprove.disabled = true;
+		this.currKickIndex = 0;
+    //this.btnBall.disabled = true;
+		this.ballBtnEnable(false);
 		this.setHeader("GAME CONTROL");
 	}
+	PageGame.prototype.keyboardlistener = function(e){
+		console.log("keyboardlistener : "+e.key);
+		if(e.key == "b"){
+			this.ballBtnEnable(true);
+		}
+		if(e.key == "k"){
+			this.ballBtnEnable(false);
+		}
+	}
 	PageGame.prototype.onSocketMessage = function(e){
-		if(e.detail.cmd == "TIMEOUT"){
-				tcsapp.isGameRunning = false;
-				tcsapp.isGameReady = false;
+		console.log("onSocketMessage ??????  ::::::::::::::::::::::: "+e.detail);
+		if(e.detail.cmd == "READY"){
+			 tcsapp.isGameRunning = true;
 
-		}else if(e.detail.cmd == "START"){
-			tcsapp.isGameRunning = true;
-			//if(this.timerId)clearInterval(this.timerId);
-			//this.prevTime = new Date().getTime();
-			//this.timerId = setInterval(this.calculateTime,30,this);
 
-		}else if(e.detail.cmd == "ADDPOINT"){
+		}else if(e.detail.cmd == "BALL_ENABLE"){
 			//this.userScore++;
 			//this.display();
+			this.currKickIndex = e.detail.msg;
+			this.ballBtnEnable(true);
+
+			if(conf.APP_INFINITE_TEST == "Y"){
+			  setTimeout(function(){tcsapp.tcssocket.send("ALL","BALL_READY","-")},5000);
+				setTimeout(function(){tcsapp.tcssocket.send("ALL","KICK_TRACKER","1.0,0,1.0")},8000);
+			}
 
 		}else if(e.detail.cmd == "GAME_END"){
-			this.btnApprove.disabled = false;
+			//this.btnApprove.disabled = false;
+			//if(conf.APP_INFINITE_TEST == "Y"){
+			//	this.approve();
+			//}
+
+		}else if(e.detail.cmd == "KICK_TRACKER"){
+			this.ballBtnEnable(false);
+			//this.btnApprove.disabled = false;
+			//if(conf.APP_INFINITE_TEST == "Y"){
+			//	this.approve();
+			//}
+
+		}else if(e.detail.cmd == "GAME_RESULT"){
+			tcsapp.isGameRunning = false;
+			tcsapp.tcssocket.send("ALL","GAME_END","-");
+			setTimeout(function(){this.btnApprove.disabled = false;}.bind(this),2000);
+
 			if(conf.APP_INFINITE_TEST == "Y"){
-				this.approve();
+				setTimeout(this.approve.bind(this),6000);
 			}
 
 		}else if(e.detail.cmd == "STOP"){
@@ -68,26 +93,12 @@
 			tcsapp.paging(1);
 			if(this.timerId)clearInterval(this.timerId);
 			tcsapp.tcssocket.send("ALL","STOP","-");
+			page_list.updateUserStatus();
 		}
 	}
 
 
 	PageGame.prototype.userReady = function(){
-
-		// var docElm = document.documentElement;
-		// if (docElm.requestFullscreen) {
-		// 		docElm.requestFullscreen();
-		// }
-		// else if (docElm.mozRequestFullScreen) {
-		// 		docElm.mozRequestFullScreen();
-		// }
-		// else if (docElm.webkitRequestFullScreen) {
-		// 		docElm.webkitRequestFullScreen();
-		// }
-		// else if (docElm.msRequestFullscreen) {
-		// 		docElm.msRequestFullscreen();
-		// }
-
 
 		if(page_list.curUserIndex>-1 && page_list.totalUser>0){
 
@@ -97,129 +108,91 @@
 			this.userData = user.queuedata.userqueues[page_list.curUserIndex];
 
 			this.photoId = "user_"+new Date().getTime();
-			this.videoId = "user_"+new Date().getTime();
 
 			var fnames = this.userData.userFirstName.split("|");
 			var lnames = this.userData.userLastName.split("|");
 			var emails = this.userData.userEmail.split("|");
 			var flags  = this.userData.userCountry.split("|");
-			var levels = this.userData.userOption1.split("|");
 
+			var levels = ["false","false"];//this.userData.userOption1.split("|");
 
-
-			if(conf.MULTI_USER==2){
-				var flag1 = (flags[0]==undefined || flags[0].length<2)?"xx":flags[0].toLowerCase();
-				var flag2 = (flags[1]==undefined || flags[1].length<2)?"xx":flags[1].toLowerCase();
-				var fStr1 = "<img src = '"+conf.FLAG_ROOT+flag1+".png'/>";
-				var fStr2 = "<img src = '"+conf.FLAG_ROOT+flag2+".png'/>";
-				var un1 = flag1 == 0?"CPU":fnames[0]+" "+lnames[0];
-				var un2 = flag2 == 0?"CPU":fnames[1]+" "+lnames[1];
-
-				$$("userGame1").innerHTML = "<div class='user-gamecard'><div class='user-gamecard-flag'>"+fStr1+"</div><div class='uname'>"+un1+(levels[0]=="true"?"*":"")+"</div></div>";
-				$$("userGame2").innerHTML = "<div class='user-gamecard'><div class='user-gamecard-flag'>"+fStr2+"</div><div class='uname'>"+un2+(levels[1]=="true"?"*":"")+"</div></div>";
-
-				if(conf.USER_CPU_OPPONENT == "Y"){
+			var fstr = [];
+			var fnum = [];
+			var nstr = [];
+			var totalUser = 0;
+			var validUser = 0;
+			for(var i = 0; i<conf.MULTI_USER; i++){
+				if(fnames[i]==""){
+					if(conf.USE_CPU_OPPONENT == "Y"){
+						fstr[i] = "<img src = '"+conf.FLAG_ROOT+"xx.png'/>";
+						nstr[i] = "CPU";
+						totalUser++;
+					}else{
+						fstr[i] = "";
+						nstr[i] = "";
+					}
+					fnum[i] = 0;
 
 				}else{
-					if(flag1 == "xx")$$("userGame1").innerHTML = "";
-					if(flag2 == "xx")$$("userGame2").innerHTML = "";
+					var flag = flags[i];
+					 totalUser++;
+					 validUser = i;
+					 fnum[i] = flag;
+					 fstr[i] = "<img src = '"+conf.FLAG_ROOT+flag+".png'/>";
+					 nstr[i] = fnames[i]+" "+lnames[i];
 				}
-
-				tcsapp.tcssocket.send("ALL","READY",un1+","+flag1+","+this.photoId+","+levels[0]+"|"+un2+","+flag2+","+this.photoId+","+levels[1]);
-
-
-			}else{
-				var flag1 = (flags[0]==undefined || flags[0].length<2)?"xx":flags[0].toLowerCase();
-				var fStr1 = "<img src = '"+conf.FLAG_ROOT+flag1+".png'/>";
-				var un1 = fnames[0]+" "+lnames[0];
-				$$("userGame1").innerHTML = "<div class='user-gamecard'><div class='user-gamecard-flag'>"+fStr1+"</div><div class='uname'>"+un1+(levels[0]=="true"?"*":"")+"</div></div>";
-				tcsapp.tcssocket.send("ALL","READY",un1+","+flag1+","+this.photoId+","+levels[0]+"|");
-				$$("userGame2").style.display = "none";
 			}
-			this.userScore = 0;
 
-			if(this.timerId)clearInterval(this.timerId);
-			this.totalTime = conf.TIMEOUT;
-			this.timeRemain = this.totalTime*1000;
-			this.display();
+			if(totalUser==2){
+				$$("userGame1").style.display = "inline-block";
+				$$("userGame2").style.display = "inline-block";
+				$$("userVS").style.display = "inline-block";
+				$$("userGame1").innerHTML = "<div class='user-gamecard'><div class='user-gamecard-flag'>"+fstr[0]+"</div><div class='uname'>"+nstr[0]+(levels[0]=="true"?"*":"")+"</div></div>";
+				$$("userGame2").innerHTML = "<div class='user-gamecard'><div class='user-gamecard-flag'>"+fstr[1]+"</div><div class='uname'>"+nstr[1]+(levels[1]=="true"?"*":"")+"</div></div>";
+			}else{
+				$$("userGame1").style.display = "inline-block";
+				$$("userGame1").innerHTML = "<div class='user-gamecard'><div class='user-gamecard-flag'>"+fstr[validUser]+"</div><div class='uname'>"+nstr[validUser]+(levels[validUser]=="true"?"*":"")+"</div></div>";
+				$$("userGame2").style.display = "none";
+				$$("userVS").style.display = "none";
+			}
 
-			$$("gameInfo").style.display = "none";
-			$$("gtimeout").style.display = "none";
-			$$("gtimer").style.display = "block";
+			tcsapp.tcssocket.send("ALL","READY",nstr[0]+","+fnum[0]+","+this.photoId+","+levels[0]+"|"+nstr[1]+","+fnum[1]+","+this.photoId+","+levels[1]);
+
 		  $$("gameButtons").style.display = "block";
 
-			TweenMax.to($$("btnCtrlBall"), 0.6, {top:"0px", repeat:-1, repeatDelay:1.0, ease:Bounce.easeOut});
-			$$("btnCtrlBall").style.filter = "drop-shadow(0px 5px 10px #000)";
-	    $$("btnCtrlRnd").style.filter = "saturate(0)";
+			this.ballBtnEnable(false);
 
 			tcsapp.paging(2);
 
-			if(conf.APP_INFINITE_TEST == "Y"){
-					setTimeout(function(){
-						$$("gameInfo").style.display = "block";
-					  $$("gameButtons").style.display = "none";
-					  tcsapp.tcssocket.send("ALL","START","-");},2000);
-			}
-			//dispatchEvent(new PanelEvent(PanelEvent.NEXT_STEP,null,false,false));
 		}else{
 			alert("No user selected!");
 		}
 	}
 
-  PageGame.prototype.activeBtn = function(btn,a){
-		if(a)btn.classList.add("active");
-		else btn.classList.remove("active");
+	PageGame.prototype.ballBtnEnable = function(b){
+		if(b){
+			this.iconBall.style.top = "-33px";
+			this.btnBall.style.opacity = 1;
+			this.btnBall.classList.remove("disable");
+			this.iconRnd.style.filter = "saturate(1)";
+			TweenMax.to(this.iconBall, 0.6, {top:"0px", repeat:-1, repeatDelay:1.0, ease:Bounce.easeOut});
+		}else{
+			this.iconBall.style.top = "0px";
+			this.btnBall.style.opacity = 0.7;
+			this.btnBall.classList.add("disable");
+			this.iconRnd.style.filter = "saturate(0)";
+			TweenMax.killTweensOf(this.iconBall);
+		}
 	}
-
-
   PageGame.prototype.gameBtnControl = function(s){
 
-		if(s == "start"){
-			$$("gameInfo").style.display = "block";
-			$$("gameButtons").style.display = "none";
-			tcsapp.tcssocket.send("ALL","START","-");
-
-		}else if(s == "again"){
+		if(s == "again"){
 			tcsapp.tcssocket.send("ALL","RETRY","");
-		}else if(s == "level"){
-			tcsapp.tcssocket.send("ALL","MODE","NORMAL");
+		}else if(s == "ball"){
+			tcsapp.tcssocket.send("ALL","BALL_READY","-");
 		}else if(s == "fake"){
 			tcsapp.tcssocket.send("ALL","KICK_TRACKER","1.0,0,1.0");
 		}
-
-	}
-
-
-	PageGame.prototype.calculateTime = function(_this){
-		var curTime = new Date().getTime();
-		_this.timeRemain -= (curTime - _this.prevTime);
-		_this.prevTime = curTime;
-		if(_this.timeRemain<0){
-			_this.timeRemain = 0;
-			$$("gtimeout").style.display = "block";
-			$$("gtimer").style.display = "none";
-			//$$("gcounter").style.display = "none";
-			clearInterval(_this.timerId);
-		}
-		_this.display();
-	}
-
-	PageGame.prototype.display = function(){
-		var tm = Math.floor(this.timeRemain/(60*1000));
-		var ts  = this.timeRemain%(60*1000)/1000;
-		var tms = this.timeRemain%1000;
-
-		var tsStr = ts<10?"0"+ts:""+ts;
-		var tmsStr = tms<10?"00"+tms:(tms<100?"0"+tms:""+tms);
-		this.ts1.innerHTML = tsStr.charAt(0);
-		this.ts2.innerHTML = tsStr.charAt(1);
-		this.tms1.innerHTML = tmsStr.charAt(0);
-		this.tms2.innerHTML = tmsStr.charAt(1);
-		this.tms3.innerHTML = tmsStr.charAt(2);
-
-		var scoreStr = this.userScore<10?"0"+this.userScore:""+this.userScore;
-		this.cnt1.innerHTML = scoreStr.charAt(0);
-		this.cnt2.innerHTML = scoreStr.charAt(1);
 
 	}
 
@@ -259,7 +232,7 @@
 		postObj.userEDMTNC1 = this.userData.userOption2 == "true"?"Y":"N";
 		postObj.userEDMTNC2 = this.userData.userOption3 == "true"?"Y":"N";
 		//userData.videoId = this.videoId;
-		//postObj.userScore = this.userScore;
+		postObj.userScore = 100;
 		//postObj.userTitle = this.userData.userTitle;
 		postObj.userCountryId = this.userData.userCountry;
 		postObj.userPostcode = this.userData.userPostcode;

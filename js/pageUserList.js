@@ -29,6 +29,25 @@
   PageUserList.prototype.constructor = PageUserList;
 	PageUserList.prototype.init = function(){
 
+		document.addEventListener('touchmove',function(e)
+		{
+			e = e || window.event;
+			var target = e.target || e.srcElement;
+			//in case $altNav is a class:
+			if (!target.className.match(/\bscrollable\b/))
+			{
+					e.returnValue = false;
+					e.cancelBubble = true;
+					if (e.preventDefault)
+					{
+							e.preventDefault();
+							e.stopPropagation();
+					}
+					return false;//or return e, doesn't matter
+			}
+			//target is a reference to an $altNav element here, e is the event object, go mad
+		},false);
+
 		this.blockUtils         = $$("blockUtils");
 		this.containerWrapper   = $$("thumbContainerWrapper");
 		this.containerCropFrame = $$("thumbContainerCropFrame");
@@ -49,12 +68,12 @@
 
 		this.btnReady.disabled = true;
 
-		this.blockUtils.innerHTML = '<div class="hidden-button rb disable" onclick="toggleOnOff(\'utilBtns\')" alt = "Toggle Utils"></div>\
-    <div id = "utilBtns" style="display:none; z-index:1001; position:absolute; width:200px; bottom:55px; right:0px; text-align:right">\
-      <button onclick="page_list.saveQueueAtServer()"     class="btn btn-sm btn-default" style="width:160px;">Save user queues</button><br>\
-      <button onclick="page_list.deleteQueue(true)"       class="btn btn-sm btn-default" style="width:160px;">Delete user queues</button><br>\
-      <button onclick="page_list.clearBoard()"            class="btn btn-sm btn-default" style="width:160px;">Clear Leader board</button>\
-    </div>';
+		// this.blockUtils.innerHTML = '<div class="hidden-button rt" onclick="toggleOnOff(\'utilBtns\')" alt = "Toggle Utils"></div>\
+		// <div id = "utilBtns" style="display:none; z-index:1001; position:absolute; width:200px; top:55px; right:0px; text-align:right">\
+		// 	<button onclick="page_list.saveQueueAtServer()"     class="btn btn-sm btn-default" style="width:160px;">Save user queues</button><br>\
+		// 	<button onclick="page_list.deleteQueue(true)"       class="btn btn-sm btn-default" style="width:160px;">Delete user queues</button><br>\
+		// 	<button onclick="page_list.clearBoard()"            class="btn btn-sm btn-default" style="width:160px;">Clear Leader board</button>\
+		// </div>';
 
 		cms.getQueue(this,{"appid":tcsapp.appId},function(data){
 			this.initUserQueueWithData(data);
@@ -195,88 +214,50 @@
 				var fnames = obj.userFirstName.split("|");
 				var lnames = obj.userLastName.split("|");
 				var flags  = obj.userCountry.split("|");
-				var levels = obj.userOption1.split("|");
+				var levels = ["false","false"];//obj.userOption1.split("|");
 
-				if(conf.MULTI_USER==2){
-				//	console.log("isNaN(parseInt(flags[1])) ::: "+isNaN(parseInt(flags[1])));
-					var flag1 = (flags[0]==undefined || flags[0].length<2)?"xx":flags[0].toLowerCase();
-					var flag2 = (flags[1]==undefined || flags[1].length<2)?"xx":flags[1].toLowerCase();
-					var fStr1="";
-					var fStr2="";
-					var nStr1="";
-					var nStr2="";
-
-
-					if(flag1 == "xx"){
+				var fstr = [];
+				var nstr = [];
+				var totalUser = 0;
+				var validUser = 0;
+				for(var i = 0; i<conf.MULTI_USER; i++){
+					if(fnames[i]==""){
 						if(conf.USE_CPU_OPPONENT == "Y"){
-							fStr1 = "<img src = '"+conf.FLAG_ROOT+"xx.png'/>";
-							nStr1 = "<input type='text' class='uname noselect ' readonly='true' value='CPU'>";
+							fstr[i] = "<img src = './img/flags/flag0.png'/>";
+							nstr[i] = "<input type='text' class='uname noselect ' readonly='true' value='CPU'>";
+							totalUser++;
 						}else{
-							fStr1 = "";
-							nStr1 = "";
+							fstr[i] = "";
+							nstr[i] = "";
 						}
 					}else{
-						fStr1 = "<img src = '"+conf.FLAG_ROOT+flag1+".png'/>";
-						nStr1 = "<input type='text' class='uname noselect' readonly='true' value="+fnames[0]+">\
-										 <input type='text' class='uname noselect' readonly='true' value="+lnames[0]+">";
+						totalUser++;
+						validUser = i;
+						var flag = flags[i].toLowerCase();
+						 fstr[i] = "<img src = '"+conf.FLAG_ROOT+flag+".png'/>";
+						 nstr[i] = "<input type='text' class='uname noselect' readonly='true' value="+fnames[i]+">\
+											  <input type='text' class='uname noselect' readonly='true' value="+lnames[i]+(levels[i]=="true"?"*":"")+">";
 					}
+				}
 
-					if(flag2 == "xx"){
-						if(conf.USE_CPU_OPPONENT == "Y"){
-							fStr2 = "<img src = '"+conf.FLAG_ROOT+"xx.png'/>";
-							nStr2 = "<input type='text' class='uname noselect ' readonly='true' value='CPU'>";
-						}else{
-							fStr2 = "";
-							nStr2 = "";
-						}
-					}else{
-						fStr2 = "<img src = '"+conf.FLAG_ROOT+flag2+".png'/>";
-						nStr2 = "<input type='text' class='uname noselect' readonly='true' value="+fnames[1]+">\
-										 <input type='text' class='uname noselect' readonly='true' value="+lnames[1]+">";
-					}
-
-					if(conf.USER_FLAG == "N"){
-						fStr1 = "";
-						fStr2 = "";
-					}
-
+				if(totalUser==2){
 					thumb.innerHTML = "\
 					<div class='overlay'></div>\
 					<div class='inner-multi'>\
-					<div class='flag-multi'>"+fStr1+"</div>\
-					<div class='name-multi'>"+nStr1+"</div>\
+					<div class='flag-multi'>"+fstr[0]+"</div>\
+					<div class='name-multi'>"+nstr[0]+"</div>\
 					</div>\
 					<div class='line'></div>\
 					<div class='inner-multi'>\
-					<div class='flag-multi'>"+fStr2+"</div>\
-					<div class='name-multi'>"+nStr2+"</div>\
+					<div class='flag-multi'>"+fstr[1]+"</div>\
+					<div class='name-multi'>"+nstr[1]+"</div>\
 					</div>";
-
-
 				}else{
-					var flag1 = flags[0].length<2?"xx":flags[0].toLowerCase();
-
-					if(flag1 == 0){
-							flag1 = 1;
-							fnames[0] = "none";
-							lnames[0] = "";
-							levels[0] = "false";
-							//return;
-					}
-
-					var fStr1 = "<img src = '"+conf.FLAG_ROOT+flag1+".png'/>";
-					var nStr1 = "<input type='text' class='uname noselect' readonly='true' value="+fnames[0]+">\
-											 <input type='text' class='uname noselect' readonly='true' value="+lnames[0]+(levels[0]=="true"?"*":"")+">";
-
-					if(conf.USER_FLAG == "N"){
- 						fStr1 = "";
- 					}
-
 					thumb.innerHTML = "\
 					<div class='overlay'></div>\
 					<div class='inner-single'>\
-					<div class='flag-single'>"+fStr1+"</div>\
-					<div class='name-single'>"+nStr1+"</div>\
+					<div class='flag-single'>"+fstr[validUser]+"</div>\
+					<div class='name-single'>"+nstr[validUser]+"</div>\
 					</div>";
 				}
 

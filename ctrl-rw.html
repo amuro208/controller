@@ -42,7 +42,7 @@
           preset.confd.FLAG_ROOT = preset.confp.FLAG_ROOT = "./flags/flags-normal/";
           tcsapp.pages = [page_intro, page_list, page_game];
           tcsapp.appId = "au.com.thecreativeshop.pf.control_rw";
-          preset.confp.CMS_EVENT_CODE = "QS";
+          preset.confp.CMS_EVENT_CODE = "PP";
           tcsapp.confKeys = ["CMD_SOCKET_ID","CMD_SOCKET_IP","CMD_SOCKET_PORT","CMS_EVENT_CODE","CMS_IP","CMS_UPLOAD","CMS_CLEAR_BOARD","APP_INFINITE_TEST","TIMEOUT","USE_FLAG"];
           tcsapp.init();
           tcsapp.paging(1);
@@ -59,9 +59,8 @@
     <!-- DEBUGGING PANEL-->
     <div id = "panelDebug" class="full-popup"></div>
 
-    <div class="hidden-button lt disable" onclick="tcsapp.panelConf.show();" alt = "Open Configuration"></div>
-    <div class="hidden-button rt disable" onclick="tcsapp.panelDebug.show();" alt = "Open Log Panel"></div>
-    <div class="hidden-button lb" onclick="eableHiddenButtons(this)" alt = "default user"></div>
+    <div class="hidden-button lt" onclick="tcsapp.panelConf.show();" alt = "Open Configuration"></div>
+    <!-- <div class="hidden-button rt" onclick="tcsapp.panelDebug.show();" alt = "Open Log Panel"></div> -->
 
     <div id = "blockUtils"></div>
 
@@ -87,10 +86,14 @@
                     <div id = "userStatusScroll"></div>
                     <div><img src="./img/arrow.png"/></div>
                     <div id = "userStatusUsers"></div>
-                    <div style = "z-index:1001; position:absolute; width:200px; top:-80px; right:0px; text-align:right">
-                			<button onclick="page_list.scrollToUser(0)"         class="btn btn-sm btn-default" style="width:160px;">Who is next</button><br>
-                			<button onclick="page_list.getQueueFromServer()"    class="btn btn-sm btn-default" style="width:160px;">Fetch user queues</button>
-                		</div>
+                    <div style = "z-index:1001; position:absolute; width:200px; top:-85px; right:0px; text-align:right">
+                      <button onclick="page_list.deleteQueue(true)"       class="btn btn-sm btn-default" style="width:160px;">Delete user queues</button><br>
+                      <button onclick="page_list.clearBoard()"            class="btn btn-sm btn-default" style="width:160px;">Clear Leader board</button>
+                    </div>
+                    <div style = "z-index:1001; position:absolute; width:200px; top:330px; right:0px; text-align:right">
+                      <button onclick="page_list.scrollToUser(0)"         class="btn btn-sm btn-default" style="width:160px;">Who is next</button><br>
+                      <button onclick="page_list.getQueueFromServer()"    class="btn btn-sm btn-default" style="width:160px;">Fetch user queues</button>
+                    </div>
                   </div>
                   <div id = "thumbContainerWrapper" class="scrollable">
                     <div id = "thumbContainer">
@@ -117,11 +120,12 @@
 
                   <div class="game-user">
                     <div id = "userGame1" style="display:inline-block;width:300px;height:120px;"></div>
+                    <div id = "userVS"    style="display:inline-block;width:40px;height:120px;font-size:2.7em;vertical-align:top;margin-top:20px;">VS</div>
                     <div id = "userGame2" style="display:inline-block;width:300px;height:120px;"></div>
                   </div>
 
                   <div id = "gameInfo" class="game-control"  style="display:none" >
-                    <div style="display:inline-block;width:50%;text-align:right;">
+                    <div style="display:inline-block;width:50%;">
                       <div id = "gtimer" style="display:block">
                         <div id="ts1"  class="digitNum dn-small" >0</div>
                         <div id="ts2"  class="digitNum dn-small" >0</div>
@@ -134,7 +138,7 @@
                         <div id="ts"  class="digitNum dn-small" style="width:100%">TIMEOUT</div>
                       </div>
                   </div>
-                    <div id = "gcounter" style="display:inline-block;width:20%;text-align:left;margin-left:5%;">
+                    <div id = "gcounter" style="display:inline-block;width:20%;margin-left:5%;">
                       <div id="cnt1" class="digitNum dn-small">0</div>
                       <div id="cnt2" class="digitNum dn-small">0</div>
                     </div>
@@ -146,7 +150,7 @@
                         <img id="btnCtrlBall" style = "position:relative; top:-30px;margin:0 auto;z-index:1000;" src = "./img/game/ball.png" width="120px">
                         <img id="btnCtrlRnd" style = "position:relative; top:-33px;margin:0 auto;z-index:999;" src = "./img/game/shadow.png" width="60px">
                       </div>
-                      <div>START</div>
+                      <div><b>START</b></div>
                     </div>
                     <!-- <div id = "btnCtrl2" class="game-control-btn"  onclick="tcsGame.gameBtnControl('start');">
                       <div class="inner">

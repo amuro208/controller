@@ -1,0 +1,51 @@
+American Samoa : AS
+Anguilla : AI
+Antarctica : AQ
+Aruba : AW
+Bermuda : BM
+Bouvet Island : BV
+British Virgin Islands : VG
+British Indian Ocean Territory : IO
+Cayman Islands : KY
+Hong Kong : HK
+Macao : MO
+Christmas Island : CX
+Cocos (Keeling) Islands : CC
+Cook Islands : CK
+Falkland Islands (Malvinas) : FK
+Faroe Islands : FO
+French Guiana : GF
+French Polynesia : PF
+French Southern Territories : TF
+Gibraltar : GI
+Greenland : GL
+Guadeloupe : GP
+Guam : GU
+Guernsey : GG
+Heard and Mcdonald Islands : HM
+Isle of Man : IM
+Jersey : JE
+Martinique : MQ
+Mayotte : YT
+Montserrat : MS
+Netherlands Antilles : AN
+New Caledonia : NC
+Niue : NU
+Norfolk Island : NF
+Northern Mariana Islands : MP
+Palestinian Territory : PS
+Pitcairn : PN
+Puerto Rico : PR
+Réunion : RE
+Saint-Barthélemy : BL
+Saint Helena : SH
+Saint-Martin (French part) : MF
+Saint Pierre and Miquelon : PM
+South Georgia and the South Sandwich Islands : GS
+South Sudan : SS
+Svalbard and Jan Mayen Islands : SJ
+Tokelau : TK
+Turks and Caicos Islands : TC
+US Minor Outlying Islands : UM
+Virgin Islands US : VI
+Wallis and Futuna Islands : WF

@@ -12,6 +12,7 @@ var UserData = function() {
     this.userLastName = "";
     this.userEmail = "";
     this.userFlag = -1;
+    this.userCountry = "xx";
     this.userMobile = "";
     this.userPostcode = "";
     this.userOption1 = false;
@@ -26,6 +27,7 @@ var UserData = function() {
       this.userLastName = "";
       this.userEmail = "";
       this.userFlag = -1;
+      this.userCountry = "xx";
       this.userMobile = "";
       this.userPostcode = "";
       this.userOption1 = false;
@@ -35,7 +37,7 @@ var UserData = function() {
     }
 
     this.print = function(){
-      log("User Info : "+this.userTitle+":"+this.userFirstName+":"+this.userLastName+":"+this.userEmail+":"+this.userFlag+":"+this.userMobile+":"+this.userPostcode+":"+this.userOption1+":"+this.userOption2+":"+this.userOption3+":"+this.check);
+      log("User Info : "+this.userTitle+":"+this.userFirstName+":"+this.userLastName+":"+this.userEmail+":"+this.userCountry+":"+this.userMobile+":"+this.userPostcode+":"+this.userOption1+":"+this.userOption2+":"+this.userOption3+":"+this.check);
     }
 
 }

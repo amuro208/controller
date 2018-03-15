@@ -121,23 +121,5 @@ if(navigator.platform.indexOf("Linux")>-1){
 	});
 
 }
-	/*
-			document.body.addEventListener('touchmove',function(e)
-			{
-				e = e || window.event;
-				var target = e.target || e.srcElement;
-				//in case $altNav is a class:
-				if (!target.className.match(/\bscrollable\b/))
-				{
-						e.returnValue = false;
-						e.cancelBubble = true;
-						if (e.preventDefault)
-						{
-								e.preventDefault();
-								e.stopPropagation();
-						}
-						return false;//or return e, doesn't matter
-				}
-				//target is a reference to an $altNav element here, e is the event object, go mad
-			},false);
-	*/
+
+	

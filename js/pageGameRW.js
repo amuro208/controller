@@ -103,39 +103,51 @@
 			var lnames = this.userData.userLastName.split("|");
 			var emails = this.userData.userEmail.split("|");
 			var flags  = this.userData.userCountry.split("|");
-			var levels = this.userData.userOption1.split("|");
+			var levels = ["false","false"];//this.userData.userOption1.split("|");
 
-
-
-			if(conf.MULTI_USER==2){
-				var flag1 = (flags[0]==undefined || flags[0].length<2)?"xx":flags[0].toLowerCase();
-				var flag2 = (flags[1]==undefined || flags[1].length<2)?"xx":flags[1].toLowerCase();
-				var fStr1 = "<img src = '"+conf.FLAG_ROOT+flag1+".png'/>";
-				var fStr2 = "<img src = '"+conf.FLAG_ROOT+flag2+".png'/>";
-				var un1 = flag1 == 0?"CPU":fnames[0]+" "+lnames[0];
-				var un2 = flag2 == 0?"CPU":fnames[1]+" "+lnames[1];
-
-				$$("userGame1").innerHTML = "<div class='user-gamecard'><div class='user-gamecard-flag'>"+fStr1+"</div><div class='uname'>"+un1+(levels[0]=="true"?"*":"")+"</div></div>";
-				$$("userGame2").innerHTML = "<div class='user-gamecard'><div class='user-gamecard-flag'>"+fStr2+"</div><div class='uname'>"+un2+(levels[1]=="true"?"*":"")+"</div></div>";
-
-				if(conf.USER_CPU_OPPONENT == "Y"){
+			var fstr = [];
+			var fnum = [];
+			var nstr = [];
+			var totalUser = 0;
+			var validUser = 0;
+			for(var i = 0; i<conf.MULTI_USER; i++){
+				
+				if(fnames[i]==""){
+					if(conf.USE_CPU_OPPONENT == "Y"){
+						fstr[i] = "<img src = '"+conf.FLAG_ROOT+"xx.png'/>";
+						nstr[i] = "CPU";
+						totalUser++;
+					}else{
+						fstr[i] = "";
+						nstr[i] = "";
+					}
+					fnum[i] = 0;
 
 				}else{
-					if(flag1 == "xx")$$("userGame1").innerHTML = "";
-					if(flag2 == "xx")$$("userGame2").innerHTML = "";
+					var flag = flags[i];
+					 totalUser++;
+					 validUser = i;
+					 fnum[i] = flag;
+					 fstr[i] = "<img src = '"+conf.FLAG_ROOT+flag+".png'/>";
+					 nstr[i] = fnames[i]+" "+lnames[i];
 				}
-
-				tcsapp.tcssocket.send("ALL","READY",un1+","+flag1+","+this.photoId+","+levels[0]+"|"+un2+","+flag2+","+this.photoId+","+levels[1]);
-
-
-			}else{
-				var flag1 = (flags[0]==undefined || flags[0].length<2)?"xx":flags[0].toLowerCase();
-				var fStr1 = "<img src = '"+conf.FLAG_ROOT+flag1+".png'/>";
-				var un1 = fnames[0]+" "+lnames[0];
-				$$("userGame1").innerHTML = "<div class='user-gamecard'><div class='user-gamecard-flag'>"+fStr1+"</div><div class='uname'>"+un1+(levels[0]=="true"?"*":"")+"</div></div>";
-				tcsapp.tcssocket.send("ALL","READY",un1+","+flag1+","+this.photoId+","+levels[0]+"|");
-				$$("userGame2").style.display = "none";
 			}
+
+			if(totalUser==2){
+				$$("userGame1").style.display = "inline-block";
+				$$("userGame2").style.display = "inline-block";
+				$$("userVS").style.display = "inline-block";
+				$$("userGame1").innerHTML = "<div class='user-gamecard'><div class='user-gamecard-flag'>"+fstr[0]+"</div><div class='uname'>"+nstr[0]+(levels[0]=="true"?"*":"")+"</div></div>";
+				$$("userGame2").innerHTML = "<div class='user-gamecard'><div class='user-gamecard-flag'>"+fstr[1]+"</div><div class='uname'>"+nstr[1]+(levels[1]=="true"?"*":"")+"</div></div>";
+			}else{
+				$$("userGame1").style.display = "inline-block";
+				$$("userGame1").innerHTML = "<div class='user-gamecard'><div class='user-gamecard-flag'>"+fstr[validUser]+"</div><div class='uname'>"+nstr[validUser]+(levels[validUser]=="true"?"*":"")+"</div></div>";
+				$$("userGame2").style.display = "none";
+				$$("userVS").style.display = "none";
+
+			}
+
+			tcsapp.tcssocket.send("ALL","READY",nstr[0]+","+fnum[0]+","+this.photoId+","+levels[0]+"|"+nstr[1]+","+fnum[1]+","+this.photoId+","+levels[1]);
 
 			this.userScore = 0;
 

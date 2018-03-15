@@ -205,7 +205,7 @@ var PageRegi = function(id){
 			if(this.isForm("userFirstName"))$$("userFirstName").value = user.userFirstName;
 			if(this.isForm("userFirstName"))$$("userLastName").value = user.userLastName;
 			if(this.isForm("userEmail"))$$("userEmail").value = user.userEmail;
-			if(this.isForm("userCountry"))$$("userCountry").value =  countrylist.getCountryName(user.userCountry);
+			if(this.isForm("userCountry"))$$("userCountry").value = user.userCountry;
 			if(this.isForm("userFlag"))this.flagSelect(user.userFlag);
 			if(this.isForm("userMobile"))$$("userMobile").value = user.userMobile;
 			if(this.isForm("userPostcode"))$$("userPostcode").value = user.userPostcode;
@@ -282,9 +282,9 @@ PageRegi.prototype.setRadioValue = function(field,n){
 			}
 		if(this.isForm("userCountry")){
 				value = $$("userCountry").value;
-				var code = countrylist.getCountryCode(value);
-				if(code==""){alert("Check your country");return false};
-				user.userCountry = code;
+				//var code = countrylist.getCountryCode(value);
+				if(value==""){alert("Check your country");return false};
+				user.userCountry = value;
 			}
 		if(this.isForm("userFlag")){
 				if(conf.USE_FLAG == "Y" && this.selectedFlag<1){alert("Please select your team");return false};
@@ -325,7 +325,12 @@ PageRegi.prototype.setRadioValue = function(field,n){
 		var values = "";
 		for(var i = 0;i<this.users.length;i++){
 			var user = this.users[i];
-			values+=user[key];
+			if(key == "userCountry"){
+				values+=countrylist.getCountryCode(user[key]);
+			}else{
+				values+=user[key];
+			}
+
 			if(i<this.users.length-1){
 				values+="|";
 			}

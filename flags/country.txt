@@ -228,7 +228,7 @@ Turkmenistan,TM
 Turks and Caicos Islands,TC
 Tuvalu,TV
 Uganda,UG
-Ukraine.UA
+Ukraine,UA
 United Arab Emirates,AE
 United Kingdom,GB
 United States of America,US

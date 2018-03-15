@@ -3,10 +3,10 @@ font-family: 'Digital7';
 src:url('../fonts/digital-7-webfont.ttf') format('truetype');
 }
 
-.digitNum{display:inline-block; vertical-align: baseline; font-family:Digital7; line-height:100%; }
+.digitNum{display:inline-block; vertical-align: baseline; text-align: center ;font-family:Digital7; line-height:100%; }
 .dn-timer{width:18.5vw;font-size:36.5vw;  margin:0px -10px 0 -10px;}
 .dn-timer-colon{width:6.5vw;font-size:36.5vw;  margin:0px -10px 0 -10px;}
 .dn-timeout{font-size:31.5vw;}
-.dn-counter{font-size:56.5vw; }
-.dn-small{width:7.6vw;font-size:16vw;  margin:0px -5px 0 -5px;}
+.dn-counter{font-size:56.5vw; width:25.6vw; }
+.dn-small{width:7.6vw;font-size:16vw; margin:0px -5px 0 -5px;}
 .dn-small-colon{width:3.5vw;font-size:16vw;  margin:0px -5px 0 -5px;}
