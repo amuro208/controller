@@ -17,8 +17,6 @@
 		this.btnBall = $$("btnCtrl1");
 		this.iconBall = $$("btnCtrlBall");
 		this.iconRnd = $$("btnCtrlRnd");
-		this.iconBall.style.filter = "drop-shadow(0px 5px 10px #000)";
-
 		document.addEventListener("onSocketMessage",this.onSocketMessage.bind(this),false);
 	}
 	PageGame.prototype.ready = function(){
@@ -79,6 +77,8 @@
 	PageGame.prototype.userReady = function(){
 
 		if(page_list.curUserIndex>-1 && page_list.totalUser>0){
+			$$("gameInfo").style.display = "none";
+			$$("gameButtons").style.display = "block";
 
 			clearlog();
 
@@ -86,28 +86,56 @@
 			this.userData = user.queuedata.userqueues[page_list.curUserIndex];
 
 			this.photoId = "user_"+new Date().getTime();
-			this.videoId = "user_"+new Date().getTime();
 
 			var fnames = this.userData.userFirstName.split("|");
 			var lnames = this.userData.userLastName.split("|");
 			var emails = this.userData.userEmail.split("|");
 			var flags  = this.userData.userFlag.split("|");
-			var levels = this.userData.userOption1.split("|");
+			var levels = ["false","false"];//this.userData.userOption1.split("|");
 
-			if(conf.MULTI_USER==2){
+			var fstr = [];
+			var fnum = [];
+			var nstr = [];
+			var totalUser = 0;
+			var validUser = 0;
+			for(var i = 0; i<conf.MULTI_USER; i++){
+				if(fnames[i]==""){
+					if(conf.USE_CPU_OPPONENT == "Y"){
+						fstr[i] = "<img src = './img/flags/flag0.png'/>";
+						nstr[i] = "CPU";
+						totalUser++;
+					}else{
+						fstr[i] = "";
+						nstr[i] = "";
+					}
+					fnum[i] = 0;
 
-
-			}else{
-				var flag = isNaN(parseInt(flags[0]))?0:parseInt(flags[0]);
-				var fStr1 = "<img src = './img/flags/flag"+flag+".png'/>";
-				var un1 = fnames[0]+" "+lnames[0];
-				if(conf.USE_FLAG == "N"){
-					fStr1 = "<img src = './img/flags/flag0.png'/>";
+				}else{
+					var flag = parseInt(flags[i]);
+					if(flag<0)flag = 0;
+					 totalUser++;
+					 validUser = i;
+					 fnum[i] = flag;
+					 fstr[i] = "<img src = './img/flags/flag"+flag+".png'/>";
+					 nstr[i] = fnames[i]+" "+lnames[i];
 				}
-				$$("userGame1").innerHTML = "<div class='user-gamecard'><div class='user-gamecard-flag'>"+fStr1+"</div><div class='uname'>"+un1+"</div></div>";
-				tcsapp.tcssocket.send("ALL","READY",un1+","+flag+","+this.photoId+","+levels[0]+"|");
-				$$("userGame2").style.display = "none";
 			}
+
+			if(totalUser==2){
+				$$("userGame1").style.display = "inline-block";
+				$$("userGame2").style.display = "inline-block";
+				$$("userVS").style.display = "inline-block";
+				$$("userGame1").innerHTML = "<div class='user-gamecard'><div class='user-gamecard-flag'>"+fstr[0]+"</div><div class='uname'>"+nstr[0]+(levels[0]=="true"?"*":"")+"</div></div>";
+				$$("userGame2").innerHTML = "<div class='user-gamecard'><div class='user-gamecard-flag'>"+fstr[1]+"</div><div class='uname'>"+nstr[1]+(levels[1]=="true"?"*":"")+"</div></div>";
+			}else{
+				$$("userGame1").style.display = "inline-block";
+				$$("userGame1").innerHTML = "<div class='user-gamecard'><div class='user-gamecard-flag'>"+fstr[validUser]+"</div><div class='uname'>"+nstr[validUser]+(levels[validUser]=="true"?"*":"")+"</div></div>";
+				$$("userGame2").style.display = "none";
+				$$("userVS").style.display = "none";
+			}
+
+			tcsapp.tcssocket.send("ALL","READY",nstr[0]+","+fnum[0]+","+this.photoId+","+levels[0]+"|"+nstr[1]+","+fnum[1]+","+this.photoId+","+levels[1]);
+
 
 		  $$("gameButtons").style.display = "block";
 
@@ -122,6 +150,8 @@
 					  if(this.isinCameraStayupProcess){
 							this.startAfterStayupProcessDone = true;
 						}else{
+							$$("gameInfo").style.display = "block";
+						  $$("gameButtons").style.display = "none";
 							tcsapp.tcssocket.send("ALL","START","-");
 						}
 					}.bind(this),2000);
@@ -151,13 +181,9 @@
   PageGame.prototype.gameBtnControl = function(s){
 
 		if(s == "start"){
+			$$("gameInfo").style.display = "block";
+			$$("gameButtons").style.display = "none";
 			tcsapp.tcssocket.send("ALL","START","-");
-		}else if(s == "again"){
-			tcsapp.tcssocket.send("ALL","RETRY","");
-		}else if(s == "level"){
-			tcsapp.tcssocket.send("ALL","MODE","NORMAL");
-		}else if(s == "fake"){
-			tcsapp.tcssocket.send("ALL","KICK_TRACKER","1.0,0,1.0");
 		}
 
 	}
